@@ -83,5 +83,6 @@ deploy:
 #Backup
 backup:
   type: git
-  repository:
-    github: git@github.com:randomdize/randomdize.github.io.git,backup
+  repo:
+    github: git@github.com:randomdize/randomdize.github.io.git,hexo-package
+
