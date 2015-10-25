@@ -79,10 +79,3 @@ disqus_shortname: randomdize
 deploy:
   type: git
   repo: https://github.com/randomdize/randomdize.github.io
-
-#Backup
-backup:
-  type: git
-  repo:
-    github: git@github.com:randomdize/randomdize.github.io.git,hexo-package
-
