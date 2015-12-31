@@ -6,7 +6,7 @@ tags: windows
 而這次在Windows10安裝完TortoiseGit後卻發現那方便的確認status的小icon消失了。實在是太不方便。上網找了解法後記在這裡，畢竟未來Windows還是無法避免要去用的。而Git對程式設計師來說又是如此重要。
 
 ＊能盡量用GUI就用GUI，算是個Windows腦袋
-
+<!--more-->
 1. 進入TortoiseGit 設定選單
 2. 在Icon Overlay中的Overlay Handlers選擇"Start registry editor"
 3. 將"ShellIconOverlayIdentifiers"中TortoiseGit相關檔案提升到最上層。

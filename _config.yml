@@ -9,8 +9,8 @@ feed:
   limit: 20
 
 # Site
-title: To be named
-subtitle: The journey of Jack Shih
+title: Code Apprentice
+subtitle: Life is code, code is life.
 description: Jack Shih's personal blog.
 author: Jack Shih
 language: en
