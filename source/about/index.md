@@ -27,14 +27,20 @@ Jack Shih (施博元)
     * Caliburn.Micro, a WPF MVVM Framework
 * Java
   * Android
+* JavaScript
+  * Node.js
+    * Express.js
+    * Tedious, Node TDS module for connecting to SQL Server databases.
 * Microsoft SQL Server
 
 ## Current learning
 * HTML5
 * CSS3
 * JavaScript
+  * Meteor.js
 * Ruby
   * Ruby on Rails
+* MongoDB
 
 ## Used to use
 * C / C++
