@@ -1,6 +1,6 @@
 title: 華碩ZenUI移除ZenLife
 date: 2016-03-07 16:08:04
-tags: ZenUI
+tags: zenui
 ---
 在最近的 ZenUI Launcher 更新中加入了新功能 ZenLife Beta，有點像是 HTC BlinkFeed 或是 Google Now Launcher 的 Google Now 介面。個人是不排斥新功能，不過如果這功能不能用就是另外一回事了。
 

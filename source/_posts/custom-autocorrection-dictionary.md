@@ -1,6 +1,8 @@
 title: 自訂字典檔案
 date: 2016-06-14 21:47:07
-tags: osx tips
+tags: 
+- osx 
+- tips
 ---
 {% asset_img autocorrect.png OSX 修正錯字 %}
 

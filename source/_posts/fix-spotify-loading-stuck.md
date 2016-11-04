@@ -1,6 +1,8 @@
 title: Spotify 卡在歌手歌曲或專輯讀取畫面解決方法
 date: 2016-03-31 10:09:50
-tags: OSX spotify
+tags: 
+- osx 
+- spotify
 ---
 Spotify 一直是合法聽免費音樂的最佳管道，只是最近遇到這個問題。
 
