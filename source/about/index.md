@@ -9,8 +9,9 @@ Jack Shih (施博元)
 
 ## Ascentex, Taiwan (2015 -- Presnet)
 ### Software Engineer
-* Software maintenance
-* Android application development
+* Legacy software maintenance using VB.net
+* Internal android application development using Kotlin
+* Internal web application development using Asp.net MVC Core
 
 # Education
 
@@ -25,7 +26,7 @@ Jack Shih (施博元)
 * C#
   * Windows Presentation Foundation
     * Caliburn.Micro, a WPF MVVM Framework
-* Java
+* Kotlin/Java
   * Android
 * JavaScript
   * Node.js
