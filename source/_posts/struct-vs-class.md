@@ -1,8 +1,8 @@
 title: struct vs class in csharp
 date: 2018-01-30 16:39:35
 tags:
-- cpp
-- csharp
+- c++
+- c#
 ---
 前陣子因為個人主張`用 class 取代 struct`而討論到 csharp 中 struct 跟 class 有什麼不同。 
 ```csharp
