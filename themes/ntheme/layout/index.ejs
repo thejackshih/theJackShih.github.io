@@ -1,0 +1,18 @@
+<header class="header">
+    <section class="container">
+        <h1><%- config.title %></h1>
+        <hr>
+    </section>
+</header>
+<section class="container">
+    <% site.posts.sort('-date').forEach(function(post) {%>
+        <div class="row">
+            <div class="column">
+                <h2><%- post.date.format("YYYY-MM-DD") %></h2>
+                <h1><%- post.title %></h1>
+                <p><%- post.content %></p>
+                <hr>
+            </div>
+        </div>
+    <% })%>
+</section>
