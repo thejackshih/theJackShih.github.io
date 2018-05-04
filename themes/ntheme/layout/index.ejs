@@ -5,7 +5,7 @@
     </section>
 </header>
 <section class="container">
-    <% site.posts.sort('-date').forEach(function(post) {%>
+    <% page.posts.sort('-date').forEach(function(post) {%>
         <div class="row">
             <div class="column">
                 <h2><%- post.date.format("YYYY-MM-DD") %></h2>
@@ -15,4 +15,14 @@
             </div>
         </div>
     <% })%>
+    <div class="row">
+        <div class="column">
+            <div class="page-nav">
+                    <%- paginator({
+                        prev_text: '&laquo; Prev',
+                        next_text: 'Next &raquo;'
+                      }) %>
+            </div>
+        </div>
+    </div>
 </section>
