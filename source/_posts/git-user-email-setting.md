@@ -3,10 +3,9 @@ date: 2016-01-13 10:06:51
 tags:
 ---
 最近在github上查看Commit歷史紀錄時發現這個。
-![github帳號未連結][github-not-linked]
-
+{% asset_img not-link.png github帳號未連結 %}
 我預期應該要長這個樣子
-![github帳號連結][github-is-linked]
+{% asset_img link.png github帳號連結 %}
 <!--more-->
 原本以為在push到github時輸入帳號密碼就會紀錄是誰push的。不過上網Google了一下才發現原來是github會依照commit的email來連結帳號。
 
@@ -30,7 +29,5 @@ $ git config --global user.email
 # Reference:
 [Setting your email in Git][setting_email_in_git]
 
-[github-not-linked]: https://www.dropbox.com/s/iyagfnaksefvqll/not-link.png?raw=1
-[github-is-linked]:https://www.dropbox.com/s/zfm1tdbpbe1ffcd/link.png?raw=1
 [github-desktop]: https://desktop.github.com/
 [setting_email_in_git]: https://help.github.com/articles/setting-your-email-in-git/
