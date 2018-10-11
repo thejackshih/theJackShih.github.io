@@ -1,4 +1,5 @@
-title:
+layout: about
+title: About me
 date: 2016-01-07 14:33:32
 ---
 # Personal
