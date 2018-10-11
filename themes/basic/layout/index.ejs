@@ -1,0 +1,10 @@
+<section class="container">
+    <% page.posts.sort('-date').forEach(function(post) {%>
+        <div class="row">
+            <div class="column">
+                <h1><%- post.date.format("YYYY-MM-DD") %></h1>
+                <h1><a href="<%- url_for(post.path)%>"><%- post.title %></a></h1>
+            </div>
+        </div>
+    <% })%>
+</section>
