@@ -15,7 +15,53 @@
     margin-right: 2rem;
 }
 
+
 .page-nav span
 {
     margin-right: 2rem;
+}
+
+body {
+    line-height:1.8;
+    letter-spacing: 0.02em;
+    font-family: 'Noto Serif TC', serif;
+    color: #454545;
+}
+
+header { 
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+article {
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+section {
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+img {
+    max-width: 100%;
+}
+
+code {
+    font-size: 1.2em;
+    padding: 0.12em;
+}
+
+pre {
+    border-style: solid;
+    border: 1px;
+    padding: 6px;
+    background-color: #000000;
+}
+
+pre code {
+    color: #FFFFFF;
+    font-size: 1.25em;
+    overflow: auto; 
+    line-height: 1.1;
 }
