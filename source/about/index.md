@@ -25,8 +25,9 @@ Software developer with experience in C# windows and web application development
     * Android application (Kotlin)
     * Web dashboard (C#/Asp.net MVC Core)
   * Daily report system (python/vue.js)
+  * Service Information Sharing platform (C#/Asp.net MVC Core/Reactjs)
 * Introducing new technology to company
-  * Git for version control
+  * Git for version control 
 
 # Education
 ## Yuan-Ze University (2009 -- 2014)
@@ -50,6 +51,7 @@ Software developer with experience in C# windows and web application development
   * Meteor.js (40)
   * Vue.js (40)
   * React.js (40)
+  * Angular (40)
 * Python (60)
   * flask (40)
 * SQL (60)
