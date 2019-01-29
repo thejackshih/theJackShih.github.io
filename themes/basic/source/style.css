@@ -58,6 +58,7 @@ pre {
     border: 1px;
     padding: 6px;
     background-color: #000000;
+    overflow: auto;
 }
 
 pre code {
