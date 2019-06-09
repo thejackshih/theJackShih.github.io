@@ -5,6 +5,11 @@
     text-align: center;
 }
 
+header h3 
+{
+    margin: 0rem;
+}
+
 .page-nav
 {
     text-align: center;
@@ -15,14 +20,13 @@
     margin-right: 2rem;
 }
 
-
 .page-nav span
 {
     margin-right: 2rem;
 }
 
 body {
-    line-height:1.8;
+    line-height: 1.8;
     letter-spacing: 0.02em;
     font-family: 'Noto Serif TC', serif;
     font-size: 21px;
@@ -65,7 +69,7 @@ img {
 }
 
 code {
-    font-size: 1.2em;
+    font-size: 1em;
     padding: 0.12em;
 }
 
@@ -75,11 +79,11 @@ pre {
     padding: 6px;
     background-color: #000000;
     overflow: auto;
+    line-height: 0.9;
 }
 
 pre code {
     color: #FFFFFF;
-    font-size: 1.25em;
+    font-size: 0.8em;
     overflow: auto; 
-    line-height: 1.1;
 }
