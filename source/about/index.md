@@ -27,7 +27,7 @@ Software developer with experience in C# windows and web application development
   * Service Information Sharing platform (C#/Asp.net MVC Core/Reactjs)
 * Introducing moderm tooling to company
   * Git for version control 
-  * Travis CI for testing and delpoyment
+  * Jenkins for testing and delpoyment
   
 # Education
 ## Yuan-Ze University (2009 -- 2014)
