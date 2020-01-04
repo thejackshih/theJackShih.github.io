@@ -1,7 +1,8 @@
 <ul>
 <% page.posts.sort('-date').forEach(function(post) {%>
     <li>
-        <time><%- post.date.format("YYYY-MM-DD") %></time> - <h2><a href="<%- url_for(post.path)%>"><%- post.title %></a></h2>
+        <h2><a href="<%- url_for(post.path)%>"><%- post.title %></a></h2>
+        <time><%- post.date.format("YYYY-MM-DD") %></time>
     </li>
 <% })%>
 </ul>
