@@ -78,5 +78,5 @@ disqus_shortname: randomdize
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/randomdize/randomdize.github.io
+  repo: git@github.com:randomdize/randomdize.github.io.git
   branch: master
