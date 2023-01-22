@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Jack Shih">
+        <meta name="description" content="Jack Shih's personal blog.">
+		<link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
+		
+<link rel="stylesheet" href="/style.css">
+
+        <title>Use the Source - 解決 Api doc missing comma error - Code Apprentice</title>
+   <meta name="generator" content="Hexo 5.4.0"></head>
+    <body>
+        <header>
+            <h1><a href="/">Code Apprentice</a></h1>
+        </header>
+        <article>
+    <header>
+        <h2>Use the Source - 解決 Api doc missing comma error</h2>
+        <time>2017-05-03</time>
+    </header>
+    <p>最近想要試試 api doc 產生器，於是 Google 一下後找到看起來很不錯的工具 Api doc。結果按照教學設定完之後一執行馬上就出現<br><code>Can not read: apidoc.json, please check the format (e.g. missing comma)</code></p>
+<p>我百思不得其解，也確認了 apidoc.json 有存在，逗號也都在。以為是自己格式弄錯，結果直接複製官方的文字也是出錯。</p>
+<p>遇到無法解決的問題，身為一位程式設計師當然趕緊 Google 一下，StackOverflow 一下，再上 github 看看 issue list。</p>
+<p>結果還是找不到什麼有用的資訊，要不就是有點鬼打牆的回覆。不過好在開發者有個 Debug log 模式，一看雖然不知道哪裡有問題，但似乎是拋出了一個例外。</p>
+<p>最後正當要放棄的時候去看了一下 source code，一看才發現原來只是個簡單的 Json parse.</p>
+<pre><code>PackageInfo.prototype._readPackageData &#x3D; function(filename) {
+    var result &#x3D; {};
+    var dir &#x3D; this._resolveSrcPath();
+    var jsonFilename &#x3D; path.join(dir, filename);
+
+    &#x2F;&#x2F; Read from source dir
+    if ( ! fs.existsSync(jsonFilename)) {
+        &#x2F;&#x2F; Read from config dir (default &#39;.&#x2F;&#39;)
+        jsonFilename &#x3D; path.join(app.options.config, filename);
+    }
+    if ( ! fs.existsSync(jsonFilename)) {
+        app.log.debug(jsonFilename + &#39; not found!&#39;);
+    } else {
+        try {
+            result &#x3D; JSON.parse( fs.readFileSync(jsonFilename, &#39;utf8&#39;) );
+            app.log.debug(&#39;read: &#39; + jsonFilename);
+        } catch (e) {
+            throw new Error(&#39;Can not read: &#39; + filename + &#39;, please check the format (e.g. missing comma).&#39;);
+        }
+    }
+    return result;
+};</code></pre>
+
+<p>這時候就是使用古老的印出變數的方法了（感謝JavaScript 可以直接去改 source code 而不用重新 Build），直接把 parse 的字串輸出，結果發現原來是 Visual Studio 在建立檔案的時候前面插入了一些多餘的資料(也許是BOM? 還是其他的之類的)，導致 parse 失敗，改用記事本建立 apidoc.json 之後就解決了，可喜可賀。</p>
+<p>學到幾個經驗</p>
+<ol>
+<li><del>notepad &gt; Visual Studio</del> 純文字就用編輯器最保險</li>
+<li>在 Windows 上使用在 unix 系統開發的東西時很容易遇到奇怪的問題</li>
+<li><code>Use the Source, Luke</code></li>
+</ol>
+
+</article>
+
+        <footer></footer>
+    </body>
+</html>

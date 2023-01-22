@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Jack Shih">
+        <meta name="description" content="Jack Shih's personal blog.">
+		<link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
+		
+<link rel="stylesheet" href="/style.css">
+
+        <title>在 IIS 上架設 django - Code Apprentice</title>
+   <meta name="generator" content="Hexo 5.4.0"></head>
+    <body>
+        <header>
+            <h1><a href="/">Code Apprentice</a></h1>
+        </header>
+        <article>
+    <header>
+        <h2>在 IIS 上架設 django</h2>
+        <time>2017-07-12</time>
+    </header>
+    <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在 IIS 上執行 python 跟是一回事，在 IIS 上架設 django 又是另外一回事。而網路上的資源又更少了一點，經過各種搜尋後在這裡記下一些筆記。</p>
+<p>執行環境如下，每一項都會可能因為版本不同而有些許不同。這也是網路資源較難使上力的原因，因為解決方式的版本跟所用的版本可能不同而不適用。</p>
+<ul>
+<li>windows server 2012 R2</li>
+<li>iis 8.5</li>
+<li>python 3.6</li>
+<li>django 1.11.3</li>
+</ul>
+<span id="more"></span>
+
+<h1 id="強者版"><a href="#強者版" class="headerlink" title="強者版"></a>強者版</h1><p>  步驟 1 -&gt; 2 -&gt; 11 -&gt; 12 -&gt; 13</p>
+<h1 id="詳細版"><a href="#詳細版" class="headerlink" title="詳細版"></a>詳細版</h1><ol>
+<li>安裝 wfastcgi <code>pip install wfastcgi</code></li>
+<li>啟用 wfastcgi <code>wfastcgi-enable</code></li>
+<li>安裝 django <code>pip install Django==1.11.3</code></li>
+<li><code>機器首頁 -&gt; IIS -&gt; FastCGI 設定</code> 這應該要有 python.exe，如果沒有點選<code>右側新增應用程式</code>。</li>
+<li>完整路徑為python執行檔位置如：<code>&lt;python安裝路徑&gt;\python.exe</code> 引數為wfastcgi.py如：<code>&lt;python安裝路徑&gt;\lib\site-packages\wfastcgi.py</code></li>
+<li>新增網站</li>
+<li><code>網站設定頁面中 -&gt; IIS -&gt; 處理常式對應 -&gt; 新增模組對應</code></li>
+<li>要求路徑： <code>*</code>，模組：<code>FastCgiModule</code>，執行檔：<code>&lt;python安裝路徑&gt;\python.exe|&lt;python安裝路徑&gt;\lib\site-packages\wfastcgi.py</code>，名稱：<code>Django Handler</code>（或是隨意）</li>
+<li>要求限制 -&gt; 取消勾選 <code>只有當要求對應到下列項目時才啟動處理常式</code></li>
+<li>IIS manager 可能會問你是否要建立 fastcgi 應用程式，選否 (選是應該也是可以)</li>
+<li>看一下網站資料夾下面有無 <code>web.config</code>，參考下面的範例，如果前面有照著做應該只要加入 appSettings 即可。<pre><code>&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;
+    &lt;configuration&gt;
+        &lt;system.webServer&gt;
+            &lt;handlers&gt;
+                &lt;add name&#x3D;&quot;Django Handler&quot; 
+                     path&#x3D;&quot;*&quot; 
+                     verb&#x3D;&quot;*&quot; 
+                     modules&#x3D;&quot;FastCgiModule&quot; 
+                     scriptProcessor&#x3D;&quot;&lt;python安裝路徑&gt;python.exe|&lt;python安裝路徑&gt;\Lib\site-packages\wfastcgi.py&quot; 
+                     resourceType&#x3D;&quot;Unspecified&quot; &#x2F;&gt;
+            &lt;&#x2F;handlers&gt;
+        &lt;&#x2F;system.webServer&gt;
+        &lt;appSettings&gt;
+            &lt;add key&#x3D;&quot;WSGI_HANDLER&quot; value&#x3D;&quot;django.core.wsgi.get_wsgi_application()&quot; &#x2F;&gt;
+            &lt;add key&#x3D;&quot;PYTHONPATH&quot; value&#x3D;&quot;&lt;網站資料夾路徑&gt;&quot; &#x2F;&gt;
+            &lt;add key&#x3D;&quot;DJANGO_SETTINGS_MODULE&quot; value&#x3D;&quot;&lt;Django App&gt;.settings&quot; &#x2F;&gt;
+        &lt;&#x2F;appSettings&gt;
+    &lt;&#x2F;configuration&gt;</code></pre></li>
+<li>在 <strong>網站資料夾</strong> 跟 <strong>python資料夾</strong> 中給予<code>IUSR</code> 跟 <code>IIS_USRS</code> 權限</li>
+<li>用瀏覽器測試看看是否成功</li>
+</ol>
+<h1 id="心得"><a href="#心得" class="headerlink" title="心得"></a>心得</h1><p>原理不難，設定也還好，主要的問題都出在權限，這也是大部分教學比較少提到的。當然不要在 iis 上跑這些東西才是最佳解。</p>
+<h1 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h1><p>django 開新專案</p>
+<pre><code>django-admin startproject mysite</code></pre>
+<p>django 測試伺服器</p>
+<pre><code>python manage.py runserver</code></pre>
+<h1 id="常見問題"><a href="#常見問題" class="headerlink" title="常見問題"></a>常見問題</h1><h2 id="0x8007010b-錯誤"><a href="#0x8007010b-錯誤" class="headerlink" title="0x8007010b 錯誤"></a>0x8007010b 錯誤</h2><p>檢查 <strong>python</strong> 目錄中的權限是否正確 <strong>IUSR</strong> 及 <strong>IIS_USRS</strong></p>
+<h2 id="找不到指令-pip-或-python"><a href="#找不到指令-pip-或-python" class="headerlink" title="找不到指令 (pip 或 python)"></a>找不到指令 (pip 或 python)</h2><p>環境變數沒有設定 </p>
+<ol>
+<li><code>控制台 -&gt; 系統及安全性 -&gt; 系統 -&gt; 進階系統設定 -&gt; 環境變數 -&gt; 系統變數</code> </li>
+<li>path 末端加入 <code>;&lt;python安裝路徑&gt;;&lt;python安裝路徑&gt;\Scripts</code></li>
+</ol>
+<h1 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h1><p><a target="_blank" rel="noopener" href="http://kronoskoders.logdown.com/posts/1074588-running-a-django-app-on-windows-iis">Running a Django app on Windows IIS</a><br><a target="_blank" rel="noopener" href="http://blog.mattwoodward.com/2016/07/running-django-application-on-windows.html">Running a Django Application on Windows Server 2012 with IIS</a><br><a target="_blank" rel="noopener" href="http://errormaker.blog74.fc2.com/blog-entry-24.html">WindowsServer2012R2 + IIS + Django + wfastcgiの環境構築</a><br><a target="_blank" rel="noopener" href="https://www.djangoproject.com/">django</a><br><a target="_blank" rel="noopener" href="http://blog.fhps.tp.edu.tw/fhpsmis/?p=1015">IIS7.5中的IUSR與IIS_IUSRS區別</a></p>
+
+</article>
+
+        <footer></footer>
+    </body>
+</html>

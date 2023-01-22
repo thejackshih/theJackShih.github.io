@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Jack Shih">
+        <meta name="description" content="Jack Shih's personal blog.">
+		<link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
+		
+<link rel="stylesheet" href="/style.css">
+
+        <title>Windows10 TortoiseGit icon未顯示問題 - Code Apprentice</title>
+   <meta name="generator" content="Hexo 5.4.0"></head>
+    <body>
+        <header>
+            <h1><a href="/">Code Apprentice</a></h1>
+        </header>
+        <article>
+    <header>
+        <h2>Windows10 TortoiseGit icon未顯示問題</h2>
+        <time>2015-10-28</time>
+    </header>
+    <p>雖然使用Git最好的方式是使用Command-Line，而這也是自己在Unix-like環境下的做法。不過在Windows底下自己依然是比較習慣使用GUI介面。而TortoiseGit是目前用最順手的。<br>而這次在Windows10安裝完TortoiseGit後卻發現那方便的確認status的小icon消失了。實在是太不方便。上網找了解法後記在這裡，畢竟未來Windows還是無法避免要去用的。而Git對程式設計師來說又是如此重要。</p>
+<p>＊能盡量用GUI就用GUI，算是個Windows腦袋</p>
+<span id="more"></span>
+<ol>
+<li>進入TortoiseGit 設定選單</li>
+<li>在Icon Overlay中的Overlay Handlers選擇”Start registry editor”</li>
+<li>將”ShellIconOverlayIdentifiers”中TortoiseGit相關檔案提升到最上層。<br>註：Windows10很賊，將Onedrive跟Skydrive前面補了一個空格所以永遠都在最上層。那我們也將TortoiseGit的檔案也補空白和0來確保這些檔案在最上層</li>
+<li>進入工作管理員把”windows檔案總管”和”TortoiseGit status cache”強制關閉</li>
+<li>重新啟動”windows檔案總管”和”TortoiseGit status cache” （個人是直接重新啟動電腦）</li>
+<li>小icon應該會出現了。 :)</li>
+</ol>
+
+</article>
+
+        <footer></footer>
+    </body>
+</html>

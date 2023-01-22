@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Jack Shih">
+        <meta name="description" content="Jack Shih's personal blog.">
+		<link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
+		
+<link rel="stylesheet" href="/style.css">
+
+        <title>How to boot into linux on v3-372 / 在 V3-372 上如何開機進入 Linux - Code Apprentice</title>
+   <meta name="generator" content="Hexo 5.4.0"></head>
+    <body>
+        <header>
+            <h1><a href="/">Code Apprentice</a></h1>
+        </header>
+        <article>
+    <header>
+        <h2>How to boot into linux on v3-372 / 在 V3-372 上如何開機進入 Linux</h2>
+        <time>2016-11-04</time>
+    </header>
+    <p>There is not much information about this problem on Internet. Truns out it need more configuration than simply disable secure boot.</p>
+<ol>
+<li>Boot into BIOS (Press F2 on boot screen.)</li>
+<li>Swtich to boot tab.</li>
+<li>Make sure secure boot is enable.</li>
+<li>Switch to Security tab.</li>
+<li>Select “Select an UEFI file as trusted for executing”.</li>
+<li>Select the proper .efi file. (Ex. EFI/ubuntu/grubx64.efi on ubuntu 16.10 64bit)</li>
+<li>Disable secure boot if you want.</li>
+<li>Save change and boot into BIOS again.</li>
+<li>You should see your boot option in boot tab now.</li>
+</ol>
+
+</article>
+
+        <footer></footer>
+    </body>
+</html>

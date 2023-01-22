@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Jack Shih">
+        <meta name="description" content="Jack Shih's personal blog.">
+		<link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
+		
+<link rel="stylesheet" href="/style.css">
+
+        <title>gogs 轉移 gitea - part3：gogs-git hooks - Code Apprentice</title>
+   <meta name="generator" content="Hexo 5.4.0"></head>
+    <body>
+        <header>
+            <h1><a href="/">Code Apprentice</a></h1>
+        </header>
+        <article>
+    <header>
+        <h2>gogs 轉移 gitea - part3：gogs-git hooks</h2>
+        <time>2019-07-10</time>
+    </header>
+    <p>tl;dr: gogs 轉移 gitea 後記得清掉 git hooks.</p>
+<p>在經過一次資料庫維護之後發現一部分的 repo 變得無法 push。出現了奇怪的錯誤訊息。<br>類似 <code>gogs failed, git pre-receive hook declined</code>之類的。</p>
+<p>一開始以為是哪裡出錯，後來才發現明明是用 gitea 怎麼會出現 gogs 的錯誤訊息，不過又覺得 gitea 本來就是從 gogs fork 出來的所以也不疑有他。到後來才發現原來問題還是跟 gogs 有關。  </p>
+<p>原來是 gogs 本身預設會建立很多 git hooks，那這些 script 是放在 .git 之中，所以過去在轉移的時候也跟個轉移過去了。由於伺服器環境並不乾淨，所以 script 還是可以將 gogs 跑起來做該做的事情。而在資料庫維護之後就無法執行了。也就是為什麼錯誤訊息會提到 gogs。</p>
+<p>gitea 有預設的 git hooks ，所以去相對應的地方將 git hooks 移除就好了。</p>
+
+</article>
+
+        <footer></footer>
+    </body>
+</html>

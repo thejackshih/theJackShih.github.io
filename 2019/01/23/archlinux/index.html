@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Jack Shih">
+        <meta name="description" content="Jack Shih's personal blog.">
+		<link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
+		
+<link rel="stylesheet" href="/style.css">
+
+        <title>arch linux 筆記 - 安裝篇 - Code Apprentice</title>
+   <meta name="generator" content="Hexo 5.4.0"></head>
+    <body>
+        <header>
+            <h1><a href="/">Code Apprentice</a></h1>
+        </header>
+        <article>
+    <header>
+        <h2>arch linux 筆記 - 安裝篇</h2>
+        <time>2019-01-23</time>
+    </header>
+    <p>最近再度挑戰使用 arch linux<br>這次感覺比較成功，也慢慢讓系統進步到堪用的狀態，每次挑戰都學了一點東西，現在看起來終於發了芽。</p>
+<p>安裝上基本上跟著 <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/Installation_guide">https://wiki.archlinux.org/index.php/Installation_guide</a> 走就好。<br>這裡做個筆記補充一下東西，下次就不用查東查西。</p>
+<h1 id="無線網路"><a href="#無線網路" class="headerlink" title="無線網路"></a>無線網路</h1><p>這裡是用 <code>netctl</code> 這個軟體。還要加上 <code>wpa_supplicant</code> 及 <code>dhcpcd</code> 這兩個相依。</p>
+<p><code>/etc/netctl/&#123;profile name&#125;</code></p>
+<pre><code>Description=&#39;A simple WPA encrypted wireless connection using 256-bit PSK&#39;
+Interface=wlp2s2
+Connection=wireless
+Security=wpa
+IP=dhcp
+ESSID=your_essid
+Key=\&quot;64cf3ced850ecef39197bb7b7b301fc39437a6aa6c6a599d0534b16af578e04a
+</code></pre>
+<p>不用被加密過得 key 嚇到，輸入明碼也可以。<br>Interface 欄位可以用 <code>ip link show</code> 來取得</p>
+<p>之後用 <code>netctl start &#123;profile name&#125;</code> 連線，現在用 <code>ping</code> 指令應該可以ping到東西了。</p>
+<h1 id="切硬碟"><a href="#切硬碟" class="headerlink" title="切硬碟"></a>切硬碟</h1><p>基本上採單一配置（純粹懶），網路上研究一下似乎獨立切 SWAP 效益不太大，用 SWAP file 就好。<br>Boot 切大一點比較重要，無論是 BIOS 或是 EFI 都不建議太低。自己是用 UEFI 直接切建議的最大值 512Mib(Mib 跟 MB 不太一樣，但差不多。) 原因在於過去經驗每次更新 kernel 它會把相關檔案放在 boot 下面，之前曾經切的太小導致更新一直失敗之後要定期去清把舊的 kernal 刪除。<br>還有 sector 大小（應該 fdisk 會問你）就用 <code>fdisk -l</code> 給的資訊去設定，如果沒有對齊會在後面的時候跳出警告。所以這邊就先設定好。</p>
+<h1 id="掛載"><a href="#掛載" class="headerlink" title="掛載"></a>掛載</h1><p>記得把 /boot 掛上去<br><code># mount /dev/sdX2 /mnt</code><br><code># mkdir /mnt/efi</code><br><code># mount /dev/sdX1 /mnt/efi</code></p>
+<h1 id="Boot-Loader"><a href="#Boot-Loader" class="headerlink" title="Boot Loader"></a>Boot Loader</h1><p>依照自己使用的主機板系統(BIOS or UEFI)跟檔案系統做選擇，基本上功能都大同小異。<br>自己是使用 <code>GRUB</code> 因為使用 <code>ext4</code> 這個檔案系統</p>
+<h1 id="microcode"><a href="#microcode" class="headerlink" title="microcode"></a>microcode</h1><p>安裝完記得裝上 microcode ，這是 CPU 廠商的一些 patch。<br>依照廠商安裝 <code>amd-ucode</code> 或是 <code>intel-ucode</code></p>
+<p><code>GRUB** 有自帶偵測更新</code><br><code># grub-mkconfig -o /boot/grub/grub.cfg</code></p>
+<p>或是按照 wiki 的教學手動加也是可以。</p>
+<h1 id="必要的東西"><a href="#必要的東西" class="headerlink" title="必要的東西"></a>必要的東西</h1><p>重開機前記得將之後要用的工具像是無線網路的程式，有些系統軟體在 usb 內有但是不會安裝到硬碟內，如果忘記了可以之後再用 usb 開機後 重新掛載後安裝</p>
+<h1 id="設定開機"><a href="#設定開機" class="headerlink" title="設定開機"></a>設定開機</h1><p>如果有找不到 bootloader 的情況可能是這邊BIOS要設定<br>參照 <a href="/2016/11/04/how-to-boot-into-linux-on-v3-372/" title="How to boot into linux on v3-372 &#x2F; 在 V3-372 上如何開機進入 Linux">How to boot into linux on v3-372 &#x2F; 在 V3-372 上如何開機進入 Linux</a></p>
+<h1 id="安裝後"><a href="#安裝後" class="headerlink" title="安裝後"></a>安裝後</h1><p>預設是 root 所以要先新增自己的帳號。<br><code># useradd -m &#123;name&#125;</code><br><code># passwd &#123;name&#125;</code></p>
+<p>基本上 <code>sudo</code> 是必備的<br><code># pacman -S sudo</code> </p>
+<p>裝好之後用 <code>visudo</code> 進入設定檔<br>把相關設定的註解移除<br>基本上應該是開啟 <code>wheel</code> 或 <code>sudo</code> 這兩個群組的權限，都開也可以。<br>建立這兩個群組<br><code># groupadd sudo</code><br><code># groudadd wheel</code><br>在將自己的使用者加入<br><code># gpasswd -a &#123;user&#125; &#123;group&#125;</code></p>
+<h1 id="最後"><a href="#最後" class="headerlink" title="最後"></a>最後</h1><p>這樣差不多就可以用了，接下來就是安裝自己的環境了。<br>其實 arch wiki 已經寫得很清楚，大部分的資料都看 wiki 就可以解了。</p>
+
+</article>
+
+        <footer></footer>
+    </body>
+</html>

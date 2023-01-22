@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Jack Shih">
+        <meta name="description" content="Jack Shih's personal blog.">
+		<link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
+		
+<link rel="stylesheet" href="/style.css">
+
+        <title>在 IIS 上跑 python script. - Code Apprentice</title>
+   <meta name="generator" content="Hexo 5.4.0"></head>
+    <body>
+        <header>
+            <h1><a href="/">Code Apprentice</a></h1>
+        </header>
+        <article>
+    <header>
+        <h2>在 IIS 上跑 python script.</h2>
+        <time>2017-07-11</time>
+    </header>
+    <p>雖然早就知道 Unix-like 環境下出身的語言跟 windows 就是天生不合，在架設時應當避免使用 windows，不過人在江湖身不由己，如今要在 IIS 下跑 python，只是沒想到過程竟如此折騰。而網路上的關於這方面的資源也並不多，在這裡就當做做個筆記。</p>
+<p>環境如下，需注意不同版本的 windows 跟不同版本的 iis 可能會有些許的不同，這也是異常困難的地方，因為網路上的教學都不一定適用當下的環境。</p>
+<ul>
+<li>windows server 2012 R2</li>
+<li>iis 8.5</li>
+<li>python 3.6</li>
+</ul>
+<ol>
+<li>首先要先確認環境中的 CGI 功能是否開啟。</li>
+<li>在伺服器管理員中，<code>管理 -&gt; 新增角色及功能 -&gt; 網頁伺服器(IIS) -&gt; 網頁伺服器 -&gt; 應用程式開發 -&gt; CGI</code>，看 CGI 使否已安裝，如果沒安裝則安裝。</li>
+<li>上官網下載 python，版本應該不會影響太多，不過這裡是用 3.6 版。</li>
+<li>安裝時建議放在方便的路徑，預設的路徑很長又放在不明顯的地方。</li>
+<li>可以在安裝時勾選選項讓安裝程式幫您將 python 加到環境變數中。</li>
+<li>開啟 IIS 管理器</li>
+<li>新增一個網站。</li>
+<li>很重要的是記得開啟 <strong>網站目錄</strong> 及 <strong>python</strong> 目錄的權限給 <strong>IUSR</strong> 或是您所指定的使用者。</li>
+<li>IIS -&gt; 處理常式對應 -&gt; 右側新增指令碼對應</li>
+<li>路徑：<code>*.py</code>，執行檔：<code>&lt;python安裝路徑&gt;/python.exe %s %s</code>，名稱：<code>python</code>(或是隨意)</li>
+<li>用瀏覽器開啟 .py 檔案位置</li>
+</ol>
+<h1 id="常見問題"><a href="#常見問題" class="headerlink" title="常見問題"></a>常見問題</h1><p>Unauthroized<br>請確認 <strong>網站目錄</strong> 及 <strong>python</strong> 目錄的權限。</p>
+
+</article>
+
+        <footer></footer>
+    </body>
+</html>

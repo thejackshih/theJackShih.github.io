@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Jack Shih">
+        <meta name="description" content="Jack Shih's personal blog.">
+		<link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
+		
+<link rel="stylesheet" href="/style.css">
+
+        <title>struct vs class in csharp - Code Apprentice</title>
+   <meta name="generator" content="Hexo 5.4.0"></head>
+    <body>
+        <header>
+            <h1><a href="/">Code Apprentice</a></h1>
+        </header>
+        <article>
+    <header>
+        <h2>struct vs class in csharp</h2>
+        <time>2018-01-30</time>
+    </header>
+    <p>前陣子因為個人主張<code>用 class 取代 struct</code>而討論到 csharp 中 struct 跟 class 有什麼不同。 </p>
+<pre><code class="csharp">struct foo
+&#123;
+    public int id;
+    public string value;
+&#125;
+</code></pre>
+<p>跟 </p>
+<pre><code class="csharp">class foo
+&#123;
+    public int id;
+    public string value;
+&#125;
+</code></pre>
+<p>有什麼不同。<br>個人因為覺得都一樣所以傾向用 class，不過上網查之後才發現在 csharp 中跟傳統 cpp 不太一樣。 </p>
+<p>先簡單說在 cpp 中 struct 跟 class 是同一件事，差別在 </p>
+<ol>
+<li>struct 只能用 public ， class 預設 private 不過可以用 tag 設定為 public。 </li>
+<li>class 可以含有方法， struct 只能有成員。 </li>
+<li>class 可以繼承， struct 不行。 </li>
+</ol>
+<p>事實上在 cpp 中還是有一部分的人完全不會用到 class。<br>不過在 csharp 中[微軟的官方文件][1]就指出兩者的不同並提出兩者建議的使用時機。<br>最大的差異在於 struct 是 value type，而 class 是 reference type。<br>有相關概念的人應該這樣就會知道兩者個差異，不過對自己來說這樣還是太過於抽象。先把那些 struct 是在 stack 中而 class 是在 heap 中放一邊。看些簡單的例子。 </p>
+<pre><code class="csharp">struct structTest
+&#123;
+    public int value;
+&#125;
+class classTest
+&#123;
+    public int value;
+&#125;
+class Program
+&#123;
+    static void Main(string[] args) 
+    &#123;
+        structTest iAmStruct = new structTest
+        &#123;
+            value = 1234;
+        &#125;
+        classTest iAmClass = new classTest
+        &#123;
+            value = 5678;
+        &#125;
+        // iAmStruct.value = 1234, iAmClass.value = 5678
+
+        // 指定到另外一個變數
+        structTest iAmAnotherStruct = iAmStruct;
+        classTest iAmAnotherClass = iAmClass;
+
+        // 改一下數值
+        iAmAnotherStruct.value = 0;
+        iAmAnotherClass.value = 0;
+
+        // iAmStruct.value = 1234, iAmClass.value = 0
+    &#125;
+&#125;
+</code></pre>
+<p>同理可以推廣到 function </p>
+<pre><code class="csharp">public void changeStructTestValueToZero(structTest input)
+&#123;
+    input.value = 0; // 不會改到外部的值
+&#125;
+public void changeClassTestValueToZero(classTest input)
+&#123;
+    input.value = 0; // 會改到外部的值 
+&#125;
+</code></pre>
+<p>這就是過去在學習 cpp 中都會學到 pass by value 跟 pass by reference 的差異，而兩者行為上差異就是在這裡。<br>其他的語言可能會稱為 immutable 之類的，不過只要想一下是這是 value 還是 pointer 應該就知道了。</p>
+<p>知道這個小知識就可以避免掉一些不如預期的的狀況，這次又有更深的了解了，挺不錯。<br>[1]: <a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/choosing-between-class-and-struct">https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/choosing-between-class-and-struct</a></p>
+
+</article>
+
+        <footer></footer>
+    </body>
+</html>

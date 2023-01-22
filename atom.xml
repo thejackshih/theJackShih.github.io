@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Code Apprentice</title>
+  
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://randomdize.github.io/"/>
+  <updated>2023-01-22T16:00:41.520Z</updated>
+  <id>http://randomdize.github.io/</id>
+  
+  <author>
+    <name>Jack Shih</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>nix 初探</title>
+    <link href="http://randomdize.github.io/2023/01/22/nix-first-impression/"/>
+    <id>http://randomdize.github.io/2023/01/22/nix-first-impression/</id>
+    <published>2023-01-22T13:58:57.000Z</published>
+    <updated>2023-01-22T16:00:41.520Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近一直在關注 <code>nix</code>，在旁邊看了很長一段時間最後才決定嘗試看看，考慮的點在於已經很習慣用 <code>homebrew</code> 上的 <code>emacs-plus</code>，不過看到連 <code>emacs-plus</code> 的作者都有 <code>nix</code> 的設定了那就可以直接 go 了。這邊就簡單流水帳一下一些想法。</p><p>當初注意到 <code>nix</code> 主要是因為看上了可以自由切換環境這個特點。在現今開發環境如此複雜之下，同時安裝一堆執行環境像是 <code>python</code> <code>ruby</code> 或是 <code>nodejs</code>。而在這些工具更新速度很快的情況下，相繼而來的就是會需要類似 <code>pyenv</code> <code>rvm</code> 和 <code>nvm</code> 等的版本管理工具。接下來的發展之下又會產生所謂管理版本管理的工具如 <code>asdf</code>。以個人來說是覺得太麻煩了。</p><p>當初以一個 <code>package manager</code> 出身的 <code>nix</code> 來說，發展到了現在可以說是已經比原來還要複雜太多。目前來說可以說是個人環境上的 <code>terraform</code> 也不爲過。</p><p>既然跟 <code>terraform</code> 一樣，那其實也有跟 <code>terraform</code> 一樣得問題。跟 <code>terraform</code> 用 <code>HCL</code> 當作編輯的語言一樣， <code>nix</code> 也有自己的語言 <code>nix</code>，想當然爾也會遇到一樣的問題，身為 <code>DSL</code> 的 <code>nix</code> 不太可能跟完全的程式語言一樣，到後來的發展也朝著不斷擴充的方式來逼近一般程式語言，樣子也越來越奇怪。</p><p>也跟 <code>terraform</code> 一樣，多了一層抽象並不代表可以不去理解底層，也就是說對於不熟悉原來操作的人來說除了要學會底層在做什麼事情之外還要同時多學習如何用其他的方式表達，但資源上又是比原生的處理方式還要少了一層。甚至還要去了解哪些是這些抽象層的極限哪些不是。如同其他將底層抽象的工具一樣，如果是在設定的範圍內（或是網路上有其他人已經包好的套件）都還算是可以處理，但對於設定範圍外的處理就變得更麻煩。</p><p><code>nix</code> 常被人詬病地方在上手門檻實在太高，有一部分的原因來自於網路上的文件跟教學實在太破碎，很多時候連參數有什麼都不知道，這點在剛接觸 <code>terraform</code> 的時候也苦過一陣子。不過 <code>nix</code> 的情況更為破碎。如果網路上一般看就會看到一堆不知道在做什麼的名詞如 <code>nix</code> <code>home-manager</code> <code>nix-darwin</code> <code>flake</code>。</p><p>會說與其看文件自己從頭來，不如直接去抄現成的還要來得快。</p><p>以下是一些參考資料</p><ul><li><p><a href="https://xyno.space/post/nix-darwin-introduction">https://xyno.space/post/nix-darwin-introduction</a><br>這篇講解了從 0 開始，針對一些基礎觀念跟專有名詞都有詳盡的解釋。</p></li><li><p><a href="https://github.com/d12frosted/environment">https://github.com/d12frosted/environment</a><br>直接把大神的 config 抄起來，主要是看要怎麼在 <code>nix</code> 下控制 <code>homebrew</code></p></li></ul><p>目前用的還算痛苦，就看看接下來會不會苦盡甘來。</p><p>順帶一提，這篇就是用 <code>nix-shell</code> 的做法產生。</p><p>目前的進度放在 <a href="https://github.com/thejackshih/dotfiles">https://github.com/thejackshih/dotfiles</a> 可以參考參考。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;最近一直在關注 &lt;code&gt;nix&lt;/code&gt;，在旁邊看了很長一段時間最後才決定嘗試看看，考慮的點在於已經很習慣用 &lt;code&gt;homebrew&lt;/code&gt; 上的 &lt;code&gt;emacs-plus&lt;/code&gt;，不過看到連 &lt;code&gt;emacs-plus&lt;/code&gt;
+      
+    
+    </summary>
+    
+    
+      <category term="nix" scheme="http://randomdize.github.io/tags/nix/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>gogs 轉移 gitea - part3：gogs-git hooks</title>
+    <link href="http://randomdize.github.io/2019/07/10/gogs-to-gitea-git-hook/"/>
+    <id>http://randomdize.github.io/2019/07/10/gogs-to-gitea-git-hook/</id>
+    <published>2019-07-10T12:24:44.000Z</published>
+    <updated>2023-01-22T13:41:46.945Z</updated>
+    
+    <content type="html"><![CDATA[<p>tl;dr: gogs 轉移 gitea 後記得清掉 git hooks.</p><p>在經過一次資料庫維護之後發現一部分的 repo 變得無法 push。出現了奇怪的錯誤訊息。<br>類似 <code>gogs failed, git pre-receive hook declined</code>之類的。</p><p>一開始以為是哪裡出錯，後來才發現明明是用 gitea 怎麼會出現 gogs 的錯誤訊息，不過又覺得 gitea 本來就是從 gogs fork 出來的所以也不疑有他。到後來才發現原來問題還是跟 gogs 有關。  </p><p>原來是 gogs 本身預設會建立很多 git hooks，那這些 script 是放在 .git 之中，所以過去在轉移的時候也跟個轉移過去了。由於伺服器環境並不乾淨，所以 script 還是可以將 gogs 跑起來做該做的事情。而在資料庫維護之後就無法執行了。也就是為什麼錯誤訊息會提到 gogs。</p><p>gitea 有預設的 git hooks ，所以去相對應的地方將 git hooks 移除就好了。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;tl;dr: gogs 轉移 gitea 後記得清掉 git hooks.&lt;/p&gt;
+&lt;p&gt;在經過一次資料庫維護之後發現一部分的 repo 變得無法 push。出現了奇怪的錯誤訊息。&lt;br&gt;類似 &lt;code&gt;gogs failed, git pre-receive hook 
+      
+    
+    </summary>
+    
+    
+      <category term="gitea" scheme="http://randomdize.github.io/tags/gitea/"/>
+    
+      <category term="gogs" scheme="http://randomdize.github.io/tags/gogs/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Single Page Application session-based 驗證</title>
+    <link href="http://randomdize.github.io/2019/05/09/react-mvc-core-session-authorization/"/>
+    <id>http://randomdize.github.io/2019/05/09/react-mvc-core-session-authorization/</id>
+    <published>2019-05-09T13:23:43.000Z</published>
+    <updated>2023-01-22T13:41:46.952Z</updated>
+    
+    <content type="html"><![CDATA[<p>基本上談到 SPA 大部分人推崇的會是使用 JWT 做驗證，不過要用 JWT 做驗證要考慮到的事情可多的。是不是值得把原本 session 作的事情拿回來自己做也是需要考慮的。<br>後來才發現其實也是可以直接使用原來的 cookie-session 的驗證也是 ok，而且反而簡單很多。<br>也許是因為太簡單所以網路上查不太到資料吧，所以在這邊紀錄一下。</p><p>直接參照 M$ 官方網站的教學</p><p>在 <code>startup.cs</code> 內的 <code>ConfigureService</code> 中加入</p><pre><code>services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)    .AddCookie(options =&gt; &#123;        options.Cookie.name = &quot;CookieName&quot;;        options.Cookie.path = &quot;/&quot;;        options.Events.OnRedirectToLogin = (context) =&gt;        &#123;            // 把未登入的自動轉頁複寫掉            context.Response.StatusCode = 401;            return Task.CompletedTask;        &#125;    &#125;);</code></pre><p>然後在 <code>Configure</code> 中加在 <code>usespaservice</code> 上面</p><pre><code>app.UseAuthentication();</code></pre><p>基本上就跟 MVC 平常一樣。</p><h1 id="登入"><a href="#登入" class="headerlink" title="登入"></a>登入</h1><pre><code>var claims = new List&lt;Claim&gt;&#123;    new Claim(ClaimTypes.Name, user.Email),    new Claim(&quot;FullName&quot;, user.FullName),    new Claim(ClaimTypes.Role, &quot;Administrator&quot;),&#125;;var claimsIdentity = new ClaimsIdentity(    claims, CookieAuthenticationDefaults.AuthenticationScheme);await HttpContext.SignInAsync(    CookieAuthenticationDefaults.AuthenticationScheme,    new ClaimsPrincipal(claimsIdentity));</code></pre><h1 id="登出"><a href="#登出" class="headerlink" title="登出"></a>登出</h1><pre><code>await HttpContext.SignOutAsync(    CookieAuthenticationDefaults.AuthenticationScheme);</code></pre><h1 id="JS-fetch"><a href="#JS-fetch" class="headerlink" title="JS fetch"></a>JS fetch</h1><pre><code>fetch(url, &#123;  credentials: &quot;same-origin&quot;&#125;).then(...);</code></pre><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions">http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions</a><br><a href="https://docs.microsoft.com/zh-tw/aspnet/core/security/authentication/cookie">https://docs.microsoft.com/zh-tw/aspnet/core/security/authentication/cookie</a><br><a href="https://stackoverflow.com/questions/46247163/net-core-2-0-cookie-authentication-do-not-redirect">https://stackoverflow.com/questions/46247163/net-core-2-0-cookie-authentication-do-not-redirect</a><br><a href="https://stackoverflow.com/questions/34558264/fetch-api-with-cookie">https://stackoverflow.com/questions/34558264/fetch-api-with-cookie</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;基本上談到 SPA 大部分人推崇的會是使用 JWT 做驗證，不過要用 JWT 做驗證要考慮到的事情可多的。是不是值得把原本 session 作的事情拿回來自己做也是需要考慮的。&lt;br&gt;後來才發現其實也是可以直接使用原來的 cookie-session 的驗證也是 ok，而且
+      
+    
+    </summary>
+    
+    
+      <category term="mvc core" scheme="http://randomdize.github.io/tags/mvc-core/"/>
+    
+      <category term="asp.net core" scheme="http://randomdize.github.io/tags/asp-net-core/"/>
+    
+      <category term="javascript" scheme="http://randomdize.github.io/tags/javascript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>arch linux 筆記 - 安裝篇</title>
+    <link href="http://randomdize.github.io/2019/01/23/archlinux/"/>
+    <id>http://randomdize.github.io/2019/01/23/archlinux/</id>
+    <published>2019-01-23T06:02:37.000Z</published>
+    <updated>2023-01-22T13:41:46.942Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近再度挑戰使用 arch linux<br>這次感覺比較成功，也慢慢讓系統進步到堪用的狀態，每次挑戰都學了一點東西，現在看起來終於發了芽。</p><p>安裝上基本上跟著 <a href="https://wiki.archlinux.org/index.php/Installation_guide">https://wiki.archlinux.org/index.php/Installation_guide</a> 走就好。<br>這裡做個筆記補充一下東西，下次就不用查東查西。</p><h1 id="無線網路"><a href="#無線網路" class="headerlink" title="無線網路"></a>無線網路</h1><p>這裡是用 <code>netctl</code> 這個軟體。還要加上 <code>wpa_supplicant</code> 及 <code>dhcpcd</code> 這兩個相依。</p><p><code>/etc/netctl/&#123;profile name&#125;</code></p><pre><code>Description=&#39;A simple WPA encrypted wireless connection using 256-bit PSK&#39;Interface=wlp2s2Connection=wirelessSecurity=wpaIP=dhcpESSID=your_essidKey=\&quot;64cf3ced850ecef39197bb7b7b301fc39437a6aa6c6a599d0534b16af578e04a</code></pre><p>不用被加密過得 key 嚇到，輸入明碼也可以。<br>Interface 欄位可以用 <code>ip link show</code> 來取得</p><p>之後用 <code>netctl start &#123;profile name&#125;</code> 連線，現在用 <code>ping</code> 指令應該可以ping到東西了。</p><h1 id="切硬碟"><a href="#切硬碟" class="headerlink" title="切硬碟"></a>切硬碟</h1><p>基本上採單一配置（純粹懶），網路上研究一下似乎獨立切 SWAP 效益不太大，用 SWAP file 就好。<br>Boot 切大一點比較重要，無論是 BIOS 或是 EFI 都不建議太低。自己是用 UEFI 直接切建議的最大值 512Mib(Mib 跟 MB 不太一樣，但差不多。) 原因在於過去經驗每次更新 kernel 它會把相關檔案放在 boot 下面，之前曾經切的太小導致更新一直失敗之後要定期去清把舊的 kernal 刪除。<br>還有 sector 大小（應該 fdisk 會問你）就用 <code>fdisk -l</code> 給的資訊去設定，如果沒有對齊會在後面的時候跳出警告。所以這邊就先設定好。</p><h1 id="掛載"><a href="#掛載" class="headerlink" title="掛載"></a>掛載</h1><p>記得把 /boot 掛上去<br><code># mount /dev/sdX2 /mnt</code><br><code># mkdir /mnt/efi</code><br><code># mount /dev/sdX1 /mnt/efi</code></p><h1 id="Boot-Loader"><a href="#Boot-Loader" class="headerlink" title="Boot Loader"></a>Boot Loader</h1><p>依照自己使用的主機板系統(BIOS or UEFI)跟檔案系統做選擇，基本上功能都大同小異。<br>自己是使用 <code>GRUB</code> 因為使用 <code>ext4</code> 這個檔案系統</p><h1 id="microcode"><a href="#microcode" class="headerlink" title="microcode"></a>microcode</h1><p>安裝完記得裝上 microcode ，這是 CPU 廠商的一些 patch。<br>依照廠商安裝 <code>amd-ucode</code> 或是 <code>intel-ucode</code></p><p><code>GRUB** 有自帶偵測更新</code><br><code># grub-mkconfig -o /boot/grub/grub.cfg</code></p><p>或是按照 wiki 的教學手動加也是可以。</p><h1 id="必要的東西"><a href="#必要的東西" class="headerlink" title="必要的東西"></a>必要的東西</h1><p>重開機前記得將之後要用的工具像是無線網路的程式，有些系統軟體在 usb 內有但是不會安裝到硬碟內，如果忘記了可以之後再用 usb 開機後 重新掛載後安裝</p><h1 id="設定開機"><a href="#設定開機" class="headerlink" title="設定開機"></a>設定開機</h1><p>如果有找不到 bootloader 的情況可能是這邊BIOS要設定<br>參照 <a href="/2016/11/04/how-to-boot-into-linux-on-v3-372/" title="How to boot into linux on v3-372 &#x2F; 在 V3-372 上如何開機進入 Linux">How to boot into linux on v3-372 &#x2F; 在 V3-372 上如何開機進入 Linux</a></p><h1 id="安裝後"><a href="#安裝後" class="headerlink" title="安裝後"></a>安裝後</h1><p>預設是 root 所以要先新增自己的帳號。<br><code># useradd -m &#123;name&#125;</code><br><code># passwd &#123;name&#125;</code></p><p>基本上 <code>sudo</code> 是必備的<br><code># pacman -S sudo</code> </p><p>裝好之後用 <code>visudo</code> 進入設定檔<br>把相關設定的註解移除<br>基本上應該是開啟 <code>wheel</code> 或 <code>sudo</code> 這兩個群組的權限，都開也可以。<br>建立這兩個群組<br><code># groupadd sudo</code><br><code># groudadd wheel</code><br>在將自己的使用者加入<br><code># gpasswd -a &#123;user&#125; &#123;group&#125;</code></p><h1 id="最後"><a href="#最後" class="headerlink" title="最後"></a>最後</h1><p>這樣差不多就可以用了，接下來就是安裝自己的環境了。<br>其實 arch wiki 已經寫得很清楚，大部分的資料都看 wiki 就可以解了。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;最近再度挑戰使用 arch linux&lt;br&gt;這次感覺比較成功，也慢慢讓系統進步到堪用的狀態，每次挑戰都學了一點東西，現在看起來終於發了芽。&lt;/p&gt;
+&lt;p&gt;安裝上基本上跟著 &lt;a href=&quot;https://wiki.archlinux.org/index.php/Inst
+      
+    
+    </summary>
+    
+    
+      <category term="linux" scheme="http://randomdize.github.io/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>gogs 轉 gitea - part2：中文 wiki 失效</title>
+    <link href="http://randomdize.github.io/2018/12/18/gitea-wiki-chinese-entry-issue/"/>
+    <id>http://randomdize.github.io/2018/12/18/gitea-wiki-chinese-entry-issue/</id>
+    <published>2018-12-18T08:39:24.000Z</published>
+    <updated>2023-01-22T13:41:46.945Z</updated>
+    
+    <content type="html"><![CDATA[<p>之前轉移至 gitea 後發現無法開啟 wiki。測試了一下發現是因為編碼的問題所導致。如果要修復必須先將 wiki 檔名轉換成 URL 使用的 UTF-8 格式。gitea是將 wiki 頁面放在 repo 目錄下以 XXX.wiki.git 存放。因為也是 git 所以可以直接 clone 下來改檔名後再 push 回去就可以了。</p><p>因為也是 .md 檔，所以乾脆把 wiki 關了也是可以。因為 gitea 並沒有提供全域的關閉 wiki 功能所以必須要一個一個設定。如果不要的話可以直接執行以下  SQL 直接移除。</p><pre><code>DELETE FROM repo_unitWHERE type = 5-- 資料庫任何資料請自行負責，謝謝</code></pre><p>接下來還有什麼問題再看看。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;之前轉移至 gitea 後發現無法開啟 wiki。測試了一下發現是因為編碼的問題所導致。如果要修復必須先將 wiki 檔名轉換成 URL 使用的 UTF-8 格式。gitea是將 wiki 頁面放在 repo 目錄下以 XXX.wiki.git 存放。因為也是 git 所以
+      
+    
+    </summary>
+    
+    
+      <category term="gitea" scheme="http://randomdize.github.io/tags/gitea/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>從 Gogs 轉移至 Gitea</title>
+    <link href="http://randomdize.github.io/2018/11/26/gogs-to-gitea/"/>
+    <id>http://randomdize.github.io/2018/11/26/gogs-to-gitea/</id>
+    <published>2018-11-26T09:11:42.000Z</published>
+    <updated>2023-01-22T13:41:46.945Z</updated>
+    
+    <content type="html"><![CDATA[<p>Gitea 雖然源自於 Gogs ，不過要從 Gogs 轉移到 Gitea 卻是十分困難。官方給的教學中 Gogs 的版本要在 <code>0.9.146</code> 或是更舊才能轉移。目前使用的版本已經太新(<code>0.11.29.0727</code>)。想說直接按照官方的文件做，結果遇到 Gitea 在 <code>1.0</code> 中不支援 MSSQL 的窘境。<br>後來在自己試一試的情況下成功了，這邊紀錄一下是如何轉上去的。</p><p>環境</p><ul><li>Microsoft Windows Server 2012 R2</li><li>Microsoft SQL Server 2012</li><li>gogs 0.11.29.0727</li><li>gitea 1.6.0</li></ul><ol><li>乾淨安裝 gitea 1.6.0</li><li>第一次設定就正常設定，但是不要設定系統管理員帳號</li><li>直接將 gogs 資料庫中的資料匯入 gitea 資料庫（啟用識別插入，然後最後應該會失敗，不過大部分的資料都會成功）</li><li>接下來應該就可以用了，但是選取任何資源庫的時候會 404 error。</li><li>執行這段 SQL<pre><code>insert into repo_unit (repo_id, type, config, created_unix) select repository.id, types.*, &#39;&#123;&#125;&#39;, repository.created_unix from repositoryleft join repo_unit on repository.id=repo_id left join (select 1 as col1, 1 as col2UNION ALL select 2,2UNION ALL select 3,3UNION ALL select 4,4UNION ALL select 5,5) as types on (1=1)where repo_id is null;</code></pre></li><li>收工</li></ol><p>大致上可以用，不過沒有 webhook 之類的（先前的失敗停止的部分）<br>流程應該可以在更好才是。（例如僅匯入該匯入的資料表）</p><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://github.com/go-gitea/gitea/issues/1794#issuecomment-347831784">Error while displaying public repo (404)</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;Gitea 雖然源自於 Gogs ，不過要從 Gogs 轉移到 Gitea 卻是十分困難。官方給的教學中 Gogs 的版本要在 &lt;code&gt;0.9.146&lt;/code&gt; 或是更舊才能轉移。目前使用的版本已經太新(&lt;code&gt;0.11.29.0727&lt;/code&gt;)。想說直接
+      
+    
+    </summary>
+    
+    
+      <category term="gitea" scheme="http://randomdize.github.io/tags/gitea/"/>
+    
+      <category term="gogs" scheme="http://randomdize.github.io/tags/gogs/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>pass-by-reference-vs-pass-by-value</title>
+    <link href="http://randomdize.github.io/2018/02/01/pass-by-reference-vs-pass-by-value/"/>
+    <id>http://randomdize.github.io/2018/02/01/pass-by-reference-vs-pass-by-value/</id>
+    <published>2018-02-01T05:40:19.000Z</published>
+    <updated>2023-01-22T13:41:46.952Z</updated>
+    
+    <content type="html"><![CDATA[<p>在討論完 struct vs class 之後遇到了這樣的問題。</p><pre><code class="javascript">function clearArray(input) &#123;    input = [];&#125;var someArray = [1, 2, 3, 4];clearArray(someArray);console.log(someArray); // [1, 2, 3, 4]</code></pre><p>也許會覺得 array 不是 pass by reference 嗎？為什麼不會改到外部的值？<br>事實上在例子中的 <code>input = []</code> 時 已經將 input 所指向的記憶體位置所轉換，而並非 someArray 所指向的位置。所以發生不如預期的狀況。</p><p>在 c# 中也會有一樣的狀況</p><pre><code class="csharp">public void clearClassValue(someClass input)&#123;    input = new someClass();&#125;public static void main()&#123;    var input = new someClass();    input.value = 1;    clearClassValue(input);    Console.WriteLine(input.value); // 1&#125;</code></pre><p>不過在 c# 中可以再加上 <code>ref</code> 關鍵字來取得儲存位置的位置。JavaScript 中倒是不知道有沒有這種功能。</p><p>過去學習記憶體和記憶體位置這類底層的東西這時候就可以派上用場了。</p><p>之後查了一下發現網路上解釋得更好的文章，有興趣可以看看。<a href="https://medium.com/@TK_CodeBear/javascript-arrays-pass-by-value-and-thinking-about-memory-fffb7b0bf43">連結</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;在討論完 struct vs class 之後遇到了這樣的問題。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;function clearArray(input) &amp;#123;
+    input = [];
+&amp;#125;
+
+var someArra
+      
+    
+    </summary>
+    
+    
+      <category term="c#" scheme="http://randomdize.github.io/tags/c/"/>
+    
+      <category term="javascript" scheme="http://randomdize.github.io/tags/javascript/"/>
+    
+      <category term="programming language" scheme="http://randomdize.github.io/tags/programming-language/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>struct vs class in csharp</title>
+    <link href="http://randomdize.github.io/2018/01/30/struct-vs-class/"/>
+    <id>http://randomdize.github.io/2018/01/30/struct-vs-class/</id>
+    <published>2018-01-30T08:39:35.000Z</published>
+    <updated>2023-01-22T13:41:46.953Z</updated>
+    
+    <content type="html"><![CDATA[<p>前陣子因為個人主張<code>用 class 取代 struct</code>而討論到 csharp 中 struct 跟 class 有什麼不同。 </p><pre><code class="csharp">struct foo&#123;    public int id;    public string value;&#125;</code></pre><p>跟 </p><pre><code class="csharp">class foo&#123;    public int id;    public string value;&#125;</code></pre><p>有什麼不同。<br>個人因為覺得都一樣所以傾向用 class，不過上網查之後才發現在 csharp 中跟傳統 cpp 不太一樣。 </p><p>先簡單說在 cpp 中 struct 跟 class 是同一件事，差別在 </p><ol><li>struct 只能用 public ， class 預設 private 不過可以用 tag 設定為 public。 </li><li>class 可以含有方法， struct 只能有成員。 </li><li>class 可以繼承， struct 不行。 </li></ol><p>事實上在 cpp 中還是有一部分的人完全不會用到 class。<br>不過在 csharp 中[微軟的官方文件][1]就指出兩者的不同並提出兩者建議的使用時機。<br>最大的差異在於 struct 是 value type，而 class 是 reference type。<br>有相關概念的人應該這樣就會知道兩者個差異，不過對自己來說這樣還是太過於抽象。先把那些 struct 是在 stack 中而 class 是在 heap 中放一邊。看些簡單的例子。 </p><pre><code class="csharp">struct structTest&#123;    public int value;&#125;class classTest&#123;    public int value;&#125;class Program&#123;    static void Main(string[] args)     &#123;        structTest iAmStruct = new structTest        &#123;            value = 1234;        &#125;        classTest iAmClass = new classTest        &#123;            value = 5678;        &#125;        // iAmStruct.value = 1234, iAmClass.value = 5678        // 指定到另外一個變數        structTest iAmAnotherStruct = iAmStruct;        classTest iAmAnotherClass = iAmClass;        // 改一下數值        iAmAnotherStruct.value = 0;        iAmAnotherClass.value = 0;        // iAmStruct.value = 1234, iAmClass.value = 0    &#125;&#125;</code></pre><p>同理可以推廣到 function </p><pre><code class="csharp">public void changeStructTestValueToZero(structTest input)&#123;    input.value = 0; // 不會改到外部的值&#125;public void changeClassTestValueToZero(classTest input)&#123;    input.value = 0; // 會改到外部的值 &#125;</code></pre><p>這就是過去在學習 cpp 中都會學到 pass by value 跟 pass by reference 的差異，而兩者行為上差異就是在這裡。<br>其他的語言可能會稱為 immutable 之類的，不過只要想一下是這是 value 還是 pointer 應該就知道了。</p><p>知道這個小知識就可以避免掉一些不如預期的的狀況，這次又有更深的了解了，挺不錯。<br>[1]: <a href="https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/choosing-between-class-and-struct">https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/choosing-between-class-and-struct</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;前陣子因為個人主張&lt;code&gt;用 class 取代 struct&lt;/code&gt;而討論到 csharp 中 struct 跟 class 有什麼不同。 &lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;csharp&quot;&gt;struct foo
+&amp;#123;
+    public in
+      
+    
+    </summary>
+    
+    
+      <category term="c++" scheme="http://randomdize.github.io/tags/c/"/>
+    
+      <category term="c#" scheme="http://randomdize.github.io/tags/c/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何在 Arduino 將 float, double 寫入 EEPROM</title>
+    <link href="http://randomdize.github.io/2017/11/09/how-to-write-real-number-to-eeprom-in-arduino/"/>
+    <id>http://randomdize.github.io/2017/11/09/how-to-write-real-number-to-eeprom-in-arduino/</id>
+    <published>2017-11-09T07:59:19.000Z</published>
+    <updated>2023-01-22T13:41:46.952Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近被問到要如何將浮點數存到 EEPROM，由於 EEPROM 一次只能存 1 byte.<br>所以實際上的問題應該是說如何將 4 bytes(float) 或是 8 bytes(double) 的資料型態每次 1 byte 存進 EEPROM。<br>第一直覺當然是使用 bitshift operator 來做，畢竟要切 byte 最直覺的方式就是透過 bitshifting 來切。不過 c/c++ 並不能做 floating-point shifting。<br>上網查了一下發現可以用 c union 來做，實際上做了也發現這樣的做法直觀容易多了。</p><p>在 c 中 union 就像是 struct 一樣，只不過其中的所有成員都是使用同一塊記憶體區域。在特殊情況下這似乎符合這次的需求：「將 float 或 double 用 byte 方式呈現。」</p><pre><code>union eDouble &#123;    double dValue;    byte[8] bValue;&#125;</code></pre><p>這樣設計將兩者對齊後就可以透過 eDouble.bValue[] 來一次存取一個 byte 了。  </p><p>挺有趣</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;最近被問到要如何將浮點數存到 EEPROM，由於 EEPROM 一次只能存 1 byte.&lt;br&gt;所以實際上的問題應該是說如何將 4 bytes(float) 或是 8 bytes(double) 的資料型態每次 1 byte 存進 EEPROM。&lt;br&gt;第一直覺當然是使用
+      
+    
+    </summary>
+    
+    
+      <category term="arduino" scheme="http://randomdize.github.io/tags/arduino/"/>
+    
+      <category term="c" scheme="http://randomdize.github.io/tags/c/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在 OSX 設定 FreeTDS</title>
+    <link href="http://randomdize.github.io/2017/08/23/setting-up-freetds-on-osx/"/>
+    <id>http://randomdize.github.io/2017/08/23/setting-up-freetds-on-osx/</id>
+    <published>2017-08-23T03:40:21.000Z</published>
+    <updated>2023-01-22T13:41:46.952Z</updated>
+    
+    <content type="html"><![CDATA[<p>過去一直以來 Unix-like 要跟 MSSQL 連線就是不容易，如果要跟舊版 MSSQL 連線就更難了，雖然有 unixODBC 和 FreeTDS 但這兩個設定的方式也不算容易。這裡當作筆記記錄下來。</p><span id="more"></span><h1 id="OSX"><a href="#OSX" class="headerlink" title="OSX:"></a>OSX:</h1><ol><li> <code>brew install unixodbc</code></li><li> <code>brew install freetds --with-unixodbc  --with-msdblib</code></li></ol><h1 id="freetds"><a href="#freetds" class="headerlink" title="freetds:"></a>freetds:</h1><p>檢查設定:  <code>tsql -C</code><br>嘗試連線:  <code>tsql -H &lt;HostName&gt; -p &lt;port&gt; -U &lt;username&gt; -P &lt;password&gt;</code><br>設定檔案:  <code>~/.freetds.conf</code><br>example:  </p><pre><code>  [ExampleServer]  host = ExampleServerIP  port = 1433  tds version = 7.0</code></pre><h1 id="unixODBC"><a href="#unixODBC" class="headerlink" title="unixODBC:"></a>unixODBC:</h1><p>嘗試連線:  <code>isql -v &lt;DSN&gt; &lt;username&gt; &lt;password&gt; </code><br>嘗試連線除錯: <code>osql -S &lt;DSN&gt; -U &lt;username&gt; -P &lt;password&gt;</code><br>查看設定:  <code>odbcinst -j</code></p><h2 id="Driver-設定"><a href="#Driver-設定" class="headerlink" title="Driver 設定:"></a>Driver 設定:</h2><p><code>.odbcinst.ini </code>  </p><pre><code>  [FreeTDS]    Description =FreeTDS    Driver =/usr/local/Cellar/freetds/1.00.26/lib/libtdsodbc.so  </code></pre><p>注意 “=” 之後不要有空格<br>unix環境應該在 /etc/ 之類的</p><h2 id="DSN-設定"><a href="#DSN-設定" class="headerlink" title="DSN 設定:"></a>DSN 設定:</h2><p><code>.odbc.ini</code>  </p><pre><code>  [ExampleServer]    Driver = FreeTDS    Description = MyExample    ServerName = ExampleServer    UID = &lt;username&gt;    PWD = &lt;pasaword&gt;</code></pre><h1 id="connectingString"><a href="#connectingString" class="headerlink" title="connectingString:"></a>connectingString:</h1><p>  <code>&quot;DRIVER=&#123;ExampleServer&#125;;DSN=;UID=;PWD=;Database=&quot;</code></p><h1 id="Github"><a href="#Github" class="headerlink" title="Github"></a>Github</h1><p><a href="https://github.com/randomdize/freetds-example">https://github.com/randomdize/freetds-example</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;過去一直以來 Unix-like 要跟 MSSQL 連線就是不容易，如果要跟舊版 MSSQL 連線就更難了，雖然有 unixODBC 和 FreeTDS 但這兩個設定的方式也不算容易。這裡當作筆記記錄下來。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="osx" scheme="http://randomdize.github.io/tags/osx/"/>
+    
+      <category term="freetds" scheme="http://randomdize.github.io/tags/freetds/"/>
+    
+      <category term="mssql" scheme="http://randomdize.github.io/tags/mssql/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在 IIS 上架設 django</title>
+    <link href="http://randomdize.github.io/2017/07/12/django-on-iis/"/>
+    <id>http://randomdize.github.io/2017/07/12/django-on-iis/</id>
+    <published>2017-07-12T00:37:39.000Z</published>
+    <updated>2023-01-22T13:41:46.943Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在 IIS 上執行 python 跟是一回事，在 IIS 上架設 django 又是另外一回事。而網路上的資源又更少了一點，經過各種搜尋後在這裡記下一些筆記。</p><p>執行環境如下，每一項都會可能因為版本不同而有些許不同。這也是網路資源較難使上力的原因，因為解決方式的版本跟所用的版本可能不同而不適用。</p><ul><li>windows server 2012 R2</li><li>iis 8.5</li><li>python 3.6</li><li>django 1.11.3</li></ul><span id="more"></span><h1 id="強者版"><a href="#強者版" class="headerlink" title="強者版"></a>強者版</h1><p>  步驟 1 -&gt; 2 -&gt; 11 -&gt; 12 -&gt; 13</p><h1 id="詳細版"><a href="#詳細版" class="headerlink" title="詳細版"></a>詳細版</h1><ol><li>安裝 wfastcgi <code>pip install wfastcgi</code></li><li>啟用 wfastcgi <code>wfastcgi-enable</code></li><li>安裝 django <code>pip install Django==1.11.3</code></li><li><code>機器首頁 -&gt; IIS -&gt; FastCGI 設定</code> 這應該要有 python.exe，如果沒有點選<code>右側新增應用程式</code>。</li><li>完整路徑為python執行檔位置如：<code>&lt;python安裝路徑&gt;\python.exe</code> 引數為wfastcgi.py如：<code>&lt;python安裝路徑&gt;\lib\site-packages\wfastcgi.py</code></li><li>新增網站</li><li><code>網站設定頁面中 -&gt; IIS -&gt; 處理常式對應 -&gt; 新增模組對應</code></li><li>要求路徑： <code>*</code>，模組：<code>FastCgiModule</code>，執行檔：<code>&lt;python安裝路徑&gt;\python.exe|&lt;python安裝路徑&gt;\lib\site-packages\wfastcgi.py</code>，名稱：<code>Django Handler</code>（或是隨意）</li><li>要求限制 -&gt; 取消勾選 <code>只有當要求對應到下列項目時才啟動處理常式</code></li><li>IIS manager 可能會問你是否要建立 fastcgi 應用程式，選否 (選是應該也是可以)</li><li>看一下網站資料夾下面有無 <code>web.config</code>，參考下面的範例，如果前面有照著做應該只要加入 appSettings 即可。<pre><code>&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;    &lt;configuration&gt;        &lt;system.webServer&gt;            &lt;handlers&gt;                &lt;add name&#x3D;&quot;Django Handler&quot;                      path&#x3D;&quot;*&quot;                      verb&#x3D;&quot;*&quot;                      modules&#x3D;&quot;FastCgiModule&quot;                      scriptProcessor&#x3D;&quot;&lt;python安裝路徑&gt;python.exe|&lt;python安裝路徑&gt;\Lib\site-packages\wfastcgi.py&quot;                      resourceType&#x3D;&quot;Unspecified&quot; &#x2F;&gt;            &lt;&#x2F;handlers&gt;        &lt;&#x2F;system.webServer&gt;        &lt;appSettings&gt;            &lt;add key&#x3D;&quot;WSGI_HANDLER&quot; value&#x3D;&quot;django.core.wsgi.get_wsgi_application()&quot; &#x2F;&gt;            &lt;add key&#x3D;&quot;PYTHONPATH&quot; value&#x3D;&quot;&lt;網站資料夾路徑&gt;&quot; &#x2F;&gt;            &lt;add key&#x3D;&quot;DJANGO_SETTINGS_MODULE&quot; value&#x3D;&quot;&lt;Django App&gt;.settings&quot; &#x2F;&gt;        &lt;&#x2F;appSettings&gt;    &lt;&#x2F;configuration&gt;</code></pre></li><li>在 <strong>網站資料夾</strong> 跟 <strong>python資料夾</strong> 中給予<code>IUSR</code> 跟 <code>IIS_USRS</code> 權限</li><li>用瀏覽器測試看看是否成功</li></ol><h1 id="心得"><a href="#心得" class="headerlink" title="心得"></a>心得</h1><p>原理不難，設定也還好，主要的問題都出在權限，這也是大部分教學比較少提到的。當然不要在 iis 上跑這些東西才是最佳解。</p><h1 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h1><p>django 開新專案</p><pre><code>django-admin startproject mysite</code></pre><p>django 測試伺服器</p><pre><code>python manage.py runserver</code></pre><h1 id="常見問題"><a href="#常見問題" class="headerlink" title="常見問題"></a>常見問題</h1><h2 id="0x8007010b-錯誤"><a href="#0x8007010b-錯誤" class="headerlink" title="0x8007010b 錯誤"></a>0x8007010b 錯誤</h2><p>檢查 <strong>python</strong> 目錄中的權限是否正確 <strong>IUSR</strong> 及 <strong>IIS_USRS</strong></p><h2 id="找不到指令-pip-或-python"><a href="#找不到指令-pip-或-python" class="headerlink" title="找不到指令 (pip 或 python)"></a>找不到指令 (pip 或 python)</h2><p>環境變數沒有設定 </p><ol><li><code>控制台 -&gt; 系統及安全性 -&gt; 系統 -&gt; 進階系統設定 -&gt; 環境變數 -&gt; 系統變數</code> </li><li>path 末端加入 <code>;&lt;python安裝路徑&gt;;&lt;python安裝路徑&gt;\Scripts</code></li></ol><h1 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h1><p><a href="http://kronoskoders.logdown.com/posts/1074588-running-a-django-app-on-windows-iis">Running a Django app on Windows IIS</a><br><a href="http://blog.mattwoodward.com/2016/07/running-django-application-on-windows.html">Running a Django Application on Windows Server 2012 with IIS</a><br><a href="http://errormaker.blog74.fc2.com/blog-entry-24.html">WindowsServer2012R2 + IIS + Django + wfastcgiの環境構築</a><br><a href="https://www.djangoproject.com/">django</a><br><a href="http://blog.fhps.tp.edu.tw/fhpsmis/?p=1015">IIS7.5中的IUSR與IIS_IUSRS區別</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;在 IIS 上執行 python 跟是一回事，在 IIS 上架設 django 又是另外一回事。而網路上的資源又更少了一點，經過各種搜尋後在這裡記下一些筆記。&lt;/p&gt;
+&lt;p&gt;執行環境如下，每一項都會可能因為版本不同而有些許不同。這也是網路資源較難使上力的原因，因為解決方式的版本跟所用的版本可能不同而不適用。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;windows server 2012 R2&lt;/li&gt;
+&lt;li&gt;iis 8.5&lt;/li&gt;
+&lt;li&gt;python 3.6&lt;/li&gt;
+&lt;li&gt;django 1.11.3&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+    
+      <category term="windows server" scheme="http://randomdize.github.io/tags/windows-server/"/>
+    
+      <category term="iis" scheme="http://randomdize.github.io/tags/iis/"/>
+    
+      <category term="django" scheme="http://randomdize.github.io/tags/django/"/>
+    
+      <category term="python" scheme="http://randomdize.github.io/tags/python/"/>
+    
+      <category term="wfastcgi" scheme="http://randomdize.github.io/tags/wfastcgi/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在 IIS 上跑 python script.</title>
+    <link href="http://randomdize.github.io/2017/07/11/python-on-iis/"/>
+    <id>http://randomdize.github.io/2017/07/11/python-on-iis/</id>
+    <published>2017-07-11T14:13:20.000Z</published>
+    <updated>2023-01-22T13:41:46.952Z</updated>
+    
+    <content type="html"><![CDATA[<p>雖然早就知道 Unix-like 環境下出身的語言跟 windows 就是天生不合，在架設時應當避免使用 windows，不過人在江湖身不由己，如今要在 IIS 下跑 python，只是沒想到過程竟如此折騰。而網路上的關於這方面的資源也並不多，在這裡就當做做個筆記。</p><p>環境如下，需注意不同版本的 windows 跟不同版本的 iis 可能會有些許的不同，這也是異常困難的地方，因為網路上的教學都不一定適用當下的環境。</p><ul><li>windows server 2012 R2</li><li>iis 8.5</li><li>python 3.6</li></ul><ol><li>首先要先確認環境中的 CGI 功能是否開啟。</li><li>在伺服器管理員中，<code>管理 -&gt; 新增角色及功能 -&gt; 網頁伺服器(IIS) -&gt; 網頁伺服器 -&gt; 應用程式開發 -&gt; CGI</code>，看 CGI 使否已安裝，如果沒安裝則安裝。</li><li>上官網下載 python，版本應該不會影響太多，不過這裡是用 3.6 版。</li><li>安裝時建議放在方便的路徑，預設的路徑很長又放在不明顯的地方。</li><li>可以在安裝時勾選選項讓安裝程式幫您將 python 加到環境變數中。</li><li>開啟 IIS 管理器</li><li>新增一個網站。</li><li>很重要的是記得開啟 <strong>網站目錄</strong> 及 <strong>python</strong> 目錄的權限給 <strong>IUSR</strong> 或是您所指定的使用者。</li><li>IIS -&gt; 處理常式對應 -&gt; 右側新增指令碼對應</li><li>路徑：<code>*.py</code>，執行檔：<code>&lt;python安裝路徑&gt;/python.exe %s %s</code>，名稱：<code>python</code>(或是隨意)</li><li>用瀏覽器開啟 .py 檔案位置</li></ol><h1 id="常見問題"><a href="#常見問題" class="headerlink" title="常見問題"></a>常見問題</h1><p>Unauthroized<br>請確認 <strong>網站目錄</strong> 及 <strong>python</strong> 目錄的權限。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;雖然早就知道 Unix-like 環境下出身的語言跟 windows 就是天生不合，在架設時應當避免使用 windows，不過人在江湖身不由己，如今要在 IIS 下跑 python，只是沒想到過程竟如此折騰。而網路上的關於這方面的資源也並不多，在這裡就當做做個筆記。&lt;/p&gt;
+      
+    
+    </summary>
+    
+    
+      <category term="windows server" scheme="http://randomdize.github.io/tags/windows-server/"/>
+    
+      <category term="iis" scheme="http://randomdize.github.io/tags/iis/"/>
+    
+      <category term="python" scheme="http://randomdize.github.io/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Use the Source - 解決 Api doc missing comma error</title>
+    <link href="http://randomdize.github.io/2017/05/03/fix-apidoc-format-error/"/>
+    <id>http://randomdize.github.io/2017/05/03/fix-apidoc-format-error/</id>
+    <published>2017-05-03T05:46:31.000Z</published>
+    <updated>2023-01-22T13:41:46.943Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近想要試試 api doc 產生器，於是 Google 一下後找到看起來很不錯的工具 Api doc。結果按照教學設定完之後一執行馬上就出現<br><code>Can not read: apidoc.json, please check the format (e.g. missing comma)</code></p><p>我百思不得其解，也確認了 apidoc.json 有存在，逗號也都在。以為是自己格式弄錯，結果直接複製官方的文字也是出錯。</p><p>遇到無法解決的問題，身為一位程式設計師當然趕緊 Google 一下，StackOverflow 一下，再上 github 看看 issue list。</p><p>結果還是找不到什麼有用的資訊，要不就是有點鬼打牆的回覆。不過好在開發者有個 Debug log 模式，一看雖然不知道哪裡有問題，但似乎是拋出了一個例外。</p><p>最後正當要放棄的時候去看了一下 source code，一看才發現原來只是個簡單的 Json parse.</p><pre><code>PackageInfo.prototype._readPackageData &#x3D; function(filename) {    var result &#x3D; {};    var dir &#x3D; this._resolveSrcPath();    var jsonFilename &#x3D; path.join(dir, filename);    &#x2F;&#x2F; Read from source dir    if ( ! fs.existsSync(jsonFilename)) {        &#x2F;&#x2F; Read from config dir (default &#39;.&#x2F;&#39;)        jsonFilename &#x3D; path.join(app.options.config, filename);    }    if ( ! fs.existsSync(jsonFilename)) {        app.log.debug(jsonFilename + &#39; not found!&#39;);    } else {        try {            result &#x3D; JSON.parse( fs.readFileSync(jsonFilename, &#39;utf8&#39;) );            app.log.debug(&#39;read: &#39; + jsonFilename);        } catch (e) {            throw new Error(&#39;Can not read: &#39; + filename + &#39;, please check the format (e.g. missing comma).&#39;);        }    }    return result;};</code></pre><p>這時候就是使用古老的印出變數的方法了（感謝JavaScript 可以直接去改 source code 而不用重新 Build），直接把 parse 的字串輸出，結果發現原來是 Visual Studio 在建立檔案的時候前面插入了一些多餘的資料(也許是BOM? 還是其他的之類的)，導致 parse 失敗，改用記事本建立 apidoc.json 之後就解決了，可喜可賀。</p><p>學到幾個經驗</p><ol><li><del>notepad &gt; Visual Studio</del> 純文字就用編輯器最保險</li><li>在 Windows 上使用在 unix 系統開發的東西時很容易遇到奇怪的問題</li><li><code>Use the Source, Luke</code></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;最近想要試試 api doc 產生器，於是 Google 一下後找到看起來很不錯的工具 Api doc。結果按照教學設定完之後一執行馬上就出現&lt;br&gt;&lt;code&gt;Can not read: apidoc.json, please check the format (e.g.
+      
+    
+    </summary>
+    
+    
+      <category term="apidoc" scheme="http://randomdize.github.io/tags/apidoc/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>No Fragment ， One Activity - Custom View 架構 - 續</title>
+    <link href="http://randomdize.github.io/2017/04/12/no-fragment-architecure-continue/"/>
+    <id>http://randomdize.github.io/2017/04/12/no-fragment-architecure-continue/</id>
+    <published>2017-04-12T11:17:43.000Z</published>
+    <updated>2023-01-22T13:41:46.952Z</updated>
+    
+    <content type="html"><![CDATA[<p>距離過去寫 no-fragment 架構的文章也快一年了，那當然最好測試新架構的方式就是直接實戰，那種比 HelloWorld 程式更為複雜的程式。這次回過頭來看看當時候遇到的問題。</p><span id="more"></span><h1 id="BackStack-比想像中還要複雜多了"><a href="#BackStack-比想像中還要複雜多了" class="headerlink" title="BackStack 比想像中還要複雜多了"></a>BackStack 比想像中還要複雜多了</h1><p>在當時寫的時候並沒有套用 Flow ，覺得是不必要的框架。但事實上 Mobile APP 比一般網頁還要複雜多了。在頁面不同的跳轉中要如何管理 UI State 並不是一件簡單的事情。到最後變成自己實作一個很像 Life Cycle 的東西。</p><h1 id="Share-State"><a href="#Share-State" class="headerlink" title="Share State"></a>Share State</h1><p>一般寫 Android 最容易遇到的問題大概就是我該如何在 Activity 或 Fragment 間傳遞訊息。這部分要如何做到很好也不是很容易。自己是直接在上層 Activity 開個 HashMap 直接存值，但這樣的解法略顯簡陋，應該有更好的方式。</p><h1 id="MVP"><a href="#MVP" class="headerlink" title="MVP"></a>MVP</h1><p>雖然 MVP 提供的一個大方向，但要如何將職責切開來也是一門學問，在遇到 RecyclerView 這樣複雜的 View 時又會是一個問題。原本以為 Presenter 只需要知道 View 就好，但最後搞到必須要將 activity 注入到每個 Presenter 中，感覺有更好的做法。</p><h1 id="AlertDialog"><a href="#AlertDialog" class="headerlink" title="AlertDialog"></a>AlertDialog</h1><p>在原來的架構下應該同一時間應該只能有一個主要 View ，可是遇到像 Dialog 這種要疊加 View 的時候似乎就還是一定要用到 Fragment 雖然要用 CustomView 做也不是不行，但還是太麻煩了，最後這變成在 APP 中唯一會使用到 Fragment 的例外。</p><h1 id="CustomView-Preview"><a href="#CustomView-Preview" class="headerlink" title="CustomView Preview"></a>CustomView Preview</h1><p>使用 CustomView + MVP 會遇到 Preview 時會出現錯誤訊息的問題，需要用 isInEditMode 這樣的布林值來為 Preview 做判斷。</p><h1 id="Android-M-權限問題"><a href="#Android-M-權限問題" class="headerlink" title="Android M 權限問題"></a>Android M 權限問題</h1><p>Android M 增加了即時詢問權限的問題，必須要來往 Activity 做。</p><h1 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h1><p>實務上的 APP 總是比較複雜，不過當自己動手做一些原本靠套件所辦到的事情確實是學習到很多東西。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;距離過去寫 no-fragment 架構的文章也快一年了，那當然最好測試新架構的方式就是直接實戰，那種比 HelloWorld 程式更為複雜的程式。這次回過頭來看看當時候遇到的問題。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="android" scheme="http://randomdize.github.io/tags/android/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MVC core 做 Localization</title>
+    <link href="http://randomdize.github.io/2017/03/22/localization-in-mvc-core/"/>
+    <id>http://randomdize.github.io/2017/03/22/localization-in-mvc-core/</id>
+    <published>2017-03-22T02:30:51.000Z</published>
+    <updated>2023-01-22T13:41:46.952Z</updated>
+    
+    <content type="html"><![CDATA[<p>過去不曾做過多國語言的支援，更不曾在 web 界做過，研究一下之後發現 Asp.net mvc core 也有提供工具。這裡做一下筆記。</p><h1 id="基本認識"><a href="#基本認識" class="headerlink" title="基本認識"></a>基本認識</h1><p>一般多國語言的做法多是用替換字串的方式，然後用 Key/Value 的方式去做取代。目的是將顯示文字跟程式脫鉤，只要抽換文字檔案就可以更換顯示的文字而不需要修改程式，翻譯人員也可以直接透過這個檔案進行翻譯。基本的概念大概就是這樣。進階一點的就是某些從右讀到左的語言會需要 UI 翻轉之類的事情了。</p><span id="more"></span><h1 id="Setup"><a href="#Setup" class="headerlink" title="Setup"></a>Setup</h1><pre><code>public void ConfigureServices(IServiceCollection services){    &#x2F;&#x2F;略    services.AddLocalization(options &#x3D;&gt; options.ResourcesPath &#x3D; &quot;Resources&quot;);    services.AddMvc()        .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)        .AddDataAnnotationsLocalization();    services.Configure&lt;RequestLocalizationOptions&gt;(        options &#x3D;&gt;        {             var supportedCultures &#x3D; new List&lt;CultureInfo&gt;             {                 new CultureInfo(&quot;en-US&quot;),                 new CultureInfo(&quot;zh-CN&quot;),                 new CultureInfo(&quot;zh-TW&quot;)             };             options.DefaultRequestCulture &#x3D; new RequestCulture(culture: &quot;zh-TW&quot;, uiCulture: &quot;zh-TW&quot;);             options.SupportedCultures &#x3D; supportedCultures;             options.SupportedUICultures &#x3D; supportedCultures;        });}public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory){    &#x2F;&#x2F;略    var locOptions &#x3D; app.ApplicationServices.GetService&lt;IOptions&lt;RequestLocalizationOptions&gt;&gt;();    app.UseRequestLocalization(locOptions.Value);}</code></pre><p>在根目錄建立 <code>Resources</code> 資料夾<br>依照預設規則建立資源檔<br><code>[views/controllers].[controller name].[action name].[language].resx</code><br>ex. <code>Views.Home.Index.zh-TW.resx</code></p><h1 id="How-to-use"><a href="#How-to-use" class="headerlink" title="How to use"></a>How to use</h1><p>使用的方式為</p><pre><code>@using Microsoft.AspNetCore.Mvc.Localization@inject IViewLocalizer Localizer&lt;!-- 一般這樣用 --&gt;@Localizer[&quot;welcome&quot;]&lt;!-- 如果遇到顯示錯誤的狀況 --&gt;@Localizer[&quot;welcome&quot;].Value</code></pre><p>測試的方式為在 URL 後面加入 <code>culture</code> 參數<br><code>http://localhost:5000/home/?culture=zh-tw</code></p><p>MVC Core 1.1 後面有支援在 URL 上加入語言選項<br>ex. <code>http://localhost:5000/zh-tw/home/</code></p><p>不過目前環境是 1.0 所以就沒再研究了，應該是要用 ActionFilter 之類的，不過就算這樣還是沒辦法用 Default Route mapping，參考連結內有更完整的教學。</p><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://docs.microsoft.com/en-us/aspnet/core/fundamentals/localization">https://docs.microsoft.com/en-us/aspnet/core/fundamentals/localization</a><br><a href="https://damienbod.com/2015/10/21/asp-net-5-mvc-6-localization/">https://damienbod.com/2015/10/21/asp-net-5-mvc-6-localization/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;過去不曾做過多國語言的支援，更不曾在 web 界做過，研究一下之後發現 Asp.net mvc core 也有提供工具。這裡做一下筆記。&lt;/p&gt;
+&lt;h1 id=&quot;基本認識&quot;&gt;&lt;a href=&quot;#基本認識&quot; class=&quot;headerlink&quot; title=&quot;基本認識&quot;&gt;&lt;/a&gt;基本認識&lt;/h1&gt;&lt;p&gt;一般多國語言的做法多是用替換字串的方式，然後用 Key/Value 的方式去做取代。目的是將顯示文字跟程式脫鉤，只要抽換文字檔案就可以更換顯示的文字而不需要修改程式，翻譯人員也可以直接透過這個檔案進行翻譯。基本的概念大概就是這樣。進階一點的就是某些從右讀到左的語言會需要 UI 翻轉之類的事情了。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="mvc core" scheme="http://randomdize.github.io/tags/mvc-core/"/>
+    
+      <category term="c#" scheme="http://randomdize.github.io/tags/c/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Javascript 的 Arrow function.</title>
+    <link href="http://randomdize.github.io/2017/01/22/this-arrow-function-javascript/"/>
+    <id>http://randomdize.github.io/2017/01/22/this-arrow-function-javascript/</id>
+    <published>2017-01-22T07:45:47.000Z</published>
+    <updated>2023-01-22T13:41:46.953Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近聽強者談論到在JS ES6 中使用 Arrow Function 要注意的事情，這事情跟 this 有關，趁這個機會對 this 做點了解。</p><span id="more"></span><p>先來一張從 Crockford 大神演講中偷來的表</p><table><thead><tr><th>Invocation form</th><th>this</th></tr></thead><tbody><tr><td>function</td><td>the global object or undefined*</td></tr><tr><td>method</td><td>the object</td></tr><tr><td>constructor</td><td>the new object</td></tr><tr><td>apply</td><td>argument</td></tr></tbody></table><p>知道 this 跟其他物件導向式的語言不同，會依照呼叫形式不同而有所不同之後大概就已經理解一半了。</p><p>其中要注意的是第一個 function 類型，使用 function 形式使用的時候 this 會指向 global object (non-strict) 或是 undefined (strict)</p><p>以 MDN 文件中的使用的範例為例</p><pre><code>function Person() {  &#x2F;&#x2F; The Person() constructor defines &#96;this&#96; as an instance of itself.  this.age &#x3D; 0;  setInterval(function growUp() {    &#x2F;&#x2F; In non-strict mode, the growUp() function defines &#96;this&#96;    &#x2F;&#x2F; as the global object, which is different from the &#96;this&#96;    &#x2F;&#x2F; defined by the Person() constructor.    this.age++;  }, 1000);}var p &#x3D; new Person();</code></pre><p>直覺看上， growUp 中所指的 this 看起來像跟外層 this.age = 0 的 this 是一樣的，但實際上會依照表中的規則 this 會是 global or undefined。</p><p>之後的解法或是一種 coding 習慣會是使用另外一個變數 that 來表示 this ，以確保 this 不會在可能沒注意到地方的被改掉。</p><pre><code>function Person() {  var that &#x3D; this;  that.age &#x3D; 0;  setInterval(function growUp() {    &#x2F;&#x2F; The callback refers to the &#96;that&#96; variable of which    &#x2F;&#x2F; the value is the expected object.    that.age++;  }, 1000);}</code></pre><p>而後還有 funcion.bind(obj) 這種方式來解決這種可能會發生的問題。</p><p>而 Arrow function 跟一般 function 不同地方在於他沒有 this。</p><pre><code>function Person(){  this.age &#x3D; 0;  setInterval(() &#x3D;&gt; {    this.age++; &#x2F;&#x2F; |this| properly refers to the person object  }, 1000);}var p &#x3D; new Person();</code></pre><p>以上的例子中由於 Arrow function 中沒有自己的 this，所以 this 依照 function scope 規則會是 this.age = 0 的 this。</p><p>看來沒把 JS 大全看完很難說自己能用得好啊。</p><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference:"></a>Reference:</h1><p><a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions">Arrow function</a><br><a href="https://www.youtube.com/watch?v=ya4UHuXNygM&list=PL7664379246A246CB&index=3">Crockford on JavaScript - Act III: Function the Ultimate</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近聽強者談論到在JS ES6 中使用 Arrow Function 要注意的事情，這事情跟 this 有關，趁這個機會對 this 做點了解。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="javascript" scheme="http://randomdize.github.io/tags/javascript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Virtual Function in C++</title>
+    <link href="http://randomdize.github.io/2016/12/18/cpp-virtual-function/"/>
+    <id>http://randomdize.github.io/2016/12/18/cpp-virtual-function/</id>
+    <published>2016-12-18T00:34:55.000Z</published>
+    <updated>2023-01-22T13:41:46.942Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近跟朋友談論到這樣的問題 「解構式應加上 virtual 關鍵字」<br>(TL;DR 如果預期會有人繼承這個物件，請在解構式加上 virtual)</p><p>上網查了一下發現挺有趣的所以在這裡記錄下來。</p><span id="more"></span><p>virtual 關鍵字代表的意思是向其他人暗示，這個 function(method)，”應該”要被子類別覆寫(override)。方式是用子類別也用一樣的 function 名稱。</p><p>也許這時候會有疑問，其實不加 virtual 也是可以的，C++ 有所謂 overload 機制。</p><p>例如我有一個 Class A 跟 Class B 且 B 繼承 A。</p><pre><code>class A {  public:    void sayHello() {      cout&lt;&lt;&quot;hello from A&quot;&lt;&lt;endl;    }    void hey() {      cout&lt;&lt;&quot;hey from A&quot;&lt;&lt;endl;    }};class B: public A {  public:    void sayHello() {      cout&lt;&lt;&quot;hello from B&quot;&lt;&lt;endl;    }};</code></pre><p>然後這樣呼叫</p><pre><code>A *a &#x3D; new A();B *b &#x3D; new B();a-&gt;sayHello(); &#x2F;&#x2F; hello from Ab-&gt;sayHello(); &#x2F;&#x2F; hello from Bb-&gt;hey(); &#x2F;&#x2F; hey from A</code></pre><p>一切看起來都很正常，但是繼承體系下，要用子類別也是父類別的一種，也就是說可以用父類別指標指向子類別。</p><pre><code>A *ab &#x3D; new B();ab-&gt;sayHello() &#x2F;&#x2F; hello from A</code></pre><p>有過 Java 經驗或許會直覺是 hello from B，畢竟不論被當成什麼東西，物件是什麼就該是什麼。這也是所謂的多型。<br>但這樣的情況下 C++ 會印出的是 hello from A.<br>如果想要印出 hello from B 就應該要在 function 前面加上 virtual 關鍵字。</p><p>由以上 C++ 的行為就衍生出所謂 virtual destructors<br>如果沒有 virtual 關鍵字，如果 B 物件是在被 A 指標指的情況下對 A 所指向的物件釋放，會變成以 A 解構式解構 B 物件，這樣下來會發生錯誤也不意外了。</p><p>事實上在 C++11 前 C++ 是沒有 final 關鍵字來阻止別人繼承物件的。所以 C++ 內有種程式設計師的默契，如果類別中的解構式沒有 virtual 關鍵字，會是在暗示您不應該繼承這個物件。</p><p>另外 C++ 中並沒有像 Java 有所謂 abstract 或是 interface 的關鍵字，而是 pure virtual function。</p><pre><code>virtual function foo() &#x3D; 0;</code></pre><p>挺有趣。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近跟朋友談論到這樣的問題 「解構式應加上 virtual 關鍵字」&lt;br&gt;(TL;DR 如果預期會有人繼承這個物件，請在解構式加上 virtual)&lt;/p&gt;
+&lt;p&gt;上網查了一下發現挺有趣的所以在這裡記錄下來。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="c++" scheme="http://randomdize.github.io/tags/c/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Claims-Based authentication in MVC Core</title>
+    <link href="http://randomdize.github.io/2016/11/30/mvc-claims-based-auth/"/>
+    <id>http://randomdize.github.io/2016/11/30/mvc-claims-based-auth/</id>
+    <published>2016-11-30T08:23:49.000Z</published>
+    <updated>2023-01-22T13:41:46.952Z</updated>
+    
+    <content type="html"><![CDATA[<p>MVC5 以前時使用的 form authentication 在 MVC Core 被 Claims-based authentication 取代了。</p><p>首先加入 Middleware.</p><pre><code>public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory) {    &#x2F;&#x2F;略    app.UseCookieAuthentication(new CookieAuthenticationOptions()    {        AuthenticationScheme &#x3D; &quot;MyCoodieMiddlewareInstance&quot;,        LoginPath &#x3D; new PathString(),        AccessDeniedPath &#x3D; new PathString(),        AutomaticAuthenticate &#x3D; true,        AutomaticChallenge &#x3D; true    });}</code></pre><p>登入方式為</p><pre><code>var myclaims &#x3D; new List&lt;Claim&gt;(new Claim[] { new Claim(&quot;Id&quot;, user.Id.ToString())});var claimsPrincipal &#x3D; new ClaimsPrincipal(new ClaimsIdentity(myclaims, &quot;MyCookieMiddlewareInstance&quot;));HttpContext.Authentication.SignInAsync(&quot;MyCookieMiddlewareInstance&quot;, claimPrincipal).Wait();</code></pre><p>登出方式</p><pre><code>HttpContext.Authentication.SignOutAsync(&quot;MyCookieMiddlewareInstance&quot;).Wait();</code></pre><p>取得 Claim 內容</p><pre><code>var userId &#x3D; User.FindFirst(&quot;Id&quot;).Value;</code></pre><p>Reference:<br><a href="https://docs.microsoft.com/en-us/aspnet/core/security/authentication/cookie">https://docs.microsoft.com/en-us/aspnet/core/security/authentication/cookie</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;MVC5 以前時使用的 form authentication 在 MVC Core 被 Claims-based authentication 取代了。&lt;/p&gt;
+&lt;p&gt;首先加入 Middleware.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public void Configur
+      
+    
+    </summary>
+    
+    
+      <category term="mvc core" scheme="http://randomdize.github.io/tags/mvc-core/"/>
+    
+      <category term="c#" scheme="http://randomdize.github.io/tags/c/"/>
+    
+      <category term="asp.net core" scheme="http://randomdize.github.io/tags/asp-net-core/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>How to boot into linux on v3-372 / 在 V3-372 上如何開機進入 Linux</title>
+    <link href="http://randomdize.github.io/2016/11/04/how-to-boot-into-linux-on-v3-372/"/>
+    <id>http://randomdize.github.io/2016/11/04/how-to-boot-into-linux-on-v3-372/</id>
+    <published>2016-11-04T01:45:43.000Z</published>
+    <updated>2023-01-22T13:41:46.946Z</updated>
+    
+    <content type="html"><![CDATA[<p>There is not much information about this problem on Internet. Truns out it need more configuration than simply disable secure boot.</p><ol><li>Boot into BIOS (Press F2 on boot screen.)</li><li>Swtich to boot tab.</li><li>Make sure secure boot is enable.</li><li>Switch to Security tab.</li><li>Select “Select an UEFI file as trusted for executing”.</li><li>Select the proper .efi file. (Ex. EFI/ubuntu/grubx64.efi on ubuntu 16.10 64bit)</li><li>Disable secure boot if you want.</li><li>Save change and boot into BIOS again.</li><li>You should see your boot option in boot tab now.</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;There is not much information about this problem on Internet. Truns out it need more configuration than simply disable secure boot.&lt;/p&gt;
+&lt;
+      
+    
+    </summary>
+    
+    
+      <category term="linux" scheme="http://randomdize.github.io/tags/linux/"/>
+    
+      <category term="acer" scheme="http://randomdize.github.io/tags/acer/"/>
+    
+      <category term="v3-372" scheme="http://randomdize.github.io/tags/v3-372/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>自訂字典檔案</title>
+    <link href="http://randomdize.github.io/2016/06/14/custom-autocorrection-dictionary/"/>
+    <id>http://randomdize.github.io/2016/06/14/custom-autocorrection-dictionary/</id>
+    <published>2016-06-14T13:47:07.000Z</published>
+    <updated>2023-01-22T13:41:46.942Z</updated>
+    
+    <content type="html"><![CDATA[<img src="/2016/06/14/custom-autocorrection-dictionary/autocorrect.png" class="" title="OSX 修正錯字"><p>對於錯字修正一直都是又愛又恨，尤其是在要輸入特定的非單字的時候。OSX 在輸入完按空白鍵的時候就會進行錯字修正，在對於某些常常輸入的單字像是帳號或是 email 時，這個功能會造成極大的困擾，但錯字修正又是現代人不可或缺的方便功能。這時候可以使用建立使用者字典來避免這種狀況發生。<br>在 OSX 裡面可以這樣建立使用者字典。</p><p>在 terminal 環境輸入以下指令</p><pre><code>$ open ~&#x2F;Library&#x2F;Spelling&#x2F;LocalDictionary</code></pre><p>接下來在文字檔案內加入自己定義的單字即可。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;img src=&quot;/2016/06/14/custom-autocorrection-dictionary/autocorrect.png&quot; class=&quot;&quot; title=&quot;OSX 修正錯字&quot;&gt;
+
+&lt;p&gt;對於錯字修正一直都是又愛又恨，尤其是在要輸入特定的非單字的時候。OSX 在
+      
+    
+    </summary>
+    
+    
+      <category term="osx" scheme="http://randomdize.github.io/tags/osx/"/>
+    
+      <category term="tips" scheme="http://randomdize.github.io/tags/tips/"/>
+    
+  </entry>
+  
+</feed>
