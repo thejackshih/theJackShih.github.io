@@ -5,21 +5,23 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="Jack Shih">
         <meta name="description" content="Jack Shih's personal blog.">
-		<link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
-		
+	<link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
+	<!-- 
 <link rel="stylesheet" href="/style.css">
-
-        <title>從 Gogs 轉移至 Gitea - Code Apprentice</title>
+ -->
+	<link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
+	<title>從 Gogs 轉移至 Gitea - Code Apprentice</title>
    <meta name="generator" content="Hexo 5.4.0"></head>
     <body>
+      <main class="container">
         <header>
-            <h1><a href="/">Code Apprentice</a></h1>
+          <h1><a href="/">Code Apprentice</a></h1>
         </header>
-        <article>
-    <header>
+	<article>
+    <hgroup>
         <h2>從 Gogs 轉移至 Gitea</h2>
-        <time>2018-11-26</time>
-    </header>
+        <h3><time>2018-11-26</time></h3>
+    </hgroup>
     <p>Gitea 雖然源自於 Gogs ，不過要從 Gogs 轉移到 Gitea 卻是十分困難。官方給的教學中 Gogs 的版本要在 <code>0.9.146</code> 或是更舊才能轉移。目前使用的版本已經太新(<code>0.11.29.0727</code>)。想說直接按照官方的文件做，結果遇到 Gitea 在 <code>1.0</code> 中不支援 MSSQL 的窘境。<br>後來在自己試一試的情況下成功了，這邊紀錄一下是如何轉上去的。</p>
 <p>環境</p>
 <ul>
@@ -52,6 +54,7 @@ where repo_id is null;
 
 </article>
 
+      </main>
         <footer></footer>
     </body>
 </html>

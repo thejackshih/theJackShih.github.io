@@ -5,21 +5,23 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="Jack Shih">
         <meta name="description" content="Jack Shih's personal blog.">
-		<link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
-		
+	<link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
+	<!-- 
 <link rel="stylesheet" href="/style.css">
-
-        <title>nix 初探 - Code Apprentice</title>
+ -->
+	<link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
+	<title>nix 初探 - Code Apprentice</title>
    <meta name="generator" content="Hexo 5.4.0"></head>
     <body>
+      <main class="container">
         <header>
-            <h1><a href="/">Code Apprentice</a></h1>
+          <h1><a href="/">Code Apprentice</a></h1>
         </header>
-        <article>
-    <header>
+	<article>
+    <hgroup>
         <h2>nix 初探</h2>
-        <time>2023-01-22</time>
-    </header>
+        <h3><time>2023-01-22</time></h3>
+    </hgroup>
     <p>最近一直在關注 <code>nix</code>，在旁邊看了很長一段時間最後才決定嘗試看看，考慮的點在於已經很習慣用 <code>homebrew</code> 上的 <code>emacs-plus</code>，不過看到連 <code>emacs-plus</code> 的作者都有 <code>nix</code> 的設定了那就可以直接 go 了。這邊就簡單流水帳一下一些想法。</p>
 <p>當初注意到 <code>nix</code> 主要是因為看上了可以自由切換環境這個特點。在現今開發環境如此複雜之下，同時安裝一堆執行環境像是 <code>python</code> <code>ruby</code> 或是 <code>nodejs</code>。而在這些工具更新速度很快的情況下，相繼而來的就是會需要類似 <code>pyenv</code> <code>rvm</code> 和 <code>nvm</code> 等的版本管理工具。接下來的發展之下又會產生所謂管理版本管理的工具如 <code>asdf</code>。以個人來說是覺得太麻煩了。</p>
 <p>當初以一個 <code>package manager</code> 出身的 <code>nix</code> 來說，發展到了現在可以說是已經比原來還要複雜太多。目前來說可以說是個人環境上的 <code>terraform</code> 也不爲過。</p>
@@ -40,6 +42,7 @@
 
 </article>
 
+      </main>
         <footer></footer>
     </body>
 </html>

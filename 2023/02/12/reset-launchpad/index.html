@@ -5,21 +5,23 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="Jack Shih">
         <meta name="description" content="Jack Shih's personal blog.">
-		<link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
-		
+	<link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
+	<!-- 
 <link rel="stylesheet" href="/style.css">
-
-        <title>如何重設 launchpad - Code Apprentice</title>
+ -->
+	<link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
+	<title>如何重設 launchpad - Code Apprentice</title>
    <meta name="generator" content="Hexo 5.4.0"></head>
     <body>
+      <main class="container">
         <header>
-            <h1><a href="/">Code Apprentice</a></h1>
+          <h1><a href="/">Code Apprentice</a></h1>
         </header>
-        <article>
-    <header>
+	<article>
+    <hgroup>
         <h2>如何重設 launchpad</h2>
-        <time>2023-02-12</time>
-    </header>
+        <h3><time>2023-02-12</time></h3>
+    </hgroup>
     <p>因為最近用 nix 在嘗試東西，刪刪改改之後發現 launchpad 的連結壞了，導致就算把 <code>/Applications</code> 或 <code>~/Applications</code> 中的程式移除後 launchpad 還會看到那個檔案。這邊記錄一下要怎麼重設 launchpad。  </p>
 <p>舊版的教學會說 launchpad 的 db 位置在 <code>~/Library/Application\ Support/Dock</code>。  </p>
 <p>不過在 macOS Sierra 之後已經被移到其他地方，原來的位置只剩下 picture.db。  </p>
@@ -31,6 +33,7 @@
 
 </article>
 
+      </main>
         <footer></footer>
     </body>
 </html>

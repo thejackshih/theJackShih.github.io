@@ -5,21 +5,23 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="Jack Shih">
         <meta name="description" content="Jack Shih's personal blog.">
-		<link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
-		
+	<link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
+	<!-- 
 <link rel="stylesheet" href="/style.css">
-
-        <title>gogs 轉 gitea - part2：中文 wiki 失效 - Code Apprentice</title>
+ -->
+	<link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
+	<title>gogs 轉 gitea - part2：中文 wiki 失效 - Code Apprentice</title>
    <meta name="generator" content="Hexo 5.4.0"></head>
     <body>
+      <main class="container">
         <header>
-            <h1><a href="/">Code Apprentice</a></h1>
+          <h1><a href="/">Code Apprentice</a></h1>
         </header>
-        <article>
-    <header>
+	<article>
+    <hgroup>
         <h2>gogs 轉 gitea - part2：中文 wiki 失效</h2>
-        <time>2018-12-18</time>
-    </header>
+        <h3><time>2018-12-18</time></h3>
+    </hgroup>
     <p>之前轉移至 gitea 後發現無法開啟 wiki。測試了一下發現是因為編碼的問題所導致。如果要修復必須先將 wiki 檔名轉換成 URL 使用的 UTF-8 格式。gitea是將 wiki 頁面放在 repo 目錄下以 XXX.wiki.git 存放。因為也是 git 所以可以直接 clone 下來改檔名後再 push 回去就可以了。</p>
 <p>因為也是 .md 檔，所以乾脆把 wiki 關了也是可以。因為 gitea 並沒有提供全域的關閉 wiki 功能所以必須要一個一個設定。如果不要的話可以直接執行以下  SQL 直接移除。</p>
 <pre><code>DELETE FROM repo_unit
@@ -30,6 +32,7 @@ WHERE type = 5
 
 </article>
 
+      </main>
         <footer></footer>
     </body>
 </html>
