@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Jack Shih">
+        <meta name="description" content="Jack Shih's personal blog.">
+		<link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
+		
+<link rel="stylesheet" href="/style.css">
+
+        <title>如何重設 launchpad - Code Apprentice</title>
+   <meta name="generator" content="Hexo 5.4.0"></head>
+    <body>
+        <header>
+            <h1><a href="/">Code Apprentice</a></h1>
+        </header>
+        <article>
+    <header>
+        <h2>如何重設 launchpad</h2>
+        <time>2023-02-12</time>
+    </header>
+    <p>因為最近用 nix 在嘗試東西，刪刪改改之後發現 launchpad 的連結壞了，導致就算把 <code>/Applications</code> 或 <code>~/Applications</code> 中的程式移除後 launchpad 還會看到那個檔案。這邊記錄一下要怎麼重設 launchpad。  </p>
+<p>舊版的教學會說 launchpad 的 db 位置在 <code>~/Library/Application\ Support/Dock</code>。  </p>
+<p>不過在 macOS Sierra 之後已經被移到其他地方，原來的位置只剩下 picture.db。  </p>
+<p>而新的位置在 <code>/private/var/folders</code> 下，如果打開來會看到裡面有被編碼的資料夾檔名，這邊可以透過 <code>getconf DARWIN_USER_DIR</code> 這個指令去查使用者的資料夾的路徑，執行的結果應該會是 <code>/var/folders/...</code>(雖然這邊是 <code>/var</code> 不過實際上是 <code>/private/var</code>)。知道之後就可以直接去資料夾下面的 <code>com.apple.dock.launchpad</code> 中把 db 檔案刪除。  </p>
+<p>或是直接 <code>cd $(getconf DARWIN_USER_DIR)/com.apple.dock.launchpad/db</code> 到資料夾內刪除，刪完後用指令<code>killall Dock</code>重開 Dock</p>
+<p>若是大膽也可以直接執行刪除並重啟指令<br><code>rm $(getconf DARWIN_USER_DIR)/com.apple.dock.launchpad/db/*.db;killall Dock</code>  </p>
+<p>執行後重新開機應該就沒問題了。  </p>
+<p>註：db 檔案實際上是 sqlite，所以有興趣也可以用 sqlite viewer 之類的程式直接開起來看看內容。檔案實際存放位置也會在裡面。  </p>
+
+</article>
+
+        <footer></footer>
+    </body>
+</html>
