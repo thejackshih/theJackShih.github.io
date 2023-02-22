@@ -12,10 +12,10 @@ tags:
 
 而新的位置在 `/private/var/folders` 下，如果打開來會看到裡面有被編碼的資料夾檔名，這邊可以透過 `getconf DARWIN_USER_DIR` 這個指令去查使用者的資料夾的路徑，執行的結果應該會是 `/var/folders/...`(雖然這邊是 `/var` 不過實際上是 `/private/var`)。知道之後就可以直接去資料夾下面的 `com.apple.dock.launchpad` 中把 db 檔案刪除。  
 
-或是直接 `cd $(getconf DARWIN_USER_DIR)/com.apple.dock.launchpad/db` 到資料夾內刪除，刪完後用指令`killall Dock`重開 Dock
+或是直接 `cd $(getconf DARWIN_USER_DIR)com.apple.dock.launchpad/db` 到資料夾內刪除，刪完後用指令`killall Dock`重開 Dock
 
 若是大膽也可以直接執行刪除並重啟指令  
-`rm $(getconf DARWIN_USER_DIR)/com.apple.dock.launchpad/db/*.db;killall Dock`  
+`rm $(getconf DARWIN_USER_DIR)com.apple.dock.launchpad/db/*;killall Dock`  
 
 執行後重新開機應該就沒問題了。  
 
