@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://randomdize.github.io/"/>
-  <updated>2023-02-18T17:27:00.125Z</updated>
+  <updated>2023-05-24T14:38:19.473Z</updated>
   <id>http://randomdize.github.io/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>修正 macos emacs term 顯示 unicode 錯誤問題 (nix --help 顯示 &lt;C2&gt;&lt;B7&gt; 問題)</title>
+    <link href="http://randomdize.github.io/2023/05/24/fix-emacs-term-utf-render/"/>
+    <id>http://randomdize.github.io/2023/05/24/fix-emacs-term-utf-render/</id>
+    <published>2023-05-23T23:30:58.000Z</published>
+    <updated>2023-05-24T14:38:19.473Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近遇到的一個奇怪的問題</p><p>在 emacs 中無論是透過 eshell 或 ansi-term 在呼叫 nix –help 時，都會有顯示 <C2><B7> (這是 unicode 的 middle dot) 的狀況。以為是 eshell 或 ansi-term 的問題，畢竟 emacs 對於 shell 或是 terminal emulator 的支援並不完美，一直以來都這樣認為。直到最近有點看不下去就想說來瞭解看看是哪裡有問題。</p><p>第一個直覺比較像是可能跟版本有關係，由於自己本身是使用 homebrew 安裝的 emacs-plus，就想說是不是裝其他編譯的版本看看是不是能解決。於是用 nix shell 安裝了 nix 上直接從 git head 編譯出來的版本。跑起來發現似乎沒有問題。於是很開心的想說試試看。結果從 emacs.app 中開啟就又有一樣的問題。</p><p>這樣一來就開始交叉測試，發現原來的 emacs-plus 只要從 terminal 中啟動就能正常顯示。而透過 emacs.app 開啟就會有顯示問題。這就怪了，不過 emacs.app 雖然對 macos 來說是應用程式，其實他只是個資料夾。下個測試就是從 terminal 中直接打開 emacs.app 中的 emacs，結果是沒有問題。 有這麼神奇從 terminal 中啟動沒問題但是從 emacs.app 中打開就有問題。於是開始交叉比較用 emacs.app 跟 emacs 啟動的設定有沒有不同。</p><p>在 emacs wiki 中有一小節 <code>Encoding for Terminal.app on OS X</code> 不過照著做並沒有解決問題。而 emacs 有提供 <code>describe-coding-system</code>，兩邊都是 utf-8。</p><p>難道是 emacs.app 就沒辦法正確顯示 middle dot 嗎？於是直接從正常顯示的 emacs 直接複製字元然後貼到不正常顯示的 emacs.app 中，結果是 emacs.app 可以正常顯示 middle dot。不過這樣就更奇怪了。</p><p>查到最後偶然看到有人透過修改 <code>LC_ALL</code> 來修正顯示問題。於是就用 <code>locale</code> 來確認看看。果不其然兩邊的結果不太一樣。 terminal 中的 <code>LC_CTYPE</code> 是 <code>UTF-8</code> 而 emacs.app 中則是 <code>C</code>。在 emacs.app 的 ansi-term 中執行 <code>export LC_CTYPE=&quot;UTF-8&quot;</code> 修改變數後就正常了。</p><p>知道問題在哪裡之後就好處理了。<br>首先在 .zshrc 中加入</p><pre><code>export CTYPE=en_US.UTF-8</code></pre><p>接下來透過 <code>exec-path-from-shell</code> 把 <code>LC_CTYPE</code> 環境變數餵進去，package 本身有提供 ‘exec-path-from-shell-variables` 來匯入，這邊主要是要解決 eshell 的情況。 因為 eshell 不是 zsh，所以要另外處理。下面是一種範例。</p><pre><code>(use-package exec-path-from-shell  :ensure t  :config  (dolist (var &#39;(&quot;LC_CTYPE&quot;))    (add-to-list &#39;exec-path-from-shell-variables var))  (when (memq window-system &#39;(mac ns x))    (exec-path-from-shell-initialize)))</code></pre><p>看來是太久沒有用 linux 了</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;最近遇到的一個奇怪的問題&lt;/p&gt;
+&lt;p&gt;在 emacs 中無論是透過 eshell 或 ansi-term 在呼叫 nix –help 時，都會有顯示 &lt;C2&gt;&lt;B7&gt; (這是 unicode 的 middle dot) 的狀況。以為是 eshell 或 ansi-term
+      
+    
+    </summary>
+    
+    
+      <category term="linux" scheme="http://randomdize.github.io/tags/linux/"/>
+    
+      <category term="nix" scheme="http://randomdize.github.io/tags/nix/"/>
+    
+      <category term="terminal" scheme="http://randomdize.github.io/tags/terminal/"/>
+    
+      <category term="emacs" scheme="http://randomdize.github.io/tags/emacs/"/>
+    
+  </entry>
   
   <entry>
     <title>元宇宙辦公有搞頭嗎？ VR 虛擬桌面軟體比較</title>
@@ -501,26 +531,6 @@ var someArra
       <category term="mvc core" scheme="http://randomdize.github.io/tags/mvc-core/"/>
     
       <category term="c#" scheme="http://randomdize.github.io/tags/c/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Javascript 的 Arrow function.</title>
-    <link href="http://randomdize.github.io/2017/01/22/this-arrow-function-javascript/"/>
-    <id>http://randomdize.github.io/2017/01/22/this-arrow-function-javascript/</id>
-    <published>2017-01-22T07:45:47.000Z</published>
-    <updated>2023-01-22T13:41:46.953Z</updated>
-    
-    <content type="html"><![CDATA[<p>最近聽強者談論到在JS ES6 中使用 Arrow Function 要注意的事情，這事情跟 this 有關，趁這個機會對 this 做點了解。</p><span id="more"></span><p>先來一張從 Crockford 大神演講中偷來的表</p><table><thead><tr><th>Invocation form</th><th>this</th></tr></thead><tbody><tr><td>function</td><td>the global object or undefined*</td></tr><tr><td>method</td><td>the object</td></tr><tr><td>constructor</td><td>the new object</td></tr><tr><td>apply</td><td>argument</td></tr></tbody></table><p>知道 this 跟其他物件導向式的語言不同，會依照呼叫形式不同而有所不同之後大概就已經理解一半了。</p><p>其中要注意的是第一個 function 類型，使用 function 形式使用的時候 this 會指向 global object (non-strict) 或是 undefined (strict)</p><p>以 MDN 文件中的使用的範例為例</p><pre><code>function Person() {  &#x2F;&#x2F; The Person() constructor defines &#96;this&#96; as an instance of itself.  this.age &#x3D; 0;  setInterval(function growUp() {    &#x2F;&#x2F; In non-strict mode, the growUp() function defines &#96;this&#96;    &#x2F;&#x2F; as the global object, which is different from the &#96;this&#96;    &#x2F;&#x2F; defined by the Person() constructor.    this.age++;  }, 1000);}var p &#x3D; new Person();</code></pre><p>直覺看上， growUp 中所指的 this 看起來像跟外層 this.age = 0 的 this 是一樣的，但實際上會依照表中的規則 this 會是 global or undefined。</p><p>之後的解法或是一種 coding 習慣會是使用另外一個變數 that 來表示 this ，以確保 this 不會在可能沒注意到地方的被改掉。</p><pre><code>function Person() {  var that &#x3D; this;  that.age &#x3D; 0;  setInterval(function growUp() {    &#x2F;&#x2F; The callback refers to the &#96;that&#96; variable of which    &#x2F;&#x2F; the value is the expected object.    that.age++;  }, 1000);}</code></pre><p>而後還有 funcion.bind(obj) 這種方式來解決這種可能會發生的問題。</p><p>而 Arrow function 跟一般 function 不同地方在於他沒有 this。</p><pre><code>function Person(){  this.age &#x3D; 0;  setInterval(() &#x3D;&gt; {    this.age++; &#x2F;&#x2F; |this| properly refers to the person object  }, 1000);}var p &#x3D; new Person();</code></pre><p>以上的例子中由於 Arrow function 中沒有自己的 this，所以 this 依照 function scope 規則會是 this.age = 0 的 this。</p><p>看來沒把 JS 大全看完很難說自己能用得好啊。</p><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference:"></a>Reference:</h1><p><a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions">Arrow function</a><br><a href="https://www.youtube.com/watch?v=ya4UHuXNygM&list=PL7664379246A246CB&index=3">Crockford on JavaScript - Act III: Function the Ultimate</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;最近聽強者談論到在JS ES6 中使用 Arrow Function 要注意的事情，這事情跟 this 有關，趁這個機會對 this 做點了解。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="javascript" scheme="http://randomdize.github.io/tags/javascript/"/>
     
   </entry>
   
