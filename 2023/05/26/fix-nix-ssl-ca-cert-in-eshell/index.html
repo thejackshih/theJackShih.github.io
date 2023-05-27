@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Jack Shih">
+        <meta name="description" content="Jack Shih's personal blog.">
+	<link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
+	<!-- 
+<link rel="stylesheet" href="/style.css">
+ -->
+	<link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
+	<title>How to fix nix "Problem with the SSL CA cert" on macOS - Code Apprentice</title>
+   <meta name="generator" content="Hexo 5.4.0"></head>
+    <body>
+      <main class="container">
+        <header>
+          <h1><a href="/">Code Apprentice</a></h1>
+        </header>
+	<article>
+    <hgroup>
+        <h2>How to fix nix "Problem with the SSL CA cert" on macOS</h2>
+        <h3><time>2023-05-26</time></h3>
+    </hgroup>
+    <p>When using nix operations inside emacs sometime it will show this warning during install packages.</p>
+<pre><code>warning: error: unable to download &#39;&#123;SOME_URL&#125;&#39;: Problem with the SSL CA cert (path? access rights?) (77); using cached version
+</code></pre>
+<p>This warning occur because emacs gui on macOS use system defaut environment variable instead of shell environment variable. Most people on macOS use <code>exec-path-from-shell</code> to fix the path problem. Luckly <code>exec-path-from-shell</code> provide a variable call <code>exec-path-from-shell-variables</code> to import any other environment variables other than <code>PATH</code>.</p>
+<p>So we can import <code>NIX_PROFILES</code> and <code>NIX_SSL_CERT_FILE</code> like below to solve the issue.</p>
+<pre><code>(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (dolist (var &#39;(&quot;LC_CTYPE&quot; &quot;NIX_PROFILES&quot; &quot;NIX_SSL_CERT_FILE&quot;))
+    (add-to-list &#39;exec-path-from-shell-variables var))
+  (when (memq window-system &#39;(mac ns x))
+    (exec-path-from-shell-initialize)))
+</code></pre>
+
+</article>
+
+      </main>
+        <footer></footer>
+    </body>
+</html>

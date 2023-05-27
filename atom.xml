@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://randomdize.github.io/"/>
-  <updated>2023-05-24T14:59:44.907Z</updated>
+  <updated>2023-05-27T08:05:14.271Z</updated>
   <id>http://randomdize.github.io/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>How to fix nix &quot;Problem with the SSL CA cert&quot; on macOS</title>
+    <link href="http://randomdize.github.io/2023/05/26/fix-nix-ssl-ca-cert-in-eshell/"/>
+    <id>http://randomdize.github.io/2023/05/26/fix-nix-ssl-ca-cert-in-eshell/</id>
+    <published>2023-05-25T23:59:06.000Z</published>
+    <updated>2023-05-27T08:05:14.271Z</updated>
+    
+    <content type="html"><![CDATA[<p>When using nix operations inside emacs sometime it will show this warning during install packages.</p><pre><code>warning: error: unable to download &#39;&#123;SOME_URL&#125;&#39;: Problem with the SSL CA cert (path? access rights?) (77); using cached version</code></pre><p>This warning occur because emacs gui on macOS use system defaut environment variable instead of shell environment variable. Most people on macOS use <code>exec-path-from-shell</code> to fix the path problem. Luckly <code>exec-path-from-shell</code> provide a variable call <code>exec-path-from-shell-variables</code> to import any other environment variables other than <code>PATH</code>.</p><p>So we can import <code>NIX_PROFILES</code> and <code>NIX_SSL_CERT_FILE</code> like below to solve the issue.</p><pre><code>(use-package exec-path-from-shell  :ensure t  :config  (dolist (var &#39;(&quot;LC_CTYPE&quot; &quot;NIX_PROFILES&quot; &quot;NIX_SSL_CERT_FILE&quot;))    (add-to-list &#39;exec-path-from-shell-variables var))  (when (memq window-system &#39;(mac ns x))    (exec-path-from-shell-initialize)))</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;When using nix operations inside emacs sometime it will show this warning during install packages.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;warning: error: unable 
+      
+    
+    </summary>
+    
+    
+      <category term="nix" scheme="http://randomdize.github.io/tags/nix/"/>
+    
+      <category term="emacs" scheme="http://randomdize.github.io/tags/emacs/"/>
+    
+      <category term="eshell" scheme="http://randomdize.github.io/tags/eshell/"/>
+    
+  </entry>
   
   <entry>
     <title>修正 macos emacs term 顯示 unicode 錯誤問題 (nix --help 顯示 &lt;C2&gt;&lt;B7&gt; 問題)</title>
@@ -508,29 +536,6 @@ var someArra
     
     
       <category term="android" scheme="http://randomdize.github.io/tags/android/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MVC core 做 Localization</title>
-    <link href="http://randomdize.github.io/2017/03/22/localization-in-mvc-core/"/>
-    <id>http://randomdize.github.io/2017/03/22/localization-in-mvc-core/</id>
-    <published>2017-03-22T02:30:51.000Z</published>
-    <updated>2023-01-22T13:41:46.952Z</updated>
-    
-    <content type="html"><![CDATA[<p>過去不曾做過多國語言的支援，更不曾在 web 界做過，研究一下之後發現 Asp.net mvc core 也有提供工具。這裡做一下筆記。</p><h1 id="基本認識"><a href="#基本認識" class="headerlink" title="基本認識"></a>基本認識</h1><p>一般多國語言的做法多是用替換字串的方式，然後用 Key/Value 的方式去做取代。目的是將顯示文字跟程式脫鉤，只要抽換文字檔案就可以更換顯示的文字而不需要修改程式，翻譯人員也可以直接透過這個檔案進行翻譯。基本的概念大概就是這樣。進階一點的就是某些從右讀到左的語言會需要 UI 翻轉之類的事情了。</p><span id="more"></span><h1 id="Setup"><a href="#Setup" class="headerlink" title="Setup"></a>Setup</h1><pre><code>public void ConfigureServices(IServiceCollection services){    &#x2F;&#x2F;略    services.AddLocalization(options &#x3D;&gt; options.ResourcesPath &#x3D; &quot;Resources&quot;);    services.AddMvc()        .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)        .AddDataAnnotationsLocalization();    services.Configure&lt;RequestLocalizationOptions&gt;(        options &#x3D;&gt;        {             var supportedCultures &#x3D; new List&lt;CultureInfo&gt;             {                 new CultureInfo(&quot;en-US&quot;),                 new CultureInfo(&quot;zh-CN&quot;),                 new CultureInfo(&quot;zh-TW&quot;)             };             options.DefaultRequestCulture &#x3D; new RequestCulture(culture: &quot;zh-TW&quot;, uiCulture: &quot;zh-TW&quot;);             options.SupportedCultures &#x3D; supportedCultures;             options.SupportedUICultures &#x3D; supportedCultures;        });}public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory){    &#x2F;&#x2F;略    var locOptions &#x3D; app.ApplicationServices.GetService&lt;IOptions&lt;RequestLocalizationOptions&gt;&gt;();    app.UseRequestLocalization(locOptions.Value);}</code></pre><p>在根目錄建立 <code>Resources</code> 資料夾<br>依照預設規則建立資源檔<br><code>[views/controllers].[controller name].[action name].[language].resx</code><br>ex. <code>Views.Home.Index.zh-TW.resx</code></p><h1 id="How-to-use"><a href="#How-to-use" class="headerlink" title="How to use"></a>How to use</h1><p>使用的方式為</p><pre><code>@using Microsoft.AspNetCore.Mvc.Localization@inject IViewLocalizer Localizer&lt;!-- 一般這樣用 --&gt;@Localizer[&quot;welcome&quot;]&lt;!-- 如果遇到顯示錯誤的狀況 --&gt;@Localizer[&quot;welcome&quot;].Value</code></pre><p>測試的方式為在 URL 後面加入 <code>culture</code> 參數<br><code>http://localhost:5000/home/?culture=zh-tw</code></p><p>MVC Core 1.1 後面有支援在 URL 上加入語言選項<br>ex. <code>http://localhost:5000/zh-tw/home/</code></p><p>不過目前環境是 1.0 所以就沒再研究了，應該是要用 ActionFilter 之類的，不過就算這樣還是沒辦法用 Default Route mapping，參考連結內有更完整的教學。</p><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://docs.microsoft.com/en-us/aspnet/core/fundamentals/localization">https://docs.microsoft.com/en-us/aspnet/core/fundamentals/localization</a><br><a href="https://damienbod.com/2015/10/21/asp-net-5-mvc-6-localization/">https://damienbod.com/2015/10/21/asp-net-5-mvc-6-localization/</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;過去不曾做過多國語言的支援，更不曾在 web 界做過，研究一下之後發現 Asp.net mvc core 也有提供工具。這裡做一下筆記。&lt;/p&gt;
-&lt;h1 id=&quot;基本認識&quot;&gt;&lt;a href=&quot;#基本認識&quot; class=&quot;headerlink&quot; title=&quot;基本認識&quot;&gt;&lt;/a&gt;基本認識&lt;/h1&gt;&lt;p&gt;一般多國語言的做法多是用替換字串的方式，然後用 Key/Value 的方式去做取代。目的是將顯示文字跟程式脫鉤，只要抽換文字檔案就可以更換顯示的文字而不需要修改程式，翻譯人員也可以直接透過這個檔案進行翻譯。基本的概念大概就是這樣。進階一點的就是某些從右讀到左的語言會需要 UI 翻轉之類的事情了。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="mvc core" scheme="http://randomdize.github.io/tags/mvc-core/"/>
-    
-      <category term="c#" scheme="http://randomdize.github.io/tags/c/"/>
     
   </entry>
   
