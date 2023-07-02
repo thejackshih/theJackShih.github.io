@@ -1,27 +1,4 @@
-[submodule "themes/photophobia"]
-	path = themes/photophobia
-	url = https://github.com/setsevireon/photophobia.git
-[submodule "themes/paper"]
-	path = themes/paper
-	url = https://github.com/nanxiaobei/hugo-paper
-[submodule "themes/smigle"]
-	path = themes/smigle
-	url = https://gitlab.com/ian-s-mcb/smigle-hugo-theme.git
-[submodule "themes/anubis"]
-	path = themes/anubis
-	url = https://github.com/mitrichius/hugo-theme-anubis.git
-[submodule "themes/hugo-theme-texify"]
-	path = themes/hugo-theme-texify
-	url = https://github.com/queensferryme/hugo-theme-texify.git
-[submodule "themes/minimal-bootstrap-hugo-theme"]
-	path = themes/minimal-bootstrap-hugo-theme
-	url = https://github.com/zwbetz-gh/minimal-bootstrap-hugo-theme.git
-[submodule "themes/etch"]
-	path = themes/etch
-	url = https://github.com/LukasJoswiak/etch.git
-[submodule "themes/elephants"]
-	path = themes/elephants
-	url = https://gitlab.com/meibenny/elephants.git
-[submodule "themes/hugo-book"]
-	path = themes/hugo-book
-	url = https://github.com/alex-shpak/hugo-book
+[submodule "themes/manis"]
+	path = themes/manis
+	url = https://github.com/yursan9/manis-hugo-theme
+
