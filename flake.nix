@@ -11,8 +11,9 @@
         let pkgs = nixpkgs.legacyPackages.${system}; in
         {
           devShells.default = pkgs.mkShell {
-            packages = [
-              pkgs.hugo
+            packages = with pkgs; [
+              git
+              hugo
             ];
           };
         }
