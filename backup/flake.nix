@@ -12,7 +12,8 @@
         {
           devShells.default = pkgs.mkShell {
             packages = [
-              pkgs.hugo
+              pkgs.nodejs
+              pkgs.git
             ];
           };
         }
