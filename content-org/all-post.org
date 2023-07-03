@@ -1,6 +1,6 @@
 #+hugo_base_dir: ../
 
-* 202307 部落格更新                                                    :misc:hexo:hugo:orgmode:
+* 202307 部落格更新                                  :misc:hexo:hugo:orgmode:
 :PROPERTIES:
 :EXPORT_FILE_NAME: blog-update-2023-07
 :EXPORT_DATE: <2023-07-03 Mon>

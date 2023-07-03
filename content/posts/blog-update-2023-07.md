@@ -17,7 +17,4 @@ draft = false
 轉移到 hugo 的過程中也照著教學套了一下新的 github action，算是額外的收穫吧。不過比起讓 github action 跑，我個人是比較喜歡舊的透過 hexo deploy 直接從本機產生靜態文件並推到 github 上，單純許多。
 
 -   [How I blog: One year of posts in a single org file](https://endlessparentheses.com/how-i-blog-one-year-of-posts-in-a-single-org-file.html) 如果想知道單一檔案的好處這邊有提到一點
--   [Why ox-hugo?](https://ox-hugo.scripter.co/doc/why-ox-hugo/) 使用 ox-hugo 的好處官網自己有解釋一番
-
-
-## How to fix n {#how-to-fix-n}
+-   [Why ox-hugo?](https://ox-hugo.scripter.co/doc/why-ox-hugo/) 使用 ox-hugo 的好處官網自己有解釋
