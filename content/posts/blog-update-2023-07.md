@@ -1,7 +1,8 @@
 +++
-title = "202307 部落格更新                                                    :misc:hexo:hugo:org-mode:"
+title = "202307 部落格更新"
 author = ["Jack Shih"]
 date = 2023-07-03T00:00:00+08:00
+tags = ["misc", "hexo", "hugo", "orgmode"]
 draft = false
 +++
 
@@ -18,4 +19,5 @@ draft = false
 -   [How I blog: One year of posts in a single org file](https://endlessparentheses.com/how-i-blog-one-year-of-posts-in-a-single-org-file.html) 如果想知道單一檔案的好處這邊有提到一點
 -   [Why ox-hugo?](https://ox-hugo.scripter.co/doc/why-ox-hugo/) 使用 ox-hugo 的好處官網自己有解釋一番
 
-\*
+
+## How to fix n {#how-to-fix-n}
