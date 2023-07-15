@@ -22,22 +22,22 @@ public void ConfigureServices(IServiceCollection services)
     //略
     services.AddLocalization(options => options.ResourcesPath = "Resources");
     services.AddMvc()
-        .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-        .AddDataAnnotationsLocalization();
+      .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+      .AddDataAnnotationsLocalization();
     services.Configure<RequestLocalizationOptions>(
-        options =>
-        {
-             var supportedCultures = new List<CultureInfo>
-             {
-                 new CultureInfo("en-US"),
-                 new CultureInfo("zh-CN"),
-                 new CultureInfo("zh-TW")
-             };
+      options =>
+      {
+           var supportedCultures = new List<CultureInfo>
+           {
+               new CultureInfo("en-US"),
+               new CultureInfo("zh-CN"),
+               new CultureInfo("zh-TW")
+           };
 
-             options.DefaultRequestCulture = new RequestCulture(culture: "zh-TW", uiCulture: "zh-TW");
-             options.SupportedCultures = supportedCultures;
-             options.SupportedUICultures = supportedCultures;
-        });
+           options.DefaultRequestCulture = new RequestCulture(culture: "zh-TW", uiCulture: "zh-TW");
+           options.SupportedCultures = supportedCultures;
+           options.SupportedUICultures = supportedCultures;
+      });
 }
 public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
 {

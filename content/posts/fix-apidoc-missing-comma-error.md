@@ -25,18 +25,18 @@ PackageInfo.prototype._readPackageData = function(filename) {
 
     // Read from source dir
     if ( ! fs.existsSync(jsonFilename)) {
-        // Read from config dir (default './')
-        jsonFilename = path.join(app.options.config, filename);
+      // Read from config dir (default './')
+      jsonFilename = path.join(app.options.config, filename);
     }
     if ( ! fs.existsSync(jsonFilename)) {
-        app.log.debug(jsonFilename + ' not found!');
+      app.log.debug(jsonFilename + ' not found!');
     } else {
-        try {
-            result = JSON.parse( fs.readFileSync(jsonFilename, 'utf8') );
-            app.log.debug('read: ' + jsonFilename);
-        } catch (e) {
-            throw new Error('Can not read: ' + filename + ', please check the format (e.g. missing comma).');
-        }
+      try {
+          result = JSON.parse( fs.readFileSync(jsonFilename, 'utf8') );
+          app.log.debug('read: ' + jsonFilename);
+      } catch (e) {
+          throw new Error('Can not read: ' + filename + ', please check the format (e.g. missing comma).');
+      }
     }
     return result;
 };

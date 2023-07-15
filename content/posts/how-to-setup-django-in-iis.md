@@ -40,21 +40,21 @@ draft = false
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
     <configuration>
-        <system.webServer>
-            <handlers>
-                <add name="Django Handler"
-                     path="*"
-                     verb="*"
-                     modules="FastCgiModule"
-                     scriptProcessor="<python安裝路徑>python.exe|<python安裝路徑>\Lib\site-packages\wfastcgi.py"
-                     resourceType="Unspecified" />
-            </handlers>
-        </system.webServer>
-        <appSettings>
-            <add key="WSGI_HANDLER" value="django.core.wsgi.get_wsgi_application()" />
-            <add key="PYTHONPATH" value="<網站資料夾路徑>" />
-            <add key="DJANGO_SETTINGS_MODULE" value="<Django App>.settings" />
-        </appSettings>
+      <system.webServer>
+          <handlers>
+              <add name="Django Handler"
+                   path="*"
+                   verb="*"
+                   modules="FastCgiModule"
+                   scriptProcessor="<python安裝路徑>python.exe|<python安裝路徑>\Lib\site-packages\wfastcgi.py"
+                   resourceType="Unspecified" />
+          </handlers>
+      </system.webServer>
+      <appSettings>
+          <add key="WSGI_HANDLER" value="django.core.wsgi.get_wsgi_application()" />
+          <add key="PYTHONPATH" value="<網站資料夾路徑>" />
+          <add key="DJANGO_SETTINGS_MODULE" value="<Django App>.settings" />
+      </appSettings>
     </configuration>
 ```
 

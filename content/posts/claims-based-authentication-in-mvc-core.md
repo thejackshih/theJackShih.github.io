@@ -15,11 +15,11 @@ public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerF
     //略
     app.UseCookieAuthentication(new CookieAuthenticationOptions()
     {
-        AuthenticationScheme = "MyCoodieMiddlewareInstance",
-        LoginPath = new PathString(),
-        AccessDeniedPath = new PathString(),
-        AutomaticAuthenticate = true,
-        AutomaticChallenge = true
+      AuthenticationScheme = "MyCoodieMiddlewareInstance",
+      LoginPath = new PathString(),
+      AccessDeniedPath = new PathString(),
+      AutomaticAuthenticate = true,
+      AutomaticChallenge = true
     });
 }
 ```
