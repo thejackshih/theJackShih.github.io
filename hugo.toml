@@ -1,4 +1,4 @@
-baseURL = 'https://theJackShih.github.io/'
+baseURL = 'https://theJackShih.com/'
 languageCode = 'en-us'
 title = 'Code Apprentice'
 theme = 'paper'
