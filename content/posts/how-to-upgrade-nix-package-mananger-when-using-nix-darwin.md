@@ -144,8 +144,13 @@ nix = {
 
 ## 心得 {#心得}
 
+光是升級就弄懷疑人生。nix 目前還沒有達到完全抽象的高度，導致要用除了要熟系統本身的基本架構之外還要在額外疊一層 nix 的抽象，更別提要在 nix 之上在加 nix-darwin(nixos) 和 home-manager。跟 homebrew 來說使用者友善度還有很長一段路要走。 而這段期間也開始有底層掛 nix 的開發環境工具慢慢出現。 像 [flox](https://flox.dev) 就是其中之一。某些層度上也算接近自己理想的介面。可以用比較傳統的方式把環境拉出來之後在儲存，而不用去寫 nix。
+
+當然 nix 好處就是這篇文章使用的 hugo 依然是直接用 nix-shell 跑出來的，很方便。搭配 `direnv` 還可以達到進專案進出資料夾自動 load/unload。 完全不會污染整個系統。
+
 
 ## reference {#reference}
 
 <https://discourse.nixos.org/t/fail-multiple-versions-of-nix-found-in-path/19890/5>
 <https://github.com/LnL7/nix-darwin/issues/655#issuecomment-1551771624>
+<https://daiderd.com/nix-darwin/manual/index.html>
