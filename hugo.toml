@@ -1,5 +1,5 @@
 baseURL = 'https://theJackShih.com/'
-languageCode = 'en-us'
+languageCode = 'zh-Hant-TW'
 title = 'Code Apprentice'
 theme = 'paper'
 [markup.goldmark.renderer]
