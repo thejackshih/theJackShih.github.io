@@ -21,7 +21,7 @@ stable 的部分則是對應 nixos 而生，所以有區分 nixos 跟 darwin(mac
 知道這些之後，要用哪個 channel 大致可以做決定，因為不同 channel 就差在更新速度不同，所以要使用哪個 channel 就取決於更新要多快，以及東西壞掉的機率。
 如果想要走 rolling release 的話就使用 unstable 相關的 channel。
 雖然就上面敘述來說，如果想要是可以在 nixos 中使用 nixpkgs-unstable，不過因為沒有針對 nixos 的測試，所以系統可能會壞掉。
-大部分是不建議這麼做，nixos 就使用 nixos-* 相關的 channel。
+因此是不建議這麼做，nixos 就使用 nixos-* 相關的 channel。
 
 macOS 的部分，如果想要有像 nixos 差不多的體驗就走 =nixpkgs-*.*-darwin= ，如果沒有的話就直接用 =nixpkgs-unstable= 。
 
