@@ -1,252 +1,225 @@
-#+hugo_base_dir: ../
++++
+author = ["Jack Shih"]
+draft = false
++++
 
-* nix 的一點筆記                                                        :nix:
-:PROPERTIES:
-:EXPORT_FILE_NAME: some-nix-note
-:EXPORT_DATE: <2025-01-29>
-:END:
+## nix 的一點筆記 <span class="tag"><span class="nix">nix</span></span> {#some-nix-stuff}
 
-年假期間想說來整理一下以前寫的 nix-darwin 的設定。然後想說這次不要用 nix flake，但是也還是不想用 channel。沒想到一改下去就開始折騰。親身體會為何 flake 的接受度為什麼會很高。當慢慢開始偏離預設的路徑得時候就痛苦。於是乎就回去看了 nix language。這邊就簡單記錄一下這次學習到的一點心得，希望有緣人不要走這個冤望路。
+年假期間想說來整理一下以前寫的 nix-darwin 的設定。然後想說這次不要用 nix flake，但是也還是不想用 channel。沒想到一改下去就開始折騰。親身體會為何 flake 的接受度為什麼會很高。當慢慢開始偏離預設的路徑得時候就痛苦。於是乎就回去看了 nix language。這邊就簡單記錄一下這次學習到的一點心得，也希望別人不要走這個冤望路。
 
-** .nix 檔案只放一個 nix-expression
-沒錯，一個檔案只是一個 expression，可以想像就是一個 one-liner 的概念。對這次我來說可以說是很重要的啟發，畢竟會想要在 .nix 裡面做很多事情，的確可以，只要你有辦法寫成 one-line 就可以。
 
-** everything is attribute set
-有點誇大，不過 attribute set 在 nix 中是很重要的東西，attribute set 可當作像 python 的 dict 或是 js 的 object，只是在語法上常跟其他語言搞混。
+### .nix 檔案只放一個 nix-expression {#dot-nix-檔案只放一個-nix-expression}
 
-#+begin_src nix
-  {}:{}
-#+end_src
+沒錯，一個檔案只是一個 expression，可以想像就是一個 one-liner 的概念。
 
-這是一個 function，參數是一個 attribute set ，回傳一個 attribute set。後面的 ={}= 並不是 code block。
 
-至於兩個參數的 function 是這樣 =x:y:{}= ，是 curry 式的寫法。
+### nix repl 是好朋友 {#nix-repl-是好朋友}
 
-早點了解相關語法跟縮寫會輕鬆很多，行走江湖會看到各種混用。表面上會看起來很複雜，其實不然。例如
-#+begin_src nix
-  {
-    a = {
-      b = c;
-    }
-  }
-#+end_src
-
-#+begin_src nix
-  {
-    a.b = c;
-  }
-#+end_src
-
-這兩個是一樣的。
-
-** nix repl 是好朋友
 以前沒有使用 repl 的習慣，雖然現在也是還沒習慣（個人還是覺得體驗不是很好），但對於這種一定要跑一遍才知道內容的語言來說。還是得用。
 
-** nix path 是獨立的 type
-對於 nix 來說 path 是獨立的型別。也就是說 path 跟 string path 是完全不同的東西，也不相容。轉換的方式是用 =/. + "/path"= 或 =./. + "/path"= 這種寫法。(path + string = path)
 
-** nix 的生態系
-nix 語言本身並不複雜。困難的是了解生態系的 convention。這次過程中常在問自己一個問題：「寫成這樣怎麼知道能不能動」。結果答案大概就是：「對，你不知道。」官方文件上大概就是這個意思。除非你看原始碼，不然你不太會知道任何一個 function 到底是要餵怎麼樣的東西。這時候就只能靠 convention 了。這點越早知道越不會覺得很混亂。因為就是這樣。越早接受越不會作無謂的掙扎。
+### nix path 是獨立的 type {#nix-path-是獨立的-type}
 
-** resource
-我不確定跟過去有差，但這次看的確是文件好了許多。
+對於 nix 來說 path 是獨立的型別。也就是說 path 跟 string path 是完全不同的東西，也不相容。轉換的方式是用 `/. + "/path"` 或 `./. + "/path"` 這種寫法。(path + string = path)
 
-- [[https://nix.dev/tutorials/#tutorials][nix.dev tutorials]]
 
-  我覺得這個教學比看操作手冊容易多了。如果如果不知道 nix 能做些什麼。可以從 =First steps= 開始看。這邊會帶你走過幾個常見的情境。如果決定要開始用了，建議先把 =Nix language basics= 章節讀過一遍，章節會帶你走過大部分的語法，並且有實際的範例。一開始大概讀到這邊就好了。與其到處 google 不如先了解基本語法到底在做什麼。
+### nix 的生態系 {#nix-的生態系}
 
-** 結語
-有了這些知識之後，快速把這個部落格用的 flake 改成傳統 nix 的寫法。不過在跑 hugo 的時候發現 hugo 已經更新到 =v0.141.0= 然後跳了一堆錯誤訊息。要是用 flake 就不會有這些問題。但沒關係，看個一下 flake.lock 的 hash commit，速速把 nixpkgs pin 在同樣的版本，然後就可以弄到當年的版本 (=v0.120.4=)。再次執行，一切正常，順便驗證了 reproducibility 的重要性，文章先出，之後有時間再來搞升級。
+nix 語言本身並不複雜。困難的是了解生態系的 convention。基本上把常用的 pattern 學起來應該就可以處理大部分的問題了。
 
-* 該用哪個 Nix Channel                                                  :nix:
-:PROPERTIES:
-:EXPORT_FILE_NAME: which-nix-channel-to-use
-:EXPORT_DATE: <2024-07-17 Wed>
-:END:
 
-在 nix 中，除了一般常見的 stable 跟 unstable 的 channel 之外，還會看到 unstable 還有分 =nixpkgs-unstable= 、 =nixos-unstable= 跟 =nixos-unstable-small= 。
-而 stable 則是有 =nixos-24.05= 、 =nixos-24.05-small= 跟 =nixpkgs-24.05-darwin= 。
+## 該用哪個 Nix Channel <span class="tag"><span class="nix">nix</span></span> {#which-nix-channel-to-use}
+
+在 nix 中，除了一般常見的 stable 跟 unstable 的 channel 之外，還會看到 unstable 還有分 `nixpkgs-unstable` 、 `nixos-unstable` 跟 `nixos-unstable-small` 。
+而 stable 則是有 `nixos-24.05` 、 `nixos-24.05-small` 跟 `nixpkgs-24.05-darwin` 。
 那這時候就會開始想到底這些 channel 到底差在哪裡，該用哪個？
 
 ˋ簡單來說，可以想像每一個 nix channel 都是在不同時間點的 nixpkgs-master，只是測試的項目不太一樣。
-例如 =nixos-*= 的測試項目就會多測試屬於 nixos 相關的項目，確保從這個 channel 出去的版本不會把 nixos 弄壞。
+例如 `nixos-*` 的測試項目就會多測試屬於 nixos 相關的項目，確保從這個 channel 出去的版本不會把 nixos 弄壞。
 
-=*-small= 則是因為測試的項目較一般的少，所以更新的速度較快。
+`*-small` 則是因為測試的項目較一般的少，所以更新的速度較快。
 
 stable 的部分則是對應 nixos 而生，所以有區分 nixos 跟 darwin(macOS) 的不同。
-大概是因為有 =nix-darwin= 所以要有個跟 =nixos= 來對應。比如說 =nixos= 不需要去考慮 macOS 相關 package 的東西。
+大概是因為有 `nix-darwin` 所以要有個跟 `nixos` 來對應。比如說 `nixos` 不需要去考慮 macOS 相關 package 的東西。
 
 知道這些之後，要用哪個 channel 大致可以做決定，因為不同 channel 就差在更新速度不同，所以要使用哪個 channel 就取決於更新要多快，以及東西壞掉的機率。
 如果想要走 rolling release 的話就使用 unstable 相關的 channel。
 雖然就上面敘述來說，如果想要是可以在 nixos 中使用 nixpkgs-unstable，不過因為沒有針對 nixos 的測試，所以系統可能會壞掉。
-因此是不建議這麼做，nixos 就使用 nixos-* 相關的 channel。
+因此是不建議這麼做，nixos 就使用 nixos-\* 相關的 channel。
 
-macOS 的部分，如果想要有像 nixos 差不多的體驗就走 =nixpkgs-*.*-darwin= ，如果沒有的話就直接用 =nixpkgs-unstable= 。
+macOS 的部分，如果想要有像 nixos 差不多的體驗就走 `nixpkgs-*.*-darwin` ，如果沒有的話就直接用 `nixpkgs-unstable` 。
 
-看了這麼多，可能會想到為什麼沒有 =nixpkgs-stable= 之類的版本，可能是因為一來 linux-based 就直接用 nixos 的 stable channel 就好。二來仔細想想，如果純粹把 nix 當作 package manager (naapm) 的話，穩定版好像沒有什麼意義。
+看了這麼多，可能會想到為什麼沒有 `nixpkgs-stable` 之類的版本，可能是因為一來 linux-based 就直接用 nixos 的 stable channel 就好。二來仔細想想，如果純粹把 nix 當作 package manager (naapm) 的話，穩定版好像沒有什麼意義。
 
 如果是走 nix flake，那麼混搭也沒有這麼困難了，可以輕鬆做到「大部分的套件都用穩定版，但就這個我想要用最新版」 的情境。
 
 
-** reference
-[[https://gist.github.com/grahamc/c60578c6e6928043d29a427361634df6#which-channel-is-right-for-me][https://gist.github.com/grahamc/c60578c6e6928043d29a427361634df6#which-channel-is-right-for-me]]
-[[https://status.nixos.org]]
-[[https://discourse.nixos.org/t/differences-between-nix-channels/13998]]
-[[https://discourse.nixos.org/t/difference-between-channels/579]]
+### reference {#reference}
+
+[https://gist.github.com/grahamc/c60578c6e6928043d29a427361634df6#which-channel-is-right-for-me](https://gist.github.com/grahamc/c60578c6e6928043d29a427361634df6#which-channel-is-right-for-me)
+<https://status.nixos.org>
+<https://discourse.nixos.org/t/differences-between-nix-channels/13998>
+<https://discourse.nixos.org/t/difference-between-channels/579>
 
 
-* 如何 nix-darwin 環境下更新 nix 版本                                   :nix:
-:PROPERTIES:
-:EXPORT_FILE_NAME: how-to-upgrade-nix-package-mananger-when-using-nix-darwin
-:EXPORT_DATE: <2024-04-21 Sun>
-:END:
+## 如何 nix-darwin 環境下更新 nix 版本 <span class="tag"><span class="nix">nix</span></span> {#how-to-upgrade-nix-package-mananger-when-using-nix-darwin}
 
-** TL;DR
-簡單說因為是用 =nix-darwin= 來管理，所以就算照著[[https://nixos.org/manual/nix/stable/installation/upgrading][官方文件]]做升級是會有問題的。 雖然沒用過 =nixos= ，不過我想在 =nixos= 上也有相同的問題。比較正確的做法是把在 =configuratino.nix= 中將 =nix.package= 指向對的版本，
 
-#+begin_src nix
-  # configuration.nix
-  nix = {
-    pacakge = pkgs.nixVersions.nix_2_21; # 指定版本
-    # skip
-  }
-#+end_src
+### TL;DR {#tl-dr}
 
-** 前言
-在使用 =nix= 的情況下有個一直未解的問題，就是要如何升級 =nix= 版本，比如說安裝的時候是 =2.18.3= ，隔一陣子官網上說已經更新到 =2.21.1= ，不確定是因為太簡單還是怎麼樣，網路上完全找不到該怎麼做。
+簡單說因為是用 `nix-darwin` 來管理，所以就算照著[官方文件](https://nixos.org/manual/nix/stable/installation/upgrading)做升級是會有問題的。 雖然沒用過 `nixos` ，不過我想在 `nixos` 上也有相同的問題。比較正確的做法是把在 `configuratino.nix` 中將 `nix.package` 指向對的版本，
 
-** 第一次嘗試：使用官方文件
+```nix
+# configuration.nix
+nix = {
+  pacakge = pkgs.nixVersions.nix_2_21; # 指定版本
+  # skip
+}
+```
 
-如果就基本關鍵字查詢，大概會先看到的是官方文件，如果按照官方文件上面更新之後，會遇到的問題是用 =nix doctor= 時，他會跳個警告說現在有多個版本
 
-#+begin_src shell
-  [FAIL] Multiple versions of nix found in PATH:
-  /nix/store/{某版號}/bin
-  /nix/store/{另外版號}/bin
-#+end_src
+### 前言 {#前言}
+
+在使用 `nix` 的情況下有個一直未解的問題，就是要如何升級 `nix` 版本，比如說安裝的時候是 `2.18.3` ，隔一陣子官網上說已經更新到 `2.21.1` ，不確定是因為太簡單還是怎麼樣，網路上完全找不到該怎麼做。
+
+
+### 第一次嘗試：使用官方文件 {#第一次嘗試-使用官方文件}
+
+如果就基本關鍵字查詢，大概會先看到的是官方文件，如果按照官方文件上面更新之後，會遇到的問題是用 `nix doctor` 時，他會跳個警告說現在有多個版本
+
+```shell
+[FAIL] Multiple versions of nix found in PATH:
+/nix/store/{某版號}/bin
+/nix/store/{另外版號}/bin
+```
 
 雖然放著好像還好，不過如果覺得很礙眼想要修正的話。就要知道為什麼會有兩個，會有兩個的原因通常是一個是系統用的，一個是使用者自己的。
 檢查的方式是比較兩個指令：
-#+begin_src shell
-  nix-env --version
-  # 基本上如果已經用 nix-darwin 做管理，這個不該有東西。
-#+end_src
 
-#+begin_src shell
-  sudo nix-env --version
-  # 這邊應該會出現某個版號的 nix
-#+end_src
+```shell
+nix-env --version
+# 基本上如果已經用 nix-darwin 做管理，這個不該有東西。
+```
+
+```shell
+sudo nix-env --version
+# 這邊應該會出現某個版號的 nix
+```
 
 要修正的話，把系統用的移除就好了。不過基本上就是回到原點。
 
-#+begin_src shell
-  sudo nix-env -e nix
-#+end_src
+```shell
+sudo nix-env -e nix
+```
 
-網路上多說多版本的狀況還行，因為 =nix= 會按照優先序來執行。不過如果拖很久的會遇到另外一個 portocol 的問題。
+網路上多說多版本的狀況還行，因為 `nix` 會按照優先序來執行。不過如果拖很久的會遇到另外一個 portocol 的問題。
 
-#+begin_src shell
-  [FAIL] Warning: protocol version of this client does not match the store.
-  While this is not necessarily a problem it's recommended to keep the client in
-  sync with the daemon.
+```shell
+[FAIL] Warning: protocol version of this client does not match the store.
+While this is not necessarily a problem it's recommended to keep the client in
+sync with the daemon.
 
-  Client protocol: {某版號}
-  Store protocol: {另外一個版號}
-#+end_src
+Client protocol: {某版號}
+Store protocol: {另外一個版號}
+```
 
 原因是在 macOS 中， nix 是用 daemon 的方式執行，所以就算更新使用者的 nix，只要 daemon 的版本沒有更新，就可能會出現版本對不上的情形。 順帶一提，要看目前執行的 daemon 的版號的話指令是
 
-#+begin_src shell
-  nix store ping # 舊版
-  nix store info # 新版
-#+end_src
+```shell
+nix store ping # 舊版
+nix store info # 新版
+```
 
 另外是作者有提供大概這樣的 snippet，千萬別無腦亂套，一用下去連 nix 的 PATH 都不見了，費了好大的力氣才弄回來。
-#+begin_src nix
-  {
-    environment.profiles = mkForce [];
-  }
-#+end_src
 
-** 第二種嘗試：透過 nix-darwin 在使用者安裝新版 nix
+```nix
+{
+  environment.profiles = mkForce [];
+}
+```
 
-對 =nix= 來說 =nix= 也是其中一個 package，在 [[https://search.nixos.org/packages?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=nix][nixos 搜尋結果]] 就可以看到有提供很多版本像 =nixVersions.nix_2_21= 這樣。所以在使用者加入總行了吧。
 
-#+begin_src nix
-  # configuration.nix
-  home-manager.users.jack = {pkgs, ...}: {
-    home.stateVersion = "23.11";
-    home.packages = with pkgs; [
-      nixVersions.nix_2_21 # 直接在使用者 package 中指定
-      coreutils
-      emacs-unstable-pgtk
-    ];
-    # skip
-  }
-#+end_src
+### 第二種嘗試：透過 nix-darwin 在使用者安裝新版 nix {#第二種嘗試-透過-nix-darwin-在使用者安裝新版-nix}
+
+對 `nix` 來說 `nix` 也是其中一個 package，在 [nixos 搜尋結果](https://search.nixos.org/packages?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=nix) 就可以看到有提供很多版本像 `nixVersions.nix_2_21` 這樣。所以在使用者加入總行了吧。
+
+```nix
+# configuration.nix
+home-manager.users.jack = {pkgs, ...}: {
+  home.stateVersion = "23.11";
+  home.packages = with pkgs; [
+    nixVersions.nix_2_21 # 直接在使用者 package 中指定
+    coreutils
+    emacs-unstable-pgtk
+  ];
+  # skip
+}
+```
 
 當然這作法跟結果第一種做法一樣，只是反過來而已。
 
-** 第三種嘗試：透過 nix-darwin 在系統安裝新版 nix
 
-既然 daemon 是由 nix-darwin 中透過 =service.nix-daemon.enable= 設定，那就在系統中安裝。
+### 第三種嘗試：透過 nix-darwin 在系統安裝新版 nix {#第三種嘗試-透過-nix-darwin-在系統安裝新版-nix}
 
-#+begin_src nix
-  environment.systemPackages = with pkgs; [
-    nixVersions.nix_2_21
-  ];
-#+end_src
+既然 daemon 是由 nix-darwin 中透過 `service.nix-daemon.enable` 設定，那就在系統中安裝。
+
+```nix
+environment.systemPackages = with pkgs; [
+  nixVersions.nix_2_21
+];
+```
 
 這個的結果是會 package 在建立的過程中會衝突，因為我同時指定要在同一層使用不同版本的 nix。
 
-** 第四種嘗試：自己控制版本
 
-既然知道 =service.nix-daemon.enable= 是由 nix-darwin 來控制，那就自己來控制吧。把 =service.nix-daemon.enable= 改成 =false= 之後會失敗，因為 =nix-darwin= 會偵測到， macOS 只能用 daemon 來管理，關閉沒設定是會出事的。 如果要自己管理，那還要把 =nix.useDaemon= 打開。想當然一沒弄好當然是整個 daemon 就不見了。因為沒了 daemon 所以就整個卡死了。
-解決的方式是自己起 =nix-daemon= ，這邊要注意的是要用 sudo 而且還要解除 macOS 對 fork 的限制。然後把系統還原。
+### 第四種嘗試：自己控制版本 {#第四種嘗試-自己控制版本}
 
-#+begin_src shell
-  sudo OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES nix-daemon
-#+end_src
+既然知道 `service.nix-daemon.enable` 是由 nix-darwin 來控制，那就自己來控制吧。把 `service.nix-daemon.enable` 改成 `false` 之後會失敗，因為 `nix-darwin` 會偵測到， macOS 只能用 daemon 來管理，關閉沒設定是會出事的。 如果要自己管理，那還要把 `nix.useDaemon` 打開。想當然一沒弄好當然是整個 daemon 就不見了。因為沒了 daemon 所以就整個卡死了。
+解決的方式是自己起 `nix-daemon` ，這邊要注意的是要用 sudo 而且還要解除 macOS 對 fork 的限制。然後把系統還原。
 
-** 第五種嘗試：看 source code
-
-在 [[https://daiderd.com/nix-darwin/manual/index.html#opt-services.nix-daemon.enable][nix-darwin 文件]] 有連結到 source code 連結。算是 nix 文件的好處跟壞處吧。好處是有 source code，壞處是因為有 source code 所以文件稀缺必須要看 source code。
-
-其中有 [[https://github.com/LnL7/nix-darwin/blob/9e7c20ffd056e406ddd0276ee9d89f09c5e5f4ed/modules/services/nix-daemon.nix#L49][這一段]] 大概是去 launchd 中增加這一段，對照 =/Library/LaunchDaemons/org.nixos.nix-daemon.plist= 中的內容是差不多的。 這邊發現他是去抓 =config.nix.package= 對比就是抓 =nix.package= 指定的 package。
-
-文件指出 =nix.package= 的預設值是 =pkgs.nix= ，這邊就改成指定的版本試試。原來這邊寫 =pkgs.nixFlakes= 應該是不知道從哪邊抄來的，現在也沒這個套件了。
-
-#+begin_src nix
-  # configuration.nix
-  nix = {
-    pacakge = pkgs.nixVersions.nix_2_21; # 指定版本
-    # skip
-  }
-#+end_src
-
-=darwin-rebuild= 的訊息看起來也很正確，重新建立了新的 launchd daemon。檢查一下看來是正確的
-
-** 心得
-
-光是升級就弄懷疑人生。nix 目前還沒有達到完全抽象的高度，導致要用除了要熟系統本身的基本架構之外還要在額外疊一層 nix 的抽象，更別提要在 nix 之上在加 nix-darwin(nixos) 和 home-manager。跟 homebrew 來說使用者友善度還有很長一段路要走。 而這段期間也開始有底層掛 nix 的開發環境工具慢慢出現。 像 [[https://flox.dev][flox]] 就是其中之一。某些層度上也算接近自己理想的介面。可以用比較傳統的方式把環境拉出來之後在儲存，而不用去寫 nix。
-
-當然 nix 好處就是這篇文章使用的 hugo 依然是直接用 nix-shell 跑出來的，很方便。搭配 =direnv= 還可以達到進專案進出資料夾自動 load/unload。 完全不會污染整個系統。
-
-** reference
-https://discourse.nixos.org/t/fail-multiple-versions-of-nix-found-in-path/19890/5
-https://github.com/LnL7/nix-darwin/issues/655#issuecomment-1551771624
-https://daiderd.com/nix-darwin/manual/index.html
+```shell
+sudo OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES nix-daemon
+```
 
 
-* 202307 部落格更新                                  :misc:hexo:hugo:orgmode:
-:PROPERTIES:
-:EXPORT_FILE_NAME: blog-update-2023-07
-:EXPORT_DATE: <2023-07-03 Mon>
-:END:
+### 第五種嘗試：看 source code {#第五種嘗試-看-source-code}
+
+在 [nix-darwin 文件](https://daiderd.com/nix-darwin/manual/index.html#opt-services.nix-daemon.enable) 有連結到 source code 連結。算是 nix 文件的好處跟壞處吧。好處是有 source code，壞處是因為有 source code 所以文件稀缺必須要看 source code。
+
+其中有 [這一段](https://github.com/LnL7/nix-darwin/blob/9e7c20ffd056e406ddd0276ee9d89f09c5e5f4ed/modules/services/nix-daemon.nix#L49) 大概是去 launchd 中增加這一段，對照 `/Library/LaunchDaemons/org.nixos.nix-daemon.plist` 中的內容是差不多的。 這邊發現他是去抓 `config.nix.package` 對比就是抓 `nix.package` 指定的 package。
+
+文件指出 `nix.package` 的預設值是 `pkgs.nix` ，這邊就改成指定的版本試試。原來這邊寫 `pkgs.nixFlakes` 應該是不知道從哪邊抄來的，現在也沒這個套件了。
+
+```nix
+# configuration.nix
+nix = {
+  pacakge = pkgs.nixVersions.nix_2_21; # 指定版本
+  # skip
+}
+```
+
+`darwin-rebuild` 的訊息看起來也很正確，重新建立了新的 launchd daemon。檢查一下看來是正確的
+
+
+### 心得 {#心得}
+
+光是升級就弄懷疑人生。nix 目前還沒有達到完全抽象的高度，導致要用除了要熟系統本身的基本架構之外還要在額外疊一層 nix 的抽象，更別提要在 nix 之上在加 nix-darwin(nixos) 和 home-manager。跟 homebrew 來說使用者友善度還有很長一段路要走。 而這段期間也開始有底層掛 nix 的開發環境工具慢慢出現。 像 [flox](https://flox.dev) 就是其中之一。某些層度上也算接近自己理想的介面。可以用比較傳統的方式把環境拉出來之後在儲存，而不用去寫 nix。
+
+當然 nix 好處就是這篇文章使用的 hugo 依然是直接用 nix-shell 跑出來的，很方便。搭配 `direnv` 還可以達到進專案進出資料夾自動 load/unload。 完全不會污染整個系統。
+
+
+### reference {#reference}
+
+<https://discourse.nixos.org/t/fail-multiple-versions-of-nix-found-in-path/19890/5>
+<https://github.com/LnL7/nix-darwin/issues/655#issuecomment-1551771624>
+<https://daiderd.com/nix-darwin/manual/index.html>
+
+
+## 202307 部落格更新 <span class="tag"><span class="misc">misc</span><span class="hexo">hexo</span><span class="hugo">hugo</span><span class="orgmode">orgmode</span></span> {#blog-update-2023-07}
 
 近期以來有個目標是希望可以將事情盡量都在 emacs 中執行。將原來部落格寫作的方式搬進 org mode 可以說是其中一步。雖然按照現況使用 markdown 也沒什麼問題，不過也趁著這個機會來試看看 emacs 的 killer feature。
 
-既然要改用 org mode 來管理部落格，就順勢把現在在用的 =hexo= 轉成可以支援 org 的 =hugo= ，過去雖然幾度想轉移。不過最後都因為懶惰而作罷。
+既然要改用 org mode 來管理部落格，就順勢把現在在用的 `hexo` 轉成可以支援 org 的 `hugo` ，過去雖然幾度想轉移。不過最後都因為懶惰而作罷。
 
 雖然 hugo 已經原生支援 org， 不過在部落格系統部分，以 org mode 來說又分成兩派，一派是跟 markdown 一樣一篇一個檔案，另外一派則是使用一個 org 檔案來管理全部部落格的文章。這邊是想要嘗試看看用單檔管理全部文章的機制。不過在匯出的部分會需要另外處理。好在這邊有個套件 ox-hugo 可以來幫忙做這件事情。這也算是決定轉 hugo 的其中一個原因。
 
@@ -254,27 +227,23 @@ https://daiderd.com/nix-darwin/manual/index.html
 
 轉移到 hugo 的過程中也照著教學套了一下新的 github action，算是額外的收穫吧。不過比起讓 github action 跑，我個人是比較喜歡舊的透過 hexo deploy 直接從本機產生靜態文件並推到 github 上，單純許多。
 
-- [[https://endlessparentheses.com/how-i-blog-one-year-of-posts-in-a-single-org-file.html][How I blog: One year of posts in a single org file]] 如果想知道單一檔案的好處這邊有提到一點
-- [[https://ox-hugo.scripter.co/doc/why-ox-hugo/][Why ox-hugo?]] 使用 ox-hugo 的好處官網自己有解釋一番
+-   [How I blog: One year of posts in a single org file](https://endlessparentheses.com/how-i-blog-one-year-of-posts-in-a-single-org-file.html) 如果想知道單一檔案的好處這邊有提到一點
+-   [Why ox-hugo?](https://ox-hugo.scripter.co/doc/why-ox-hugo/) 使用 ox-hugo 的好處官網自己有解釋一番
 
 
-* How to fix nix "Problem with the SSL CA cert" on macOS   :nix:emacs:eshell:
-:PROPERTIES:
-:EXPORT_FILE_NAME: how-to-fix-problem-with-the-ssl-ca-cert-on-macos
-:EXPORT_DATE: <2023-05-26 07:59:06>
-:END:
+## How to fix nix "Problem with the SSL CA cert" on macOS <span class="tag"><span class="nix">nix</span><span class="emacs">emacs</span><span class="eshell">eshell</span></span> {#how-to-fix-problem-with-the-ssl-ca-cert-on-macos}
 
 When using nix operations inside emacs sometime it will show this warning during install packages.
 
-#+begin_src shell
+```shell
 warning: error: unable to download '{SOME_URL}': Problem with the SSL CA cert (path? access rights?) (77); using cached version
-#+end_src
+```
 
-This warning occur because emacs gui on macOS use system defaut environment variable instead of shell environment variable. Most people on macOS use =exec-path-from-shell= to fix the path problem. Luckly =exec-path-from-shell= provide a variable call =exec-path-from-shell-variables= to import any other environment variables other than =PATH=.
+This warning occur because emacs gui on macOS use system defaut environment variable instead of shell environment variable. Most people on macOS use `exec-path-from-shell` to fix the path problem. Luckly `exec-path-from-shell` provide a variable call `exec-path-from-shell-variables` to import any other environment variables other than `PATH`.
 
-So we can import =NIX_PROFILES= and =NIX_SSL_CERT_FILE= like below to solve the issue.
+So we can import `NIX_PROFILES` and `NIX_SSL_CERT_FILE` like below to solve the issue.
 
-#+begin_src emacs-lisp
+```emacs-lisp
 (use-package exec-path-from-shell
   :ensure t
   :config
@@ -282,40 +251,39 @@ So we can import =NIX_PROFILES= and =NIX_SSL_CERT_FILE= like below to solve the 
     (add-to-list 'exec-path-from-shell-variables var))
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
-#+end_src
+```
 
 
-* 修正 macos emacs term 顯示 unicode 錯誤問題      :terminal:emacs:nix:linux:
-:PROPERTIES:
-:EXPORT_FILE_NAME: fix-emacs-term-utf-rendering
-:EXPORT_DATE: <2023-05-24 07:30:58>
-:END:
+## 修正 macos emacs term 顯示 unicode 錯誤問題 <span class="tag"><span class="terminal">terminal</span><span class="emacs">emacs</span><span class="nix">nix</span><span class="linux">linux</span></span> {#fix-emacs-term-utf-rendering}
+
 最近遇到的一個奇怪的問題
 
-在 emacs 中無論是透過 eshell 或 ansi-term 在呼叫 nix --help 時，都會有顯示 <C2><B7> (這是 unicode 的 middle dot) 的狀況。以為是 eshell 或 ansi-term 的問題，畢竟 emacs 對於 shell 或是 terminal emulator 的支援並不完美，一直以來都這樣認為。直到最近有點看不下去就想說來瞭解看看是哪裡有問題。
+在 emacs 中無論是透過 eshell 或 ansi-term 在呼叫 nix --help 時，都會有顯示 &lt;C2&gt;&lt;B7&gt; (這是 unicode 的 middle dot) 的狀況。以為是 eshell 或 ansi-term 的問題，畢竟 emacs 對於 shell 或是 terminal emulator 的支援並不完美，一直以來都這樣認為。直到最近有點看不下去就想說來瞭解看看是哪裡有問題。
 
-[[/images/emacs-render-incorrect.png]]
+{{< figure src="/images/emacs-render-incorrect.png" >}}
 
 第一個直覺比較像是可能跟版本有關係，由於自己本身是使用 homebrew 安裝的 emacs-plus，就想說是不是裝其他編譯的版本看看是不是能解決。於是用 nix shell 安裝了 nix 上直接從 git head 編譯出來的版本。跑起來發現似乎沒有問題。於是很開心的想說試試看。結果從 emacs.app 中開啟就又有一樣的問題。
 
 這樣一來就開始交叉測試，發現原來的 emacs-plus 只要從 terminal 中啟動就能正常顯示。而透過 emacs.app 開啟就會有顯示問題。這就怪了，不過 emacs.app 雖然對 macos 來說是應用程式，其實他只是個資料夾。下個測試就是從 terminal 中直接打開 emacs.app 中的 emacs，結果是沒有問題。 有這麼神奇從 terminal 中啟動沒問題但是從 emacs.app 中打開就有問題。於是開始交叉比較用 emacs.app 跟 emacs 啟動的設定有沒有不同。
 
-在 emacs wiki 中有一小節 =Encoding for Terminal.app on OS X= 不過照著做並沒有解決問題。而 emacs 有提供 =describe-coding-system= ，兩邊都是 utf-8。
+在 emacs wiki 中有一小節 `Encoding for Terminal.app on OS X` 不過照著做並沒有解決問題。而 emacs 有提供 `describe-coding-system` ，兩邊都是 utf-8。
 
 難道是 emacs.app 就沒辦法正確顯示 middle dot 嗎？於是直接從正常顯示的 emacs 直接複製字元然後貼到不正常顯示的 emacs.app 中，結果是 emacs.app 可以正常顯示 middle dot。不過這樣就更奇怪了。
 
-查到最後偶然看到有人透過修改 =LC_ALL= 來修正顯示問題。於是就用 ~locale~ 來確認看看。果不其然兩邊的結果不太一樣。 terminal 中的 =LC_CTYPE= 是 =UTF-8= 而 emacs.app 中則是 =C= 。在 emacs.app 的 ansi-term 中執行 ~export LC_CTYPE="UTF-8"~ 修改變數後就正常了。
+查到最後偶然看到有人透過修改 `LC_ALL` 來修正顯示問題。於是就用 `locale` 來確認看看。果不其然兩邊的結果不太一樣。 terminal 中的 `LC_CTYPE` 是 `UTF-8` 而 emacs.app 中則是 `C` 。在 emacs.app 的 ansi-term 中執行 `export LC_CTYPE="UTF-8"` 修改變數後就正常了。
 
-[[/images/emacs-render-correct.png]]
+{{< figure src="/images/emacs-render-correct.png" >}}
 
 知道問題在哪裡之後就好處理了。
-首先在 =.zshrc= 中加入
-#+begin_src shell
-export CTYPE=en_US.UTF-8
-#+end_src
+首先在 `.zshrc` 中加入
 
-接下來透過 =exec-path-from-shell= 把 =LC_CTYPE= 環境變數餵進去，package 本身有提供 ~exec-path-from-shell-variables~ 來匯入，這邊主要是要解決 eshell 的情況。 因為 eshell 不是 zsh，所以要另外處理。下面是一種範例。
-#+begin_src emacs-lisp
+```shell
+export CTYPE=en_US.UTF-8
+```
+
+接下來透過 `exec-path-from-shell` 把 `LC_CTYPE` 環境變數餵進去，package 本身有提供 `exec-path-from-shell-variables` 來匯入，這邊主要是要解決 eshell 的情況。 因為 eshell 不是 zsh，所以要另外處理。下面是一種範例。
+
+```emacs-lisp
 (use-package exec-path-from-shell
   :ensure t
   :config
@@ -323,82 +291,77 @@ export CTYPE=en_US.UTF-8
     (add-to-list 'exec-path-from-shell-variables var))
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
-#+end_src
+```
 
 看來是太久沒有用 linux 了，也許網路上資料很少是因為 LC 通常在 linux 都會設定。
 
-至於 terminal.app 就算 =.zshrc= 沒有設定也吃得到的原因則是在 terminal.app 有個 =Set locale environment variables on startup= 是打勾的。
+至於 terminal.app 就算 `.zshrc` 沒有設定也吃得到的原因則是在 terminal.app 有個 `Set locale environment variables on startup` 是打勾的。
 
 
-* 元宇宙辦公有搞頭嗎？ VR 虛擬桌面軟體比較                        :quest2:vr:
-:PROPERTIES:
-:EXPORT_FILE_NAME: vr-workspace-comparison
-:EXPORT_DATE: <2023-02-18>
-:END:
+## 元宇宙辦公有搞頭嗎？ VR 虛擬桌面軟體比較 <span class="tag"><span class="quest2">quest2</span><span class="vr">vr</span></span> {#vr-workspace-comparison}
 
 接觸 VR 一段時間後，以為最常用的軟體應該都是遊戲類。結果竟然都是虛擬辦公軟體。這邊就以自己嘗試軟體的經驗分享一下體驗心得。
 
 這邊體驗的部分是以 quest2 + macOS 為主，環境是 wifi 5Ghz 頻段。
 
-** Meta Horizon Workrooms
+
+### Meta Horizon Workrooms {#meta-horizon-workrooms}
 
 這款主要是 meta 推出的虛擬會議室軟體，不過近期也加入了個人辦公室的功能。
 螢幕最多可以支援三個，螢幕大小跟解析度都不能調整，而且必須要有設定桌面才能使用。以使用上來說並不會覺得很難使用，螢幕文字上來說看起來也還可以。
 以優點上來說，雖然目前支援的場景不多，但是完整度高的，風格也符合 meta 元宇宙，而且也整合虛擬人物的程度比較高。跟其他軟體比起來更有元宇宙的感覺。畢竟是 meta 本家的產品。
 
-** Immersed VR
+
+### Immersed VR {#immersed-vr}
 
 以純辦公角度來看這是是目前支援最齊全的，原本要付月費，不過近期也改成免費了。付費的部分也從原本訂閱制改為買斷制。
 基本免費就有三個螢幕可以用，付費之後最多可以開到五個，螢幕大小解析度跟位置也能自行調整。如果 wifi 不是很穩定還支援 wifi direct 讓延遲降到最低。不過以 macos 來說要使用 wifi direct 只能透過 mac 分享網路給 quest 2 使用。
 Immersed VR 另外的特色就是公共的辦公空間，有機會的話可能會遇到其他人，不過自己本身並沒有遇到人就是了。
 空間場景雖然數量多，但品質普普。跟其他軟體比起來真的是為生產力打造。
 
-** Virtual Desktop
+
+### Virtual Desktop {#virtual-desktop}
 
 這款比較偏遊戲向。不過既然也支援的螢幕投射功能就來嘗試看看。
 螢幕只支援一個，而且是強烈建議使用至少電腦要用有線網路。自己使用無線網路的部分延遲跟其他軟體比起來算高，而且算已經是影響體驗的程度。
 以場景來說品質是最高的，同時支援像 Immersed VR 的漂浮螢幕跟 Workrooms 的固定螢幕。以娛樂角度來說還支援像是電影院等等的場景。想起以前看到有人跑去電影院用電影院投影遊戲。現在透過 VR 就能有一樣的體驗。
 
-** 結論
+
+### 結論 {#結論}
 
 基本上 Workrooms 跟 Immersed VR 都免費，所以都可以嘗試看看，在挑選自己喜歡的。至於 Virtual Desktop 就比較偏娛樂，如果只有無線網路可能就沒有這麼推薦，畢竟是付費軟體。
 
-** 心得
+
+### 心得 {#心得}
 
 元宇宙辦公這件事情在網路上往往都是兩極評價，個人比較偏向如果把眼鏡調教好就不至於太糟糕，會體驗很糟糕大部分應該是眼鏡沒有調好，至於要調教好的門檻還是比螢幕裝好還要來得高。
 以目前 Quest 2 的解析度還稍嫌不足。但我想未來眼鏡的解析度越來高，跟當年視網膜螢幕一樣突破眼睛的精細度之後，就能達到電腦螢幕一輩子都達不到的境界，不再需要花買一堆高階螢幕，也不用擔心沒地方擺，還要弄一堆螢幕手臂，只要眼鏡戴上要幾個螢幕就有幾個螢幕，螢幕要多大就有多大，而且完全不佔空間，唯一的缺點可能就只剩不能拍水水照分享了。至少以自己來說，對於新螢幕這件事情已經不感興趣了。
 
 
-* 如何重設 launchpad                                        :macos:launchpad:
-:PROPERTIES:
-:EXPORT_FILE_NAME: how-to-reset-launchpad-on-macos
-:EXPORT_DATE: <2023-02-12>
-:END:
+## 如何重設 launchpad <span class="tag"><span class="macos">macos</span><span class="launchpad">launchpad</span></span> {#how-to-reset-launchpad-on-macos}
 
-因為最近用 nix 在嘗試東西，刪刪改改之後發現 launchpad 的連結壞了，導致就算把 =/Applications= 或 =~/Applications= 中的程式移除後 launchpad 還會看到那個檔案。這邊記錄一下要怎麼重設 launchpad。
+因為最近用 nix 在嘗試東西，刪刪改改之後發現 launchpad 的連結壞了，導致就算把 `/Applications` 或 `~/Applications` 中的程式移除後 launchpad 還會看到那個檔案。這邊記錄一下要怎麼重設 launchpad。
 
-舊版的教學會說 launchpad 的 db 位置在 =~/Library/Application\ Support/Dock= 。
+舊版的教學會說 launchpad 的 db 位置在 `~/Library/Application\ Support/Dock` 。
 
 不過在 macOS Sierra 之後已經被移到其他地方，原來的位置只剩下 picture.db。
 
-而新的位置在 =/private/var/folders= 下，如果打開來會看到裡面有被編碼的資料夾檔名，這邊可以透過 =getconf DARWIN_USER_DIR= 這個指令去查使用者的資料夾的路徑，執行的結果應該會是 =/var/folders/...= (雖然這邊是 =/var= 不過實際上是 =/private/var=)。知道之後就可以直接去資料夾下面的 =com.apple.dock.launchpad= 中把 db 檔案刪除。
+而新的位置在 `/private/var/folders` 下，如果打開來會看到裡面有被編碼的資料夾檔名，這邊可以透過 `getconf DARWIN_USER_DIR` 這個指令去查使用者的資料夾的路徑，執行的結果應該會是 `/var/folders/...` (雖然這邊是 `/var` 不過實際上是 `/private/var`)。知道之後就可以直接去資料夾下面的 `com.apple.dock.launchpad` 中把 db 檔案刪除。
 
-或是直接 ~cd $(getconf DARWIN_USER_DIR)com.apple.dock.launchpad/db~ 到資料夾內刪除，刪完後用指令 ~killall Dock~ 重開 Dock
+或是直接 `cd $(getconf DARWIN_USER_DIR)com.apple.dock.launchpad/db` 到資料夾內刪除，刪完後用指令 `killall Dock` 重開 Dock
 
 若是大膽也可以直接執行刪除並重啟指令
-#+begin_src shell
+
+```shell
 rm $(getconf DARWIN_USER_DIR)com.apple.dock.launchpad/db/*;killall Dock
-#+end_src
+```
+
 執行後重新開機應該就沒問題了。
 
 註：db 檔案實際上是 sqlite，所以有興趣也可以用 sqlite viewer 之類的程式直接開起來看看內容。檔案實際存放位置也會在裡面。
 
 
-* 為何選擇 Quest 2                                                :vr:quest2:
-:PROPERTIES:
-:EXPORT_FILE_NAME: why-i-choose-quest2
-:EXPORT_DATE: <2023-02-03>
-:END:
+## 為何選擇 Quest 2 <span class="tag"><span class="vr">vr</span><span class="quest2">quest2</span></span> {#why-i-choose-quest2}
 
 跟以往不同，現今已經在市面上已經有許多 VR 產品可以選擇。以下就簡單記錄一下為什麼在很多新產品中還選擇已經上市很久的 quest2。
 
@@ -415,90 +378,85 @@ PSVR2 也曾是考慮的選項，雖然說組電腦不在考慮之中，但我�
 以上大概就是為什麼在 2022 有這麼多當季產品的時候還會選擇一個已經推出兩年，甚至近年來才加價不加量的 Quest 2。
 
 
-* VR 流水帳                                                       :quest2:vr:
-:PROPERTIES:
-:EXPORT_FILE_NAME: how-i-get-into-vr
-:EXPORT_DATE: <2023-01-25>
-:END:
+## VR 流水帳 <span class="tag"><span class="quest2">quest2</span><span class="vr">vr</span></span> {#how-i-get-into-vr}
 
-** 早期的第一印象
+
+### 早期的第一印象 {#早期的第一印象}
+
 一直一來因為 VR 的高門檻所以自己雖然想要嘗試但卻一直沒有，畢竟不是人人都有這樣的經濟去買一台高級電腦，還要再另外買一台高級眼鏡，更別說是要清理出一塊空間專門給設備使用。所以一直以來都是覺得虛擬實境是屬於給洋人玩的。
 
-** 低階玩具
+
+### 低階玩具 {#低階玩具}
 
 直到後來 google 推出 cardboard 才自己弄來玩玩，不過那也只是一般玩具的體驗。當時還很期待之後要推出的 daydream，畢竟 cardboard 只有眼鏡，所以只能算半個 VR，不過後來被取消了。
 
-** VR 海盜船暈到退坑
+
+### VR 海盜船暈到退坑 {#vr-海盜船暈到退坑}
 
 第一次認真接觸ＶＲ的體驗非常不佳，那是在遊樂場設施提供的ＶＲ，因為算是做半套的ＶＲ所以動暈症非常的嚴重，原本以為對 3d 遊戲適應很良的自己暈到不行，自此之後對ＶＲ更是敬而遠之。就像是早期3D遊戲一樣還滿看每個人感受，有些人會暈有些人不會，那會暈的人知道狀況就會勁量避免。這次的機會讓原本還在觀望的我完全放棄這個機會，畢竟知道自己是一個會暈的人。
 
-** 短暫的 HTC VIVE 體驗
+
+### 短暫的 HTC VIVE 體驗 {#短暫的-htc-vive-體驗}
 
 再次接觸ＶＲ是隔了很多年。在工作上偶然有機會嘗試 HTC VIVE，用高級配備和高級眼鏡效果完全不一樣，不過礙於時間跟場地大小不足其實就只有短暫的體驗。在嘗試短短的幾分鐘的經驗讓我知道虛擬實境所說的沈浸感到底在說些什麼。基本上就是只要一戴上眼鏡真的有脫離現實的感覺。
 
-** 體驗 VR 的頂點
+
+### 體驗 VR 的頂點 {#體驗-vr-的頂點}
 
 雖然有一次的經驗，不過沒有勾起對ＶＲ的興趣，一直保留在一個會想要嘗試但如果沒機會也沒關係的狀態，反而是對ＡＲ更有興趣了一點。直到後來有算是有機會跟朋友認真的嘗試。儘管過去的動暈症的陰影還在，某種程度算是抱持著「好吧，就給ＶＲ最後一次機會，如果還是暈到炸那我就完全放棄。」一方面也是如果因為過去二流的設備體驗很差就放棄ＶＲ那我覺得有失公允。那就體驗一次所謂ＶＲ的頂端再來決定是不是要繼續參與。所以算是圓了一個想做的事情跑去VR體驗館認真的花了一筆錢做所謂的體驗。
 
 事實上那次的體驗算是很成功。這次體驗讓我開始相信就算元宇宙泡泡破了，ＶＲ也會有他的用途跟市場。所以決定是要不就是入手 PSVR2 或是下一款 Quest。當然就等到 Quest Pro 發表所謂美金 1499之後就完全放棄，想說繼續等 PSVR2 或 Quest 3。
 
-** 新冠肺炎
+
+### 新冠肺炎 {#新冠肺炎}
 
 時間一轉到了得了新冠肺炎直接被隔離的時候，畢竟還是活生生的人關久了還是會想要出門。這時候才又想起ＶＲ的好。至少人在家裡還能遠距離多少體驗一下在海邊沙灘的感覺。
 
-** 入手 Meta Quest 2
+
+### 入手 Meta Quest 2 {#入手-meta-quest-2}
 
 後來越想越起勁，上網做了一番研究，最後在等不到 Quest 3 的情況下直接買了 Meta Quest 2 了。至於自己偽什麼選擇 Quest 2 而不是其他眼鏡就下一篇來慢慢敘述。
 
 
+## nix 初探 <span class="tag"><span class="nix">nix</span></span> {#nix-first-impression}
 
-* nix 初探                                                              :nix:
-:PROPERTIES:
-:EXPORT_FILE_NAME: nix-first-impression
-:EXPORT_DATE: <2023-01-22>
-:END:
+最近一直在關注 `nix` ，在旁邊看了很長一段時間最後才決定嘗試看看，考慮的點在於已經很習慣用 `homebrew` 上的 `emacs-plus` ，不過看到連 `emacs-plus` 的作者都有 `nix` 的設定了那就可以直接 go 了。這邊就簡單流水帳一下一些想法。
 
-最近一直在關注 =nix= ，在旁邊看了很長一段時間最後才決定嘗試看看，考慮的點在於已經很習慣用 =homebrew= 上的 =emacs-plus= ，不過看到連 =emacs-plus= 的作者都有 =nix= 的設定了那就可以直接 go 了。這邊就簡單流水帳一下一些想法。
+當初注意到 `nix` 主要是因為看上了可以自由切換環境這個特點。在現今開發環境如此複雜之下，同時安裝一堆執行環境像是 `python` `ruby` 或是 `nodejs=。而在這些工具更新速度很快的情況下，相繼而來的就是會需要類似 =pyenv` `rvm` 和 `nvm` 等的版本管理工具。接下來的發展之下又會產生所謂管理版本管理的工具如 `asdf` 。以個人來說是覺得太麻煩了。
 
-當初注意到 =nix= 主要是因為看上了可以自由切換環境這個特點。在現今開發環境如此複雜之下，同時安裝一堆執行環境像是 =python= =ruby= 或是 =nodejs=。而在這些工具更新速度很快的情況下，相繼而來的就是會需要類似 =pyenv= =rvm= 和 =nvm= 等的版本管理工具。接下來的發展之下又會產生所謂管理版本管理的工具如 =asdf= 。以個人來說是覺得太麻煩了。
+當初以一個 `package manager` 出身的 `nix` 來說，發展到了現在可以說是已經比原來還要複雜太多。目前來說可以說是個人環境上的 `terraform` 也不爲過。
 
-當初以一個 =package manager= 出身的 =nix= 來說，發展到了現在可以說是已經比原來還要複雜太多。目前來說可以說是個人環境上的 =terraform= 也不爲過。
+既然跟 `terraform` 一樣，那其實也有跟 `terraform` 一樣得問題。跟 `terraform` 用 `HCL` 當作編輯的語言一樣， `nix` 也有自己的語言 `nix` ，想當然爾也會遇到一樣的問題，身為 `DSL` 的 `nix` 不太可能跟完全的程式語言一樣，到後來的發展也朝著不斷擴充的方式來逼近一般程式語言，樣子也越來越奇怪。
 
-既然跟 =terraform= 一樣，那其實也有跟 =terraform= 一樣得問題。跟 =terraform= 用 =HCL= 當作編輯的語言一樣， =nix= 也有自己的語言 =nix= ，想當然爾也會遇到一樣的問題，身為 =DSL= 的 =nix= 不太可能跟完全的程式語言一樣，到後來的發展也朝著不斷擴充的方式來逼近一般程式語言，樣子也越來越奇怪。
+也跟 `terraform` 一樣，多了一層抽象並不代表可以不去理解底層，也就是說對於不熟悉原來操作的人來說除了要學會底層在做什麼事情之外還要同時多學習如何用其他的方式表達，但資源上又是比原生的處理方式還要少了一層。甚至還要去了解哪些是這些抽象層的極限哪些不是。如同其他將底層抽象的工具一樣，如果是在設定的範圍內（或是網路上有其他人已經包好的套件）都還算是可以處理，但對於設定範圍外的處理就變得更麻煩。
 
-也跟 =terraform= 一樣，多了一層抽象並不代表可以不去理解底層，也就是說對於不熟悉原來操作的人來說除了要學會底層在做什麼事情之外還要同時多學習如何用其他的方式表達，但資源上又是比原生的處理方式還要少了一層。甚至還要去了解哪些是這些抽象層的極限哪些不是。如同其他將底層抽象的工具一樣，如果是在設定的範圍內（或是網路上有其他人已經包好的套件）都還算是可以處理，但對於設定範圍外的處理就變得更麻煩。
-
-=nix= 常被人詬病地方在上手門檻實在太高，有一部分的原因來自於網路上的文件跟教學實在太破碎，很多時候連參數有什麼都不知道，這點在剛接觸 =terraform= 的時候也苦過一陣子。不過 =nix= 的情況更為破碎。如果網路上一般看就會看到一堆不知道在做什麼的名詞如 =nix= =home-manager= =nix-darwin= =flake= 。
+`nix` 常被人詬病地方在上手門檻實在太高，有一部分的原因來自於網路上的文件跟教學實在太破碎，很多時候連參數有什麼都不知道，這點在剛接觸 `terraform` 的時候也苦過一陣子。不過 `nix` 的情況更為破碎。如果網路上一般看就會看到一堆不知道在做什麼的名詞如 `nix` `home-manager` `nix-darwin` `flake` 。
 
 會說與其看文件自己從頭來，不如直接去抄現成的還要來得快。
 
 以下是一些參考資料
 
-- [[https://xyno.space/post/nix-darwin-introduction]]
+-   <https://xyno.space/post/nix-darwin-introduction>
+
 這篇講解了從 0 開始，針對一些基礎觀念跟專有名詞都有詳盡的解釋。
 
-- [[https://github.com/d12frosted/environment]]
-直接把大神的 config 抄起來，主要是看要怎麼在 =nix= 下控制 =homebrew=
+-   <https://github.com/d12frosted/environment>
+
+直接把大神的 config 抄起來，主要是看要怎麼在 `nix` 下控制 `homebrew`
 
 目前用的還算痛苦，就看看接下來會不會苦盡甘來。
 
-順帶一提，這篇就是用 =nix-shell= 的做法產生。
+順帶一提，這篇就是用 `nix-shell` 的做法產生。
 
-目前的進度放在 [[https://github.com/thejackshih/dotfiles]] 可以參考參考。
+目前的進度放在 <https://github.com/thejackshih/dotfiles> 可以參考參考。
 
 
-* gogs 轉移 gitea - part3：gogs-git hooks                        :gitea:gogs:
-:PROPERTIES:
-:EXPORT_FILE_NAME: how-to-fix-gitea-git-hooks-after-transfer-from-gogs
-:EXPORT_DATE: <2019-07-10>
-:END:
+## gogs 轉移 gitea - part3：gogs-git hooks <span class="tag"><span class="gitea">gitea</span><span class="gogs">gogs</span></span> {#how-to-fix-gitea-git-hooks-after-transfer-from-gogs}
 
-#+begin_quote
-tl;dr: gogs 轉移 gitea 後記得清掉 git hooks.
-#+end_quote
+> tl;dr: gogs 轉移 gitea 後記得清掉 git hooks.
 
 在經過一次資料庫維護之後發現一部分的 repo 變得無法 push。出現了奇怪的錯誤訊息。
-類似 =gogs failed, git pre-receive hook declined= 之類的。
+類似 `gogs failed, git pre-receive hook declined` 之類的。
 
 一開始以為是哪裡出錯，後來才發現明明是用 gitea 怎麼會出現 gogs 的錯誤訊息，不過又覺得 gitea 本來就是從 gogs fork 出來的所以也不疑有他。到後來才發現原來問題還是跟 gogs 有關。
 
@@ -507,11 +465,7 @@ tl;dr: gogs 轉移 gitea 後記得清掉 git hooks.
 gitea 有預設的 git hooks ，所以去相對應的地方將 git hooks 移除就好了。
 
 
-* Single Page Application session-based 驗證 :asp_net_core:mvc_core:javascript:
-:PROPERTIES:
-:EXPORT_FILE_NAME: spa-session-based-authorization-on-mvc-core
-:EXPORT_DATE: <2019-05-09>
-:END:
+## Single Page Application session-based 驗證 <span class="tag"><span class="asp_net_core">asp-net-core</span><span class="mvc_core">mvc-core</span><span class="javascript">javascript</span></span> {#spa-session-based-authorization-on-mvc-core}
 
 基本上談到 SPA 大部分人推崇的會是使用 JWT 做驗證，不過要用 JWT 做驗證要考慮到的事情可多的。是不是值得把原本 session 作的事情拿回來自己做也是需要考慮的。
 後來才發現其實也是可以直接使用原來的 cookie-session 的驗證也是 ok，而且反而簡單很多。
@@ -519,31 +473,34 @@ gitea 有預設的 git hooks ，所以去相對應的地方將 git hooks 移除�
 
 直接參照 M$ 官方網站的教學
 
-在 =startup.cs= 內的 =ConfigureService= 中加入
-#+begin_src csharp
+在 `startup.cs` 內的 `ConfigureService` 中加入
+
+```csharp
 services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options => {
-	options.Cookie.name = "CookieName";
-	options.Cookie.path = "/";
-	options.Events.OnRedirectToLogin = (context) =>
-	{
-	    // 把未登入的自動轉頁複寫掉
-	    context.Response.StatusCode = 401;
-	    return Task.CompletedTask;
-	}
+        options.Cookie.name = "CookieName";
+        options.Cookie.path = "/";
+        options.Events.OnRedirectToLogin = (context) =>
+        {
+            // 把未登入的自動轉頁複寫掉
+            context.Response.StatusCode = 401;
+            return Task.CompletedTask;
+        }
     });
-#+end_src
+```
 
-然後在 =Configure= 中加在 =usespaservice= 上面
+然後在 `Configure` 中加在 `usespaservice` 上面
 
-#+begin_src csharp
+```csharp
 app.UseAuthentication();
-#+end_src
+```
 
 基本上就跟 MVC 平常一樣。
 
-** 登入
-#+begin_src csharp
+
+### 登入 {#登入}
+
+```csharp
 var claims = new List<Claim>
 {
     new Claim(ClaimTypes.Name, user.Email),
@@ -557,45 +514,50 @@ var claimsIdentity = new ClaimsIdentity(
 await HttpContext.SignInAsync(
     CookieAuthenticationDefaults.AuthenticationScheme,
     new ClaimsPrincipal(claimsIdentity));
-#+end_src
+```
 
-** 登出
-#+begin_src csharp
+
+### 登出 {#登出}
+
+```csharp
 await HttpContext.SignOutAsync(
     CookieAuthenticationDefaults.AuthenticationScheme);
-#+end_src
+```
 
-** JS fetch
-#+begin_src javascript
+
+### JS fetch {#js-fetch}
+
+```javascript
 fetch(url, {
   credentials: "same-origin"
 }).then(...);
-#+end_src
-
-** Reference
-[[http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions]]
-[[https://docs.microsoft.com/zh-tw/aspnet/core/security/authentication/cookie]]
-[[https://stackoverflow.com/questions/46247163/net-core-2-0-cookie-authentication-do-not-redirect]]
-[[https://stackoverflow.com/questions/34558264/fetch-api-with-cookie]]
+```
 
 
-* arch linux 筆記 - 安裝篇                                            :linux:
-:PROPERTIES:
-:EXPORT_FILE_NAME: arch-linux-installation-note
-:EXPORT_DATE: <2019-01-23 Wed>
-:END:
+### Reference {#reference}
+
+<http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions>
+<https://docs.microsoft.com/zh-tw/aspnet/core/security/authentication/cookie>
+<https://stackoverflow.com/questions/46247163/net-core-2-0-cookie-authentication-do-not-redirect>
+<https://stackoverflow.com/questions/34558264/fetch-api-with-cookie>
+
+
+## arch linux 筆記 - 安裝篇 <span class="tag"><span class="linux">linux</span></span> {#arch-linux-installation-note}
 
 最近再度挑戰使用 arch linux
 這次感覺比較成功，也慢慢讓系統進步到堪用的狀態，每次挑戰都學了一點東西，現在看起來終於發了芽。
 
-安裝上基本上跟著 [[https://wiki.archlinux.org/index.php/Installation_guide]] 走就好。
+安裝上基本上跟著 <https://wiki.archlinux.org/index.php/Installation_guide> 走就好。
 這裡做個筆記補充一下東西，下次就不用查東查西。
 
-** 無線網路
-這裡是用 =netctl= 這個軟體。還要加上 =wpa_supplicant= 及 =dhcpcd= 這兩個相依。
 
-~/etc/netctl/{profile name}~
-#+begin_src conf
+### 無線網路 {#無線網路}
+
+這裡是用 `netctl` 這個軟體。還要加上 `wpa_supplicant` 及 `dhcpcd` 這兩個相依。
+
+`/etc/netctl/{profile name}`
+
+```cfg
 Description='A simple WPA encrypted wireless connection using 256-bit PSK'
 Interface=wlp2s2
 Connection=wireless
@@ -603,142 +565,159 @@ Security=wpa
 IP=dhcp
 ESSID=your_essid
 Key=\"64cf3ced850ecef39197bb7b7b301fc39437a6aa6c6a599d0534b16af578e04a
-#+end_src
+```
+
 不用被加密過得 key 嚇到，輸入明碼也可以。
-Interface 欄位可以用 ~ip link show~ 來取得
+Interface 欄位可以用 `ip link show` 來取得
 
-之後用 ~netctl start {profile name}~ 連線，現在用 =ping= 指令應該可以ping到東西了。
+之後用 `netctl start {profile name}` 連線，現在用 `ping` 指令應該可以ping到東西了。
 
-** 切硬碟
+
+### 切硬碟 {#切硬碟}
+
 基本上採單一配置（純粹懶），網路上研究一下似乎獨立切 SWAP 效益不太大，用 SWAP file 就好。
 Boot 切大一點比較重要，無論是 BIOS 或是 EFI 都不建議太低。自己是用 UEFI 直接切建議的最大值 512Mib(Mib 跟 MB 不太一樣，但差不多。) 原因在於過去經驗每次更新 kernel 它會把相關檔案放在 boot 下面，之前曾經切的太小導致更新一直失敗之後要定期去清把舊的 kernal 刪除。
-還有 sector 大小（應該 fdisk 會問你）就用 ~fdisk -l~ 給的資訊去設定，如果沒有對齊會在後面的時候跳出警告。所以這邊就先設定好。
+還有 sector 大小（應該 fdisk 會問你）就用 `fdisk -l` 給的資訊去設定，如果沒有對齊會在後面的時候跳出警告。所以這邊就先設定好。
 
-** 掛載
+
+### 掛載 {#掛載}
+
 記得把 /boot 掛上去
-#+begin_src shell
+
+```shell
 mount /dev/sdX2 /mnt
 mkdir /mnt/efi
 mount /dev/sdX1 /mnt/efi
-#+end_src
+```
 
-** Boot Loader
+
+### Boot Loader {#boot-loader}
+
 依照自己使用的主機板系統(BIOS or UEFI)跟檔案系統做選擇，基本上功能都大同小異。
-自己是使用 =GRUB= 因為使用 =ext4= 這個檔案系統
+自己是使用 `GRUB` 因為使用 `ext4` 這個檔案系統
 
-** microcode
+
+### microcode {#microcode}
+
 安裝完記得裝上 microcode ，這是 CPU 廠商的一些 patch。
-依照廠商安裝 =amd-ucode= 或是 =intel-ucode=
+依照廠商安裝 `amd-ucode` 或是 `intel-ucode`
 
-#+begin_src shell
+```shell
 # GRUB** 有自帶偵測更新
 grub-mkconfig -o /boot/grub/grub.cfg
-#+end_src
+```
+
 或是按照 wiki 的教學手動加也是可以。
 
-** 必要的東西
+
+### 必要的東西 {#必要的東西}
+
 重開機前記得將之後要用的工具像是無線網路的程式，有些系統軟體在 usb 內有但是不會安裝到硬碟內，如果忘記了可以之後再用 usb 開機後 重新掛載後安裝
 
-** 設定開機
-如果有找不到 bootloader 的情況可能是這邊BIOS要設定
-參照 [[*How to boot into linux on v3-372 / 在 V3-372 上如何開機進入 Linux]]
 
-** 安裝後
+### 設定開機 {#設定開機}
+
+如果有找不到 bootloader 的情況可能是這邊BIOS要設定
+參照 [How to boot into linux on v3-372 / 在 V3-372 上如何開機進入 Linux](#how-to-boot-into-linux-on-acer-v3-372)
+
+
+### 安裝後 {#安裝後}
+
 預設是 root 所以要先新增自己的帳號。
-#+begin_src shell
+
+```shell
 useradd -m {name}
 passwd {name}
-#+end_src
-基本上 =sudo= 是必備的
-~pacman -S sudo~
+```
 
-裝好之後用 =visudo= 進入設定檔
+基本上 `sudo` 是必備的
+`pacman -S sudo`
+
+裝好之後用 `visudo` 進入設定檔
 把相關設定的註解移除
-基本上應該是開啟 =wheel= 或 =sudo= 這兩個群組的權限，都開也可以。
+基本上應該是開啟 `wheel` 或 `sudo` 這兩個群組的權限，都開也可以。
 建立這兩個群組
-#+begin_src shell
+
+```shell
 groupadd sudo
 groudadd wheel
-#+end_src
+```
+
 在將自己的使用者加入
-#+begin_src shell
+
+```shell
 gpasswd -a {user} {group}
-#+end_src
-** 最後
+```
+
+
+### 最後 {#最後}
+
 這樣差不多就可以用了，接下來就是安裝自己的環境了。
 其實 arch wiki 已經寫得很清楚，大部分的資料都看 wiki 就可以解了。
 
 
-* gogs 轉 gitea - part2：中文 wiki 失效                               :gitea:
-:PROPERTIES:
-:EXPORT_FILE_NAME: how-to-fix-gitea-wiki-chinese-entry-issue
-:EXPORT_DATE: <2018-12-18>
-:END:
+## gogs 轉 gitea - part2：中文 wiki 失效 <span class="tag"><span class="gitea">gitea</span></span> {#how-to-fix-gitea-wiki-chinese-entry-issue}
 
 之前轉移至 gitea 後發現無法開啟 wiki。測試了一下發現是因為編碼的問題所導致。如果要修復必須先將 wiki 檔名轉換成 URL 使用的 UTF-8 格式。gitea是將 wiki 頁面放在 repo 目錄下以 XXX.wiki.git 存放。因為也是 git 所以可以直接 clone 下來改檔名後再 push 回去就可以了。
 
 因為也是 .md 檔，所以乾脆把 wiki 關了也是可以。因為 gitea 並沒有提供全域的關閉 wiki 功能所以必須要一個一個設定。如果不要的話可以直接執行以下  SQL 直接移除。
 
-#+begin_src sql
+```sql
 DELETE FROM repo_unit
 WHERE type = 5
 -- 資料庫任何資料請自行負責，謝謝
-#+end_src
+```
 
 接下來還有什麼問題再看看。
 
 
-* 從 Gogs 轉移至 Gitea                                           :gogs:gitea:
-:PROPERTIES:
-:EXPORT_FILE_NAME: how-to-migrate-gogs-to-gitea
-:EXPORT_DATE: <2018-11-26>
-:END:
+## 從 Gogs 轉移至 Gitea <span class="tag"><span class="gogs">gogs</span><span class="gitea">gitea</span></span> {#how-to-migrate-gogs-to-gitea}
 
-Gitea 雖然源自於 Gogs ，不過要從 Gogs 轉移到 Gitea 卻是十分困難。官方給的教學中 Gogs 的版本要在 =0.9.146= 或是更舊才能轉移。目前使用的版本已經太新(=0.11.29.0727=)。想說直接按照官方的文件做，結果遇到 Gitea 在 =1.0= 中不支援 MSSQL 的窘境。
+Gitea 雖然源自於 Gogs ，不過要從 Gogs 轉移到 Gitea 卻是十分困難。官方給的教學中 Gogs 的版本要在 `0.9.146` 或是更舊才能轉移。目前使用的版本已經太新(`0.11.29.0727`)。想說直接按照官方的文件做，結果遇到 Gitea 在 `1.0` 中不支援 MSSQL 的窘境。
 後來在自己試一試的情況下成功了，這邊紀錄一下是如何轉上去的。
 
 環境
-- Microsoft Windows Server 2012 R2
-- Microsoft SQL Server 2012
-- gogs 0.11.29.0727
-- gitea 1.6.0
 
+-   Microsoft Windows Server 2012 R2
+-   Microsoft SQL Server 2012
+-   gogs 0.11.29.0727
+-   gitea 1.6.0
 
-1. 乾淨安裝 gitea 1.6.0
-2. 第一次設定就正常設定，但是不要設定系統管理員帳號
-3. 直接將 gogs 資料庫中的資料匯入 gitea 資料庫（啟用識別插入，然後最後應該會失敗，不過大部分的資料都會成功）
-4. 接下來應該就可以用了，但是選取任何資源庫的時候會 404 error。
-5. 執行這段 SQL
-   #+begin_src sql
-   insert into repo_unit (repo_id, type, config, created_unix)
-   select repository.id, types.*, '{}', repository.created_unix from repository
-   left join repo_unit on repository.id=repo_id
-   left join (
-     select 1 as col1, 1 as col2
-     UNION ALL select 2,2
-     UNION ALL select 3,3
-     UNION ALL select 4,4
-     UNION ALL select 5,5) as types on (1=1)
-   where repo_id is null;
-   #+end_src
-6. 收工
+<!--listend-->
+
+1.  乾淨安裝 gitea 1.6.0
+2.  第一次設定就正常設定，但是不要設定系統管理員帳號
+3.  直接將 gogs 資料庫中的資料匯入 gitea 資料庫（啟用識別插入，然後最後應該會失敗，不過大部分的資料都會成功）
+4.  接下來應該就可以用了，但是選取任何資源庫的時候會 404 error。
+5.  執行這段 SQL
+    ```sql
+    insert into repo_unit (repo_id, type, config, created_unix)
+    select repository.id, types.*, '{}', repository.created_unix from repository
+    left join repo_unit on repository.id=repo_id
+    left join (
+      select 1 as col1, 1 as col2
+      UNION ALL select 2,2
+      UNION ALL select 3,3
+      UNION ALL select 4,4
+      UNION ALL select 5,5) as types on (1=1)
+    where repo_id is null;
+    ```
+6.  收工
 
 大致上可以用，不過沒有 webhook 之類的（先前的失敗停止的部分）
 流程應該可以在更好才是。（例如僅匯入該匯入的資料表）
 
-** Reference
-[[https://github.com/go-gitea/gitea/issues/1794#issuecomment-347831784][Error while displaying public repo (404)]]
+
+### Reference {#reference}
+
+[Error while displaying public repo (404)](https://github.com/go-gitea/gitea/issues/1794#issuecomment-347831784)
 
 
-* pass-by-reference-vs-pass-by-value :javascript:c_sharp:programming_language:
-:PROPERTIES:
-:EXPORT_FILE_NAME: pass-by-reference-vs-pass-by-value
-:EXPORT_DATE: <2018-02-01>
-:END:
+## pass-by-reference-vs-pass-by-value <span class="tag"><span class="javascript">javascript</span><span class="c_sharp">c-sharp</span><span class="programming_language">programming-language</span></span> {#pass-by-reference-vs-pass-by-value}
 
 在討論完 struct vs class 之後遇到了這樣的問題。
 
-#+begin_src javascript
+```javascript
 function clearArray(input) {
     input = [];
 }
@@ -748,13 +727,14 @@ var someArray = [1, 2, 3, 4];
 clearArray(someArray);
 
 console.log(someArray); // [1, 2, 3, 4]
-#+end_src
+```
+
 也許會覺得 array 不是 pass by reference 嗎？為什麼不會改到外部的值？
-事實上在例子中的 ~input = []~ 時 已經將 input 所指向的記憶體位置所轉換，而並非 someArray 所指向的位置。所以發生不如預期的狀況。
+事實上在例子中的 `input = []` 時 已經將 input 所指向的記憶體位置所轉換，而並非 someArray 所指向的位置。所以發生不如預期的狀況。
 
 在 c# 中也會有一樣的狀況
 
-#+begin_src csharp
+```csharp
 public void clearClassValue(someClass input)
 {
     input = new someClass();
@@ -767,49 +747,52 @@ public static void main()
     clearClassValue(input);
     Console.WriteLine(input.value); // 1
 }
-#+end_src
-不過在 c# 中可以再加上 =ref= 關鍵字來取得儲存位置的位置。JavaScript 中倒是不知道有沒有這種功能。
+```
+
+不過在 c# 中可以再加上 `ref` 關鍵字來取得儲存位置的位置。JavaScript 中倒是不知道有沒有這種功能。
 
 過去學習記憶體和記憶體位置這類底層的東西這時候就可以派上用場了。
 
-之後查了一下發現網路上解釋得更好的文章，有興趣可以看看。[[https://medium.com/@TK_CodeBear/javascript-arrays-pass-by-value-and-thinking-about-memory-fffb7b0bf43][連結]]
+之後查了一下發現網路上解釋得更好的文章，有興趣可以看看。[連結](https://medium.com/@TK_CodeBear/javascript-arrays-pass-by-value-and-thinking-about-memory-fffb7b0bf43)
 
 
-* struct vs class in csharp                                     :cpp:c_sharp:
-:PROPERTIES:
-:EXPORT_FILE_NAME: struct-vs-class-in-csharp
-:EXPORT_DATE: <2018-01-30>
-:END:
+## struct vs class in csharp <span class="tag"><span class="cpp">cpp</span><span class="c_sharp">c-sharp</span></span> {#struct-vs-class-in-csharp}
 
-前陣子因為個人主張`用 class 取代 struct`而討論到 csharp 中 struct 跟 class 有什麼不同。
-#+begin_src csharp
+前陣子因為個人主張\`用 class 取代 struct\`而討論到 csharp 中 struct 跟 class 有什麼不同。
+
+```csharp
 struct foo
 {
     public int id;
     public string value;
 }
-#+end_src
+```
+
 跟
-#+begin_src csharp
+
+```csharp
 class foo
 {
     public int id;
     public string value;
 }
-#+end_src
+```
+
 有什麼不同。
 個人因為覺得都一樣所以傾向用 class，不過上網查之後才發現在 csharp 中跟傳統 cpp 不太一樣。
 
 先簡單說在 cpp 中 struct 跟 class 是同一件事，差別在
-1. struct 只能用 public ， class 預設 private 不過可以用 tag 設定為 public。
-2. class 可以含有方法， struct 只能有成員。
-3. class 可以繼承， struct 不行。
+
+1.  struct 只能用 public ， class 預設 private 不過可以用 tag 設定為 public。
+2.  class 可以含有方法， struct 只能有成員。
+3.  class 可以繼承， struct 不行。
 
 事實上在 cpp 中還是有一部分的人完全不會用到 class。
-不過在 csharp 中 [[https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/choosing-between-class-and-struct][微軟的官方文件]] 就指出兩者的不同並提出兩者建議的使用時機。
+不過在 csharp 中 [微軟的官方文件](https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/choosing-between-class-and-struct) 就指出兩者的不同並提出兩者建議的使用時機。
 最大的差異在於 struct 是 value type，而 class 是 reference type。
 有相關概念的人應該這樣就會知道兩者個差異，不過對自己來說這樣還是太過於抽象。先把那些 struct 是在 stack 中而 class 是在 heap 中放一邊。看些簡單的例子。
-#+begin_src csharp
+
+```csharp
 struct structTest
 {
     public int value;
@@ -822,32 +805,32 @@ class Program
 {
     static void Main(string[] args)
     {
-	structTest iAmStruct = new structTest
-	{
-	    value = 1234;
-	}
-	classTest iAmClass = new classTest
-	{
-	    value = 5678;
-	}
-	// iAmStruct.value = 1234, iAmClass.value = 5678
+        structTest iAmStruct = new structTest
+        {
+            value = 1234;
+        }
+        classTest iAmClass = new classTest
+        {
+            value = 5678;
+        }
+        // iAmStruct.value = 1234, iAmClass.value = 5678
 
-	// 指定到另外一個變數
-	structTest iAmAnotherStruct = iAmStruct;
-	classTest iAmAnotherClass = iAmClass;
+        // 指定到另外一個變數
+        structTest iAmAnotherStruct = iAmStruct;
+        classTest iAmAnotherClass = iAmClass;
 
-	// 改一下數值
-	iAmAnotherStruct.value = 0;
-	iAmAnotherClass.value = 0;
+        // 改一下數值
+        iAmAnotherStruct.value = 0;
+        iAmAnotherClass.value = 0;
 
-	// iAmStruct.value = 1234, iAmClass.value = 0
+        // iAmStruct.value = 1234, iAmClass.value = 0
     }
 }
-#+end_src
+```
 
 同理可以推廣到 function
 
-#+begin_src csharp
+```csharp
 public void changeStructTestValueToZero(structTest input)
 {
     input.value = 0; // 不會改到外部的值
@@ -856,7 +839,7 @@ public void changeClassTestValueToZero(classTest input)
 {
     input.value = 0; // 會改到外部的值
 }
-#+end_src
+```
 
 這就是過去在學習 cpp 中都會學到 pass by value 跟 pass by reference 的差異，而兩者行為上差異就是在這裡。
 其他的語言可能會稱為 immutable 之類的，不過只要想一下是這是 value 還是 pointer 應該就知道了。
@@ -864,11 +847,7 @@ public void changeClassTestValueToZero(classTest input)
 知道這個小知識就可以避免掉一些不如預期的的狀況，這次又有更深的了解了，挺不錯。
 
 
-* 如何在 Arduino 將 float, double 寫入 EEPROM                     :arduino:c:
-:PROPERTIES:
-:EXPORT_FILE_NAME: how-to-write-real-number-to-eeprom-in-arduino
-:EXPORT_DATE: <2017-11-09>
-:END:
+## 如何在 Arduino 將 float, double 寫入 EEPROM <span class="tag"><span class="arduino">arduino</span><span class="c">c</span></span> {#how-to-write-real-number-to-eeprom-in-arduino}
 
 最近被問到要如何將浮點數存到 EEPROM，由於 EEPROM 一次只能存 1 byte.
 所以實際上的問題應該是說如何將 4 bytes(float) 或是 8 bytes(double) 的資料型態每次 1 byte 存進 EEPROM。
@@ -876,192 +855,223 @@ public void changeClassTestValueToZero(classTest input)
 上網查了一下發現可以用 c union 來做，實際上做了也發現這樣的做法直觀容易多了。
 
 在 c 中 union 就像是 struct 一樣，只不過其中的所有成員都是使用同一塊記憶體區域。在特殊情況下這似乎符合這次的需求：「將 float 或 double 用 byte 方式呈現。」
-#+begin_src c
+
+```c
 union eDouble {
     double dValue;
     byte[8] bValue;
 }
-#+end_src
+```
+
 這樣設計將兩者對齊後就可以透過 eDouble.bValue[] 來一次存取一個 byte 了。
 
 挺有趣
 
 
-* 在 OSX 設定 FreeTDS                                     :freetds:osx:mssql:
-:PROPERTIES:
-:EXPORT_FILE_NAME: how-to-setup-freetds-on-osx
-:EXPORT_DATE: <2017-08-23>
-:END:
+## 在 OSX 設定 FreeTDS <span class="tag"><span class="freetds">freetds</span><span class="osx">osx</span><span class="mssql">mssql</span></span> {#how-to-setup-freetds-on-osx}
 
 過去一直以來 Unix-like 要跟 MSSQL 連線就是不容易，如果要跟舊版 MSSQL 連線就更難了，雖然有 unixODBC 和 FreeTDS 但這兩個設定的方式也不算容易。這裡當作筆記記錄下來。
 
-** OSX
-1.  ~brew install unixodbc~
-2.  ~brew install freetds --with-unixodbc  --with-msdblib~
 
-** freetds:
+### OSX {#osx}
 
-檢查設定:  ~tsql -C~
-嘗試連線:  ~tsql -H <HostName> -p <port> -U <username> -P <password>~
-設定檔案:  ~~/.freetds.conf~
+1.  `brew install unixodbc`
+2.  `brew install freetds --with-unixodbc  --with-msdblib`
+
+
+### freetds: {#freetds}
+
+檢查設定:  `tsql -C`
+嘗試連線:  `tsql -H <HostName> -p <port> -U <username> -P <password>`
+設定檔案:  `~/.freetds.conf`
 example:
-#+begin_src conf
-  [ExampleServer]
-  host = ExampleServerIP
-  port = 1433
-  tds version = 7.0
-#+end_src
-** unixODBC:
-嘗試連線:  ~isql -v <DSN> <username> <password>~
-嘗試連線除錯: ~osql -S <DSN> -U <username> -P <password>~
-查看設定:  ~odbcinst -j~
 
-*** Driver 設定:
-=.odbcinst.ini=
-#+begin_src conf
-  [FreeTDS]
-  Description =FreeTDS
-  Driver =/usr/local/Cellar/freetds/1.00.26/lib/libtdsodbc.so
-#+end_src
+```cfg
+[ExampleServer]
+host = ExampleServerIP
+port = 1433
+tds version = 7.0
+```
+
+
+### unixODBC: {#unixodbc}
+
+嘗試連線:  `isql -v <DSN> <username> <password>`
+嘗試連線除錯: `osql -S <DSN> -U <username> -P <password>`
+查看設定:  `odbcinst -j`
+
+
+#### Driver 設定: {#driver-設定}
+
+`.odbcinst.ini`
+
+```cfg
+[FreeTDS]
+Description =FreeTDS
+Driver =/usr/local/Cellar/freetds/1.00.26/lib/libtdsodbc.so
+```
+
 注意 "=" 之後不要有空格
-unix環境應該在 /etc/ 之類的
-
-*** DSN 設定:
-=.odbc.ini=
-#+begin_src conf
-  [ExampleServer]
-  Driver = FreeTDS
-  Description = MyExample
-  ServerName = ExampleServer
-  UID = <username>
-  PWD = <pasaword>
-#+end_src
-** connectingString:
-  ~"DRIVER={ExampleServer};DSN=;UID=;PWD=;Database="~
-
-** Github
-[[https://github.com/randomdize/freetds-example]]
+unix環境應該在 _etc_ 之類的
 
 
-* 在 IIS 上架設 django            :windows_server:iis:django:python:wfastcgi:
-:PROPERTIES:
-:EXPORT_FILE_NAME: how-to-setup-django-in-iis
-:EXPORT_DATE: <2017-07-12>
-:END:
+#### DSN 設定: {#dsn-設定}
 
-# 前言
+`.odbc.ini`
+
+```cfg
+[ExampleServer]
+Driver = FreeTDS
+Description = MyExample
+ServerName = ExampleServer
+UID = <username>
+PWD = <pasaword>
+```
+
+
+### connectingString: {#connectingstring}
+
+`"DRIVER={ExampleServer};DSN=;UID=;PWD=;Database="`
+
+
+### Github {#github}
+
+<https://github.com/randomdize/freetds-example>
+
+
+## 在 IIS 上架設 django <span class="tag"><span class="windows_server">windows-server</span><span class="iis">iis</span><span class="django">django</span><span class="python">python</span><span class="wfastcgi">wfastcgi</span></span> {#how-to-setup-django-in-iis}
+
 在 IIS 上執行 python 跟是一回事，在 IIS 上架設 django 又是另外一回事。而網路上的資源又更少了一點，經過各種搜尋後在這裡記下一些筆記。
 
 執行環境如下，每一項都會可能因為版本不同而有些許不同。這也是網路資源較難使上力的原因，因為解決方式的版本跟所用的版本可能不同而不適用。
-- windows server 2012 R2
-- iis 8.5
-- python 3.6
-- django 1.11.3
 
-** 強者版
-  步驟 1 -> 2 -> 11 -> 12 -> 13
+-   windows server 2012 R2
+-   iis 8.5
+-   python 3.6
+-   django 1.11.3
 
-** 詳細版
-1. 安裝 wfastcgi ~pip install wfastcgi~
-2. 啟用 wfastcgi ~wfastcgi-enable~
-3. 安裝 django ~pip install Django==1.11.3~
-4. =機器首頁 -> IIS -> FastCGI 設定= 這應該要有 python.exe，如果沒有點選 =右側新增應用程式= 。
-5. 完整路徑為python執行檔位置如： =<python安裝路徑>\python.exe= 引數為 wfastcgi.py 如： =<python安裝路徑>\lib\site-packages\wfastcgi.py=
-6. 新增網站
-7. =網站設定頁面中 -> IIS -> 處理常式對應 -> 新增模組對應=
-8. 要求路徑： =*= ，模組： =FastCgiModule= ，執行檔： =<python安裝路徑>\python.exe|<python安裝路徑>\lib\site-packages\wfastcgi.py`= ，名稱： =Django Handler= （或是隨意）
-9. 要求限制 -> 取消勾選 =只有當要求對應到下列項目時才啟動處理常式=
+
+### 強者版 {#強者版}
+
+步驟 1 -&gt; 2 -&gt; 11 -&gt; 12 -&gt; 13
+
+
+### 詳細版 {#詳細版}
+
+1.  安裝 wfastcgi `pip install wfastcgi`
+2.  啟用 wfastcgi `wfastcgi-enable`
+3.  安裝 django `pip install Django==1.11.3`
+4.  `機器首頁 -> IIS -> FastCGI 設定` 這應該要有 python.exe，如果沒有點選 `右側新增應用程式` 。
+5.  完整路徑為python執行檔位置如： `<python安裝路徑>\python.exe` 引數為 wfastcgi.py 如： `<python安裝路徑>\lib\site-packages\wfastcgi.py`
+6.  新增網站
+7.  `網站設定頁面中 -> IIS -> 處理常式對應 -> 新增模組對應`
+8.  要求路徑： `*` ，模組： `FastCgiModule` ，執行檔： `` <python安裝路徑>\python.exe|<python安裝路徑>\lib\site-packages\wfastcgi.py` `` ，名稱： `Django Handler` （或是隨意）
+9.  要求限制 -&gt; 取消勾選 `只有當要求對應到下列項目時才啟動處理常式`
 10. IIS manager 可能會問你是否要建立 fastcgi 應用程式，選否 (選是應該也是可以)
-11. 看一下網站資料夾下面有無 =web.config= ，參考下面的範例，如果前面有照著做應該只要加入 appSettings 即可。
-#+begin_src xml
+11. 看一下網站資料夾下面有無 `web.config` ，參考下面的範例，如果前面有照著做應該只要加入 appSettings 即可。
+
+<!--listend-->
+
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
     <configuration>
-	<system.webServer>
-	    <handlers>
-		<add name="Django Handler"
-		     path="*"
-		     verb="*"
-		     modules="FastCgiModule"
-		     scriptProcessor="<python安裝路徑>python.exe|<python安裝路徑>\Lib\site-packages\wfastcgi.py"
-		     resourceType="Unspecified" />
-	    </handlers>
-	</system.webServer>
-	<appSettings>
-	    <add key="WSGI_HANDLER" value="django.core.wsgi.get_wsgi_application()" />
-	    <add key="PYTHONPATH" value="<網站資料夾路徑>" />
-	    <add key="DJANGO_SETTINGS_MODULE" value="<Django App>.settings" />
-	</appSettings>
+        <system.webServer>
+            <handlers>
+                <add name="Django Handler"
+                     path="*"
+                     verb="*"
+                     modules="FastCgiModule"
+                     scriptProcessor="<python安裝路徑>python.exe|<python安裝路徑>\Lib\site-packages\wfastcgi.py"
+                     resourceType="Unspecified" />
+            </handlers>
+        </system.webServer>
+        <appSettings>
+            <add key="WSGI_HANDLER" value="django.core.wsgi.get_wsgi_application()" />
+            <add key="PYTHONPATH" value="<網站資料夾路徑>" />
+            <add key="DJANGO_SETTINGS_MODULE" value="<Django App>.settings" />
+        </appSettings>
     </configuration>
-#+end_src
-12. 在 **網站資料夾** 跟 **python資料夾** 中給予 =IUSR= 跟 =IIS_USRS= 權限
-13. 用瀏覽器測試看看是否成功
+```
 
-** 心得
+1.  在 ****網站資料夾**** 跟 ****python資料夾**** 中給予 `IUSR` 跟 `IIS_USRS` 權限
+2.  用瀏覽器測試看看是否成功
+
+
+### 心得 {#心得}
+
 原理不難，設定也還好，主要的問題都出在權限，這也是大部分教學比較少提到的。當然不要在 iis 上跑這些東西才是最佳解。
 
-** 常用指令
-#+begin_src shell
+
+### 常用指令 {#常用指令}
+
+```shell
 # django 開新專案
 django-admin startproject mysite
 # django 測試伺服器
 python manage.py runserver
-#+end_src
-** 常見問題
-*** 0x8007010b 錯誤
-檢查 **python** 目錄中的權限是否正確 **IUSR** 及 **IIS_USRS**
+```
 
-*** 找不到指令 (pip 或 python)
+
+### 常見問題 {#常見問題}
+
+
+#### 0x8007010b 錯誤 {#0x8007010b-錯誤}
+
+檢查 ****python**** 目錄中的權限是否正確 ****IUSR**** 及 ****IIS_USRS****
+
+
+#### 找不到指令 (pip 或 python) {#找不到指令--pip-或-python}
+
 環境變數沒有設定
-1. =控制台 -> 系統及安全性 -> 系統 -> 進階系統設定 -> 環境變數 -> 系統變數=
-2. path 末端加入 =;<python安裝路徑>;<python安裝路徑>\Scripts=
 
-** 參考資料
-- [[http://kronoskoders.logdown.com/posts/1074588-running-a-django-app-on-windows-iis][Running a Django app on Windows IIS]]
-- [[http://blog.mattwoodward.com/2016/07/running-django-application-on-windows.html][Running a Django Application on Windows Server 2012 with IIS]]
-- [[http://errormaker.blog74.fc2.com/blog-entry-24.html][WindowsServer2012R2 + IIS + Django + wfastcgiの環境構築]]
-- [[https://www.djangoproject.com][django]]
-- [[http://blog.fhps.tp.edu.tw/fhpsmis/?p=1015][IIS7.5中的IUSR與IIS_IUSRS區別]]
+1.  `控制台 -> 系統及安全性 -> 系統 -> 進階系統設定 -> 環境變數 -> 系統變數`
+2.  path 末端加入 `;<python安裝路徑>;<python安裝路徑>\Scripts`
 
 
-* 在 IIS 上跑 python script                       :python:windows_server:iis:
-:PROPERTIES:
-:EXPORT_FILE_NAME: how-to-run-python-on-iis
-:EXPORT_DATE: <2017-07-11>
-:END:
+### 參考資料 {#參考資料}
+
+-   [Running a Django app on Windows IIS](http://kronoskoders.logdown.com/posts/1074588-running-a-django-app-on-windows-iis)
+-   [Running a Django Application on Windows Server 2012 with IIS](http://blog.mattwoodward.com/2016/07/running-django-application-on-windows.html)
+-   [WindowsServer2012R2 + IIS + Django + wfastcgiの環境構築](http://errormaker.blog74.fc2.com/blog-entry-24.html)
+-   [django](https://www.djangoproject.com)
+-   [IIS7.5中的IUSR與IIS_IUSRS區別](http://blog.fhps.tp.edu.tw/fhpsmis/?p=1015)
+
+
+## 在 IIS 上跑 python script <span class="tag"><span class="python">python</span><span class="windows_server">windows-server</span><span class="iis">iis</span></span> {#how-to-run-python-on-iis}
 
 雖然早就知道 Unix-like 環境下出身的語言跟 windows 就是天生不合，在架設時應當避免使用 windows，不過人在江湖身不由己，如今要在 IIS 下跑 python，只是沒想到過程竟如此折騰。而網路上的關於這方面的資源也並不多，在這裡就當做做個筆記。
 
 環境如下，需注意不同版本的 windows 跟不同版本的 iis 可能會有些許的不同，這也是異常困難的地方，因為網路上的教學都不一定適用當下的環境。
-- windows server 2012 R2
-- iis 8.5
-- python 3.6
 
-1. 首先要先確認環境中的 CGI 功能是否開啟。
-2. 在伺服器管理員中， =管理 -> 新增角色及功能 -> 網頁伺服器(IIS) -> 網頁伺服器 -> 應用程式開發 -> CGI= ，看 CGI 使否已安裝，如果沒安裝則安裝。
-3. 上官網下載 python，版本應該不會影響太多，不過這裡是用 3.6 版。
-4. 安裝時建議放在方便的路徑，預設的路徑很長又放在不明顯的地方。
-5. 可以在安裝時勾選選項讓安裝程式幫您將 python 加到環境變數中。
-6. 開啟 IIS 管理器
-7. 新增一個網站。
-6. 很重要的是記得開啟 **網站目錄** 及 **python** 目錄的權限給 **IUSR** 或是您所指定的使用者。
-7. IIS -> 處理常式對應 -> 右側新增指令碼對應
-8. 路徑： =*.py= ，執行檔： =<python安裝路徑>/python.exe %s %s= ，名稱： =python= (或是隨意)
-9. 用瀏覽器開啟 .py 檔案位置
+-   windows server 2012 R2
+-   iis 8.5
+-   python 3.6
 
-** 常見問題
-*** Unauthroized
-請確認 **網站目錄** 及 **python** 目錄的權限。
+-   首先要先確認環境中的 CGI 功能是否開啟。
+-   在伺服器管理員中， `管理 -> 新增角色及功能 -> 網頁伺服器(IIS) -> 網頁伺服器 -> 應用程式開發 -> CGI` ，看 CGI 使否已安裝，如果沒安裝則安裝。
+-   上官網下載 python，版本應該不會影響太多，不過這裡是用 3.6 版。
+-   安裝時建議放在方便的路徑，預設的路徑很長又放在不明顯的地方。
+-   可以在安裝時勾選選項讓安裝程式幫您將 python 加到環境變數中。
+-   開啟 IIS 管理器
+-   新增一個網站。
+-   很重要的是記得開啟 ****網站目錄**** 及 ****python**** 目錄的權限給 ****IUSR**** 或是您所指定的使用者。
+-   IIS -&gt; 處理常式對應 -&gt; 右側新增指令碼對應
+-   路徑： `*.py` ，執行檔： `<python安裝路徑>/python.exe %s %s` ，名稱： `python` (或是隨意)
+-   用瀏覽器開啟 .py 檔案位置
 
 
+### 常見問題 {#常見問題}
 
-* Use the Source - 解決 Api doc missing comma error                  :apidoc:
-:PROPERTIES:
-:EXPORT_FILE_NAME: fix-apidoc-missing-comma-error
-:EXPORT_DATE: <2017-05-03>
-:END:
+
+#### Unauthroized {#unauthroized}
+
+請確認 ****網站目錄**** 及 ****python**** 目錄的權限。
+
+
+## Use the Source - 解決 Api doc missing comma error <span class="tag"><span class="apidoc">apidoc</span></span> {#fix-apidoc-missing-comma-error}
 
 最近想要試試 api doc 產生器，於是 Google 一下後找到看起來很不錯的工具 Api doc。結果按照教學設定完之後一執行馬上就出現
-=Can not read: apidoc.json, please check the format (e.g. missing comma)=
+`Can not read: apidoc.json, please check the format (e.g. missing comma)`
 
 我百思不得其解，也確認了 apidoc.json 有存在，逗號也都在。以為是自己格式弄錯，結果直接複製官方的文字也是出錯。
 
@@ -1071,7 +1081,7 @@ python manage.py runserver
 
 最後正當要放棄的時候去看了一下 source code，一看才發現原來只是個簡單的 Json parse.
 
-#+begin_src javascript
+```javascript
 PackageInfo.prototype._readPackageData = function(filename) {
     var result = {};
     var dir = this._resolveSrcPath();
@@ -1079,95 +1089,106 @@ PackageInfo.prototype._readPackageData = function(filename) {
 
     // Read from source dir
     if ( ! fs.existsSync(jsonFilename)) {
-	// Read from config dir (default './')
-	jsonFilename = path.join(app.options.config, filename);
+        // Read from config dir (default './')
+        jsonFilename = path.join(app.options.config, filename);
     }
     if ( ! fs.existsSync(jsonFilename)) {
-	app.log.debug(jsonFilename + ' not found!');
+        app.log.debug(jsonFilename + ' not found!');
     } else {
-	try {
-	    result = JSON.parse( fs.readFileSync(jsonFilename, 'utf8') );
-	    app.log.debug('read: ' + jsonFilename);
-	} catch (e) {
-	    throw new Error('Can not read: ' + filename + ', please check the format (e.g. missing comma).');
-	}
+        try {
+            result = JSON.parse( fs.readFileSync(jsonFilename, 'utf8') );
+            app.log.debug('read: ' + jsonFilename);
+        } catch (e) {
+            throw new Error('Can not read: ' + filename + ', please check the format (e.g. missing comma).');
+        }
     }
     return result;
 };
-#+end_src
+```
 
 這時候就是使用古老的印出變數的方法了（感謝JavaScript 可以直接去改 source code 而不用重新 Build），直接把 parse 的字串輸出，結果發現原來是 Visual Studio 在建立檔案的時候前面插入了一些多餘的資料(也許是BOM? 還是其他的之類的)，導致 parse 失敗，改用記事本建立 apidoc.json 之後就解決了，可喜可賀。
 
 學到幾個經驗
-1. +notepad > Visual Studio+ 純文字就用編輯器最保險
-2. 在 Windows 上使用在 unix 系統開發的東西時很容易遇到奇怪的問題
-3. =Use the Source, Luke=
+
+1.  ~~notepad &gt; Visual Studio~~ 純文字就用編輯器最保險
+2.  在 Windows 上使用在 unix 系統開發的東西時很容易遇到奇怪的問題
+3.  `Use the Source, Luke`
 
 
-* No Fragment，One Activity - Custom View 架構 - 續                 :android:
-:PROPERTIES:
-:EXPORT_FILE_NAME: android-no-fragment-architecture-continue
-:EXPORT_DATE: <2017-04-12>
-:END:
+## No Fragment，One Activity - Custom View 架構 - 續 <span class="tag"><span class="android">android</span></span> {#android-no-fragment-architecture-continue}
+
 距離過去寫 no-fragment 架構的文章也快一年了，那當然最好測試新架構的方式就是直接實戰，那種比 HelloWorld 程式更為複雜的程式。這次回過頭來看看當時候遇到的問題。
 
-** BackStack 比想像中還要複雜多了
+
+### BackStack 比想像中還要複雜多了 {#backstack-比想像中還要複雜多了}
+
 在當時寫的時候並沒有套用 Flow ，覺得是不必要的框架。但事實上 Mobile APP 比一般網頁還要複雜多了。在頁面不同的跳轉中要如何管理 UI State 並不是一件簡單的事情。到最後變成自己實作一個很像 Life Cycle 的東西。
 
-** Share State
+
+### Share State {#share-state}
+
 一般寫 Android 最容易遇到的問題大概就是我該如何在 Activity 或 Fragment 間傳遞訊息。這部分要如何做到很好也不是很容易。自己是直接在上層 Activity 開個 HashMap 直接存值，但這樣的解法略顯簡陋，應該有更好的方式。
 
-** MVP
+
+### MVP {#mvp}
+
 雖然 MVP 提供的一個大方向，但要如何將職責切開來也是一門學問，在遇到 RecyclerView 這樣複雜的 View 時又會是一個問題。原本以為 Presenter 只需要知道 View 就好，但最後搞到必須要將 activity 注入到每個 Presenter 中，感覺有更好的做法。
 
-** AlertDialog
+
+### AlertDialog {#alertdialog}
+
 在原來的架構下應該同一時間應該只能有一個主要 View ，可是遇到像 Dialog 這種要疊加 View 的時候似乎就還是一定要用到 Fragment 雖然要用 CustomView 做也不是不行，但還是太麻煩了，最後這變成在 APP 中唯一會使用到 Fragment 的例外。
 
-** CustomView Preview
+
+### CustomView Preview {#customview-preview}
+
 使用 CustomView + MVP 會遇到 Preview 時會出現錯誤訊息的問題，需要用 isInEditMode 這樣的布林值來為 Preview 做判斷。
 
-** Android M 權限問題
+
+### Android M 權限問題 {#android-m-權限問題}
+
 Android M 增加了即時詢問權限的問題，必須要來往 Activity 做。
 
-** 總結
+
+### 總結 {#總結}
+
 實務上的 APP 總是比較複雜，不過當自己動手做一些原本靠套件所辦到的事情確實是學習到很多東西。
 
 
-* MVC core 做 Localization                                 :mvc_core:c_sharp:
-:PROPERTIES:
-:EXPORT_FILE_NAME: localization-in-mvc-core
-:EXPORT_DATE: <2017-03-22>
-:END:
+## MVC core 做 Localization <span class="tag"><span class="mvc_core">mvc-core</span><span class="c_sharp">c-sharp</span></span> {#localization-in-mvc-core}
 
 過去不曾做過多國語言的支援，更不曾在 web 界做過，研究一下之後發現 Asp.net mvc core 也有提供工具。這裡做一下筆記。
 
-** 基本認識
+
+### 基本認識 {#基本認識}
 
 一般多國語言的做法多是用替換字串的方式，然後用 Key/Value 的方式去做取代。目的是將顯示文字跟程式脫鉤，只要抽換文字檔案就可以更換顯示的文字而不需要修改程式，翻譯人員也可以直接透過這個檔案進行翻譯。基本的概念大概就是這樣。進階一點的就是某些從右讀到左的語言會需要 UI 翻轉之類的事情了。
 
-** Setup
-#+begin_src csharp
+
+### Setup {#setup}
+
+```csharp
 public void ConfigureServices(IServiceCollection services)
 {
     //略
     services.AddLocalization(options => options.ResourcesPath = "Resources");
     services.AddMvc()
-	.AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-	.AddDataAnnotationsLocalization();
+        .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+        .AddDataAnnotationsLocalization();
     services.Configure<RequestLocalizationOptions>(
-	options =>
-	{
-	     var supportedCultures = new List<CultureInfo>
-	     {
-		 new CultureInfo("en-US"),
-		 new CultureInfo("zh-CN"),
-		 new CultureInfo("zh-TW")
-	     };
+        options =>
+        {
+             var supportedCultures = new List<CultureInfo>
+             {
+                 new CultureInfo("en-US"),
+                 new CultureInfo("zh-CN"),
+                 new CultureInfo("zh-TW")
+             };
 
-	     options.DefaultRequestCulture = new RequestCulture(culture: "zh-TW", uiCulture: "zh-TW");
-	     options.SupportedCultures = supportedCultures;
-	     options.SupportedUICultures = supportedCultures;
-	});
+             options.DefaultRequestCulture = new RequestCulture(culture: "zh-TW", uiCulture: "zh-TW");
+             options.SupportedCultures = supportedCultures;
+             options.SupportedUICultures = supportedCultures;
+        });
 }
 public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
 {
@@ -1175,16 +1196,18 @@ public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerF
     var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
     app.UseRequestLocalization(locOptions.Value);
 }
-#+end_src
+```
 
-在根目錄建立 =Resources= 資料夾
-依照預設規則建立資源檔 =[views/controllers].[controller name].[action name].[language].resx=
-ex. =Views.Home.Index.zh-TW.resx=
+在根目錄建立 `Resources` 資料夾
+依照預設規則建立資源檔 `[views/controllers].[controller name].[action name].[language].resx`
+ex. `Views.Home.Index.zh-TW.resx`
 
-** How to use
+
+### How to use {#how-to-use}
 
 使用的方式為
-#+begin_src html
+
+```html
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 
@@ -1193,36 +1216,35 @@ ex. =Views.Home.Index.zh-TW.resx=
 
 <!-- 如果遇到顯示錯誤的狀況 -->
 @Localizer["welcome"].Value
-#+end_src
-測試的方式為在 URL 後面加入 =culture= 參數
-=http://localhost:5000/home/?culture=zh-tw=
+```
+
+測試的方式為在 URL 後面加入 `culture` 參數
+`http://localhost:5000/home/?culture=zh-tw`
 
 MVC Core 1.1 後面有支援在 URL 上加入語言選項
-ex. =http://localhost:5000/zh-tw/home/=
+ex. `http://localhost:5000/zh-tw/home/`
 
 不過目前環境是 1.0 所以就沒再研究了，應該是要用 ActionFilter 之類的，不過就算這樣還是沒辦法用 Default Route mapping，參考連結內有更完整的教學。
 
-** Reference
-[[https://docs.microsoft.com/en-us/aspnet/core/fundamentals/localization]]
-[[https://damienbod.com/2015/10/21/asp-net-5-mvc-6-localization/]]
+
+### Reference {#reference}
+
+<https://docs.microsoft.com/en-us/aspnet/core/fundamentals/localization>
+<https://damienbod.com/2015/10/21/asp-net-5-mvc-6-localization/>
 
 
-* Javascript 的 Arrow function                                   :javascript:
-:PROPERTIES:
-:EXPORT_FILE_NAME: this-in-arrow-function-in-javascript
-:EXPORT_DATE: <2017-01-22>
-:END:
+## Javascript 的 Arrow function <span class="tag"><span class="javascript">javascript</span></span> {#this-in-arrow-function-in-javascript}
 
 最近聽強者談論到在JS ES6 中使用 Arrow Function 要注意的事情，這事情跟 this 有關，趁這個機會對 this 做點了解。
 
 先來一張從 Crockford 大神演講中偷來的表
 
-| Invocation form | this                            |
-|-----------------+---------------------------------|
-| function        | the global object or undefined* |
-| method          | the object                      |
-| constructor     | the new object                  |
-| apply           | argument                        |
+| Invocation form | this                             |
+|-----------------|----------------------------------|
+| function        | the global object or undefined\* |
+| method          | the object                       |
+| constructor     | the new object                   |
+| apply           | argument                         |
 
 知道 this 跟其他物件導向式的語言不同，會依照呼叫形式不同而有所不同之後大概就已經理解一半了。
 
@@ -1230,7 +1252,7 @@ ex. =http://localhost:5000/zh-tw/home/=
 
 以 MDN 文件中的使用的範例為例
 
-#+begin_src javascript
+```javascript
 function Person() {
   // The Person() constructor defines `this` as an instance of itself.
   this.age = 0;
@@ -1243,13 +1265,13 @@ function Person() {
   }, 1000);
 }
 var p = new Person();
-#+end_src
+```
 
 直覺看上， growUp 中所指的 this 看起來像跟外層 this.age = 0 的 this 是一樣的，但實際上會依照表中的規則 this 會是 global or undefined。
 
 之後的解法或是一種 coding 習慣會是使用另外一個變數 that 來表示 this ，以確保 this 不會在可能沒注意到地方的被改掉。
 
-#+begin_src javascript
+```javascript
 function Person() {
   var that = this;
   that.age = 0;
@@ -1260,13 +1282,13 @@ function Person() {
     that.age++;
   }, 1000);
 }
-#+end_src
+```
 
 而後還有 funcion.bind(obj) 這種方式來解決這種可能會發生的問題。
 
 而 Arrow function 跟一般 function 不同地方在於他沒有 this。
 
-#+begin_src javascript
+```javascript
 function Person(){
   this.age = 0;
 
@@ -1276,35 +1298,33 @@ function Person(){
 }
 
 var p = new Person();
-#+end_src
+```
 
 以上的例子中由於 Arrow function 中沒有自己的 this，所以 this 依照 function scope 規則會是 this.age = 0 的 this。
 
 看來沒把 JS 大全看完很難說自己能用得好啊。
 
-** Reference:
-- [[https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions][Arrow function]]
-- [[https://www.youtube.com/watch?v=ya4UHuXNygM&list=PL7664379246A246CB&index=3][Crockford on JavaScript - Act III: Function the Ultimate]]
+
+### Reference: {#reference}
+
+-   [Arrow function](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
+-   [Crockford on JavaScript - Act III: Function the Ultimate](https://www.youtube.com/watch?v=ya4UHuXNygM&list=PL7664379246A246CB&index=3)
 
 
-* Virtual Function in C++                                               :cpp:
-:PROPERTIES:
-:EXPORT_FILE_NAME: virtual-function-in-cpp
-:EXPORT_DATE: <2016-12-18 Sun>
-:END:
+## Virtual Function in C++ <span class="tag"><span class="cpp">cpp</span></span> {#virtual-function-in-cpp}
 
 最近跟朋友談論到這樣的問題 「解構式應加上 virtual 關鍵字」
 (TL;DR 如果預期會有人繼承這個物件，請在解構式加上 virtual)
 
 上網查了一下發現挺有趣的所以在這裡記錄下來。
 
-
 virtual 關鍵字代表的意思是向其他人暗示，這個 function(method)，"應該"要被子類別覆寫(override)。方式是用子類別也用一樣的 function 名稱。
 
 也許這時候會有疑問，其實不加 virtual 也是可以的，C++ 有所謂 overload 機制。
 
 例如我有一個 Class A 跟 Class B 且 B 繼承 A。
-#+begin_src cpp
+
+```cpp
 class A {
   public:
     void sayHello() {
@@ -1320,24 +1340,24 @@ class B: public A {
       cout<<"hello from B"<<endl;
     }
 };
-#+end_src
+```
 
 然後這樣呼叫
 
-#+begin_src cpp
+```cpp
 A *a = new A();
 B *b = new B();
 a->sayHello(); // hello from A
 b->sayHello(); // hello from B
 b->hey(); // hey from A
-#+end_src
+```
 
 一切看起來都很正常，但是繼承體系下，要用子類別也是父類別的一種，也就是說可以用父類別指標指向子類別。
 
-#+begin_src cpp
+```cpp
 A *ab = new B();
 ab->sayHello() // hello from A
-#+end_src
+```
 
 有過 Java 經驗或許會直覺是 hello from B，畢竟不論被當成什麼東西，物件是什麼就該是什麼。這也是所謂的多型。
 但這樣的情況下 C++ 會印出的是 hello from A.
@@ -1350,120 +1370,111 @@ ab->sayHello() // hello from A
 
 另外 C++ 中並沒有像 Java 有所謂 abstract 或是 interface 的關鍵字，而是 pure virtual function。
 
-#+begin_src cpp
+```cpp
 virtual function foo() = 0;
-#+end_Src
+```
 
 挺有趣。
 
 
-* Claims-Based authentication in MVC Core     :asp_net_core:mvc_core:c_sharp:
-:PROPERTIES:
-:EXPORT_FILE_NAME: claims-based-authentication-in-mvc-core
-:EXPORT_DATE: <2016-11-30>
-:END:
+## Claims-Based authentication in MVC Core <span class="tag"><span class="asp_net_core">asp-net-core</span><span class="mvc_core">mvc-core</span><span class="c_sharp">c-sharp</span></span> {#claims-based-authentication-in-mvc-core}
 
 MVC5 以前時使用的 form authentication 在 MVC Core 被 Claims-based authentication 取代了。
 
 首先加入 Middleware.
 
-#+begin_src csharp
+```csharp
 public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory) {
     //略
     app.UseCookieAuthentication(new CookieAuthenticationOptions()
     {
-	AuthenticationScheme = "MyCoodieMiddlewareInstance",
-	LoginPath = new PathString(),
-	AccessDeniedPath = new PathString(),
-	AutomaticAuthenticate = true,
-	AutomaticChallenge = true
+        AuthenticationScheme = "MyCoodieMiddlewareInstance",
+        LoginPath = new PathString(),
+        AccessDeniedPath = new PathString(),
+        AutomaticAuthenticate = true,
+        AutomaticChallenge = true
     });
 }
-#+end_src
+```
 
 登入方式為
 
-#+begin_src csharp
+```csharp
 var myclaims = new List<Claim>(new Claim[] { new Claim("Id", user.Id.ToString())});
 var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(myclaims, "MyCookieMiddlewareInstance"));
 HttpContext.Authentication.SignInAsync("MyCookieMiddlewareInstance", claimPrincipal).Wait();
-#+end_src
+```
 
 登出方式
 
-#+begin_src csharp
+```csharp
 HttpContext.Authentication.SignOutAsync("MyCookieMiddlewareInstance").Wait();
-#+end_src
+```
 
 取得 Claim 內容
 
-#+begin_src csharp
+```csharp
 var userId = User.FindFirst("Id").Value;
-#+end_src
-
-** Reference
-[[https://docs.microsoft.com/en-us/aspnet/core/security/authentication/cookie]]
+```
 
 
-* How to boot into linux on v3-372 / 在 V3-372 上如何開機進入 Linux :linux:acer:v3_372:
-:PROPERTIES:
-:EXPORT_FILE_NAME: how-to-boot-into-linux-on-acer-v3-372
-:EXPORT_DATE: <2016-11-04>
-:END:
+### Reference {#reference}
+
+<https://docs.microsoft.com/en-us/aspnet/core/security/authentication/cookie>
+
+
+## How to boot into linux on v3-372 / 在 V3-372 上如何開機進入 Linux <span class="tag"><span class="linux">linux</span><span class="acer">acer</span><span class="v3_372">v3-372</span></span> {#how-to-boot-into-linux-on-acer-v3-372}
 
 There is not much information about this problem on Internet. Truns out it need more configuration than simply disable secure boot.
 
-1. Boot into BIOS (Press F2 on boot screen.)
-2. Swtich to boot tab.
-3. Make sure secure boot is enable.
-4. Switch to Security tab.
-5. Select "Select an UEFI file as trusted for executing".
-6. Select the proper .efi file. (Ex. EFI/ubuntu/grubx64.efi on ubuntu 16.10 64bit)
-7. Disable secure boot if you want.
-8. Save change and boot into BIOS again.
-9. You should see your boot option in boot tab now.
+1.  Boot into BIOS (Press F2 on boot screen.)
+2.  Swtich to boot tab.
+3.  Make sure secure boot is enable.
+4.  Switch to Security tab.
+5.  Select "Select an UEFI file as trusted for executing".
+6.  Select the proper .efi file. (Ex. EFI/ubuntu/grubx64.efi on ubuntu 16.10 64bit)
+7.  Disable secure boot if you want.
+8.  Save change and boot into BIOS again.
+9.  You should see your boot option in boot tab now.
 
 
-* 自訂字典檔案                                                          :osx:
-:PROPERTIES:
-:EXPORT_FILE_NAME: custom-autocorrent-dictionary
-:EXPORT_DATE: <2016-06-14 Tue>
-:END:
-[[/images/autocorrect.png]]
+## 自訂字典檔案 <span class="tag"><span class="osx">osx</span></span> {#custom-autocorrent-dictionary}
+
+![](/images/autocorrect.png)
 對於錯字修正一直都是又愛又恨，尤其是在要輸入特定的非單字的時候。OSX 在輸入完按空白鍵的時候就會進行錯字修正，在對於某些常常輸入的單字像是帳號或是 email 時，這個功能會造成極大的困擾，但錯字修正又是現代人不可或缺的方便功能。這時候可以使用建立使用者字典來避免這種狀況發生。
 在 OSX 裡面可以這樣建立使用者字典。
 
 在 terminal 環境輸入以下指令
 
-#+begin_src shell
+```shell
 open ~/Library/Spelling/LocalDictionary
-#+end_src
+```
 
 接下來在文字檔案內加入自己定義的單字即可。
 
 
-* No Fragment ， One Activity - Custom View 架構                    :android:
-:PROPERTIES:
-:EXPORT_FILE_NAME: android-no-fragment-architecture
-:EXPORT_DATE: <2016-05-24>
-:END:
+## No Fragment ， One Activity - Custom View 架構 <span class="tag"><span class="android">android</span></span> {#android-no-fragment-architecture}
 
-** 前言
+
+### 前言 {#前言}
 
 近期在接觸 Fragment 時，看見了 Square 工程師寫的反 Fragment 文章，在文章中也提出了新的做法，也就是用 Custom View 取代 Fragment 。文章對 Android 新手來說並不好懂，至少對我來說是這樣。多看幾遍之後，再搭配 Youtube 上，有高手在 JCConf 上介紹此架構的影片。應該是多少掌握了一些。在這裡簡單寫一下心得。
 
-** 架構
+
+### 架構 {#架構}
 
 基本上這個架構就是沿用 One Activity - Multiple Fragments 的架構，只是將 Fragment 用 Custom View 取代，不用 Fragment 的理由在Square文章及 JCConf 影片中都已經敘述很清楚。在這裡就不贅述了，自己並沒有很深入的用過 Fragment 所以沒什麼體會，頂多就是 Fragment 那看起來很恐怖的 Life cycle 吧。 Fragment 的高度複雜度讓 Google 在最近的 Google I/O 2016 上還開了一門專題專門在介紹 Fragment 的來龍去脈。
 
 架構上由單一 Activity 內裝一個名叫 Container 的 Custom View ，由 Container 抽換各種 View。
 
-** 範例
+
+### 範例 {#範例}
 
 原本想直接用 Square 的範例，不過用 LiveView 不夠傻瓜。
 這裡做一個在主畫面可以輸入名字，按下按鈕之後就可以跟你說 Hello 的 App 。
 
-** Activity
+
+### Activity {#activity}
 
 Activity要做的事情很簡單
 
@@ -1471,32 +1482,32 @@ Activity要做的事情很簡單
 建立存取 Container 的管道：建立存取 View 容器的管道。
 跟 Square 範例完全一樣
 
-#+begin_src java
+```java
 public class MainActivity extends Activity {
     private Container container;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
-	super.onCreate(savedInstanceState);
-	setContentView(R.layout.activity_main);
-	container = (Container) findViewById(R.id.container);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        container = (Container) findViewById(R.id.container);
     }
     @Override public void onBackPressed() {
-	boolean handled = container.onBackPressed();
-	if(!handled) {
-	    finish();
-	}
+        boolean handled = container.onBackPressed();
+        if(!handled) {
+            finish();
+        }
     }
     public Container getContainer() {
-	return container;
+        return container;
     }
 }
-#+end_src
+```
 
 建構式建立 View 並取得其中的 container 。
 在 onBackPressed() 中首先呼叫 container 的 onBackPressed 方法，並由 Container 回傳這個返回鍵是否是結束 App 的返回鍵。如果是結束 App 的返回鍵則呼叫 finish() 關閉這個 App.
  的 layout 也很簡單，就是把 Container 放進去。
 
-#+begin_src xml
+```xml
 <com.rdize.nofragmentexample.SinglePaneContainer
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -1504,69 +1515,70 @@ public class MainActivity extends Activity {
     android:layout_margin="16dp"
     android:id="@+id/container">
 </com.rdize.nofragmentexample.SinglePaneContainer>
-#+end_src
+```
 
 再來是 Container
 
-** Container
+
+### Container {#container}
 
 Container 要做的事情有
 
-1. 控制目前要顯示哪個畫面：因為會切換畫面 ，所以 Container 要做的事情就是在要切換畫面時，移除目前的 View ，插入新的 View。
-2. 處理返回鍵事件： 當使用者按下返回鍵時， 移除目前的 View ，插入上一個 View
-3. 判斷是否這是 Root View： 可以告訴 Activity 是不是該關閉App了。
+1.  控制目前要顯示哪個畫面：因為會切換畫面 ，所以 Container 要做的事情就是在要切換畫面時，移除目前的 View ，插入新的 View。
+2.  處理返回鍵事件： 當使用者按下返回鍵時， 移除目前的 View ，插入上一個 View
+3.  判斷是否這是 Root View： 可以告訴 Activity 是不是該關閉App了。
 
 在 Square 的範例中要展示支援平板，所以把 Container 抽象成一個介面，不過這樣也比較清楚。
 
-#+begin_src java
+```java
 public interface Container {
     void showName(String name);
     boolean onBackPressed();
 }
-#+end_src
+```
 
 showName 做的是切換 View 並顯示輸入的名字。
 onBackPressed 就是移除 View 並回傳是否已經是 root view 了。
 
 Square 的範例將首頁嵌入 Container 中讓程式碼比較單純，這裡用比較通用的做法。
 
-#+begin_src java
+```java
 public class SinglePaneContainer extends LinearLayout implements Container {
     MainView mainView;
 
     public SinglePaneContainer(Context context, AttributeSet attrs) {
-	super(context, attrs);
+        super(context, attrs);
     }
 
     @Override protected void onFinishInflate() {
-	super.onFinishInflate();
-	View.inflate(getContext(), R.layout.main_view, this);
-	mainView = (MainView) getChildAt(0);
+        super.onFinishInflate();
+        View.inflate(getContext(), R.layout.main_view, this);
+        mainView = (MainView) getChildAt(0);
     }
 
     @Override public boolean onBackPressed() {
-	if(!rootViewAttached()) {
-	    removeViewAt(0);
-	    addView(mainView);
-	    return true;
-	}
-	return false;
+        if(!rootViewAttached()) {
+            removeViewAt(0);
+            addView(mainView);
+            return true;
+        }
+        return false;
     }
 
     @Override public void showName(String name) {
-	TransitionManager.beginDelayedTransition(this);
-	if(rootViewAttached()) {
-	    removeViewAt(0);
-	    View.inflate(getContext(), R.layout.hello_view, this);
-	}
-	HelloView helloView = (HelloView) getChildAt(0);
-	helloView.setMessage(name);
+        TransitionManager.beginDelayedTransition(this);
+        if(rootViewAttached()) {
+            removeViewAt(0);
+            View.inflate(getContext(), R.layout.hello_view, this);
+        }
+        HelloView helloView = (HelloView) getChildAt(0);
+        helloView.setMessage(name);
     }
     private boolean rootViewAttached() {
-	return mainView.getParent() != null;
+        return mainView.getParent() != null;
     }
 }
-#+end_src
+```
 
 SinglePaneContainer 繼承 LinearLayout 所以也是一個 CustomView。除了CustomView要做的事情外還要處理 Container 該做的。
 
@@ -1579,61 +1591,62 @@ rootViewAttached 是因為這裡使用單純兩層式架構(只有兩個View)，
 showName 跟 onBackPressed 一樣，移除當前的 View 並插入新的 View 。跟前面一樣因為只會有一個 View 所以用 getChildAt(0) 就可以取出，接著可以對 View 做一些設定。另外加上一行
 TransitionManager.beginDelayedTransition(this); 就可以用漂亮的轉場效果了真好。
 
-** CustomView
+
+### CustomView {#customview}
 
 在 Container 中的 R.layout.main_view 跟 R.layout.hello_view 做法一樣，用 CustomView 把想要呈現的畫面包起來。
 
-#+begin_src xml
+```xml
 <com.rdize.nofragmentexample.MainView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <EditText
-	android:id="@+id/main_view_edittext"
-	android:layout_width="match_parent"
-	android:layout_height="wrap_content" />
+        android:id="@+id/main_view_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <Button
-	android:id="@+id/main_view_button"
-	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:text="Button"/>
+        android:id="@+id/main_view_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button"/>
 </com.rdize.nofragmentexample.MainView>
-#+end_src
+```
 
 CustomView 雖然也有很多東西要學，但這裡只需要知道兩件事情就好
 
-1. 建構式傳入 Context 與 AttributeSet。
-2. 在 onFinishInflate 方法後可以存取 CustomView 中的 View。
+1.  建構式傳入 Context 與 AttributeSet。
+2.  在 onFinishInflate 方法後可以存取 CustomView 中的 View。
 
 MainView 的程式碼如下
 
-#+begin_src java
+```java
 public class MainView extends LinearLayout {
     Button button;
     public MainView(Context context, AttributeSet attrs) {
-	super(context, attrs);
+        super(context, attrs);
     }
 
     @Override protected void onFinishInflate() {
-	super.onFinishInflate();
-	button = (Button) findViewById(R.id.main_view_button);
-	button.setOnClickListener(new OnClickListener() {
-	    @Override
-	    public void onClick(View v) {
-		MainActivity mainActivity = (MainActivity) getContext();
-		EditText name = (EditText) findViewById(R.id.main_view_edittext);
-		mainActivity.getContainer().showName(name.getText().toString());
-	    }
-	});
+        super.onFinishInflate();
+        button = (Button) findViewById(R.id.main_view_button);
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity mainActivity = (MainActivity) getContext();
+                EditText name = (EditText) findViewById(R.id.main_view_edittext);
+                mainActivity.getContainer().showName(name.getText().toString());
+            }
+        });
     }
 }
-#+end_src
+```
 
 由於是單一 Activity 配 Container ，所以可以只要用 getContext() 就可拿到 Activity。
 
 而 HelloView 也一樣在先在 layout 用 CustomView 把要呈現的畫面包起來。
 
-#+begin_src xml
+```xml
 <com.rdize.nofragmentexample.HelloView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
@@ -1641,73 +1654,76 @@ public class MainView extends LinearLayout {
     android:layout_height="match_parent"
     >
     <TextView
-	android:id="@+id/hello_view_welcome_message"
-	android:layout_width="match_parent"
-	android:layout_height="wrap_content" />
+        android:id="@+id/hello_view_welcome_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </com.rdize.nofragmentexample.HelloView>
-#+end_src
+```
 
 然後在照著前面的方法完成 CustomView
 
-#+begin_src java
+```java
 public class HelloView extends LinearLayout {
     TextView welcomeMessage;
 
     public HelloView(Context context, AttributeSet attrs) {
-	super(context, attrs);
+        super(context, attrs);
     }
 
     @Override protected void onFinishInflate() {
-	super.onFinishInflate();
-	welcomeMessage = (TextView) findViewById(R.id.hello_view_welcome_message);
+        super.onFinishInflate();
+        welcomeMessage = (TextView) findViewById(R.id.hello_view_welcome_message);
     }
 
     public void setMessage(String name) {
-	String message = "Hello " + name;
-	welcomeMessage.setText(message);
+        String message = "Hello " + name;
+        welcomeMessage.setText(message);
     }
 }
-#+end_src
+```
 
-** 後記
+
+### 後記 {#後記}
 
 這樣的做法跟 Fragment 比起來看起來是簡單許多，甚至比最初的 Multiple Activities 架構還要簡單，要做到在不同 View 傳值也比較容易，甚至要在各個 View 共用值也是可以。不需要為了簡單的功能使用很複雜的 API，另外還有一個優點是擺脫 API 版本的相依，因為只有用到最基本的 View API 而已。
 
-** 延伸
+
+### 延伸 {#延伸}
 
 以上只是簡陋的範例，可以繼續改進的有幾點。
 
-*** 通用化
+
+#### 通用化 {#通用化}
 
 在 Container interface 的定義是針對範例所設計，要用在更廣泛的地方也許要將 showName 改為 addView 之類的做法會更恰當。
 
-*** MVP
+
+#### MVP {#mvp}
 
 在 Square 文章的範例中有示範如何進一步將 CustomView 中的邏輯部分分割出來成為 Presenter ， 讓程式碼更清楚。
 
-*** BackStack 管理
+
+#### BackStack 管理 {#backstack-管理}
 
 範例只有兩個 View ，而且深度也不深，實務上會有更多的 View 深度也會很深(一個畫面接著一個畫面) 這時候從哪裡來就是一件要處理的事情了， Square 寫了一個 flow 專門做這件事情，如果不想要把搞太複雜也可以自己處理。
 
-** github
 
-[[https://github.com/randomdize/noFragmentExample][noFragmentExample]]
+### github {#github}
 
-** Reference
-
-[[https://corner.squareup.com/2014/10/advocating-against-android-fragments.html][Advocating Against Android Fragments]] - (英文) 原 Square 文章
-[[https://www.youtube.com/watch?v=soQq4PWHzKc][[JCConf 2015] Android One Activity, No fragment 架構 by Nevin - R2 Day2-2]] - (中文)
+[noFragmentExample](https://github.com/randomdize/noFragmentExample)
 
 
-* Spotify 卡在歌手歌曲或專輯讀取畫面解決方法                    :osx:spotify:
-:PROPERTIES:
-:EXPORT_FILE_NAME: fix-spotify-loading-stuck-problem
-:EXPORT_DATE: <2016-03-31>
-:END:
+### Reference {#reference}
+
+[Advocating Against Android Fragments](https://corner.squareup.com/2014/10/advocating-against-android-fragments.html) - (英文) 原 Square 文章
+[[JCConf 2015] Android One Activity, No fragment 架構 by Nevin - R2 Day2-2](https://www.youtube.com/watch?v=soQq4PWHzKc) - (中文)
+
+
+## Spotify 卡在歌手歌曲或專輯讀取畫面解決方法 <span class="tag"><span class="osx">osx</span><span class="spotify">spotify</span></span> {#fix-spotify-loading-stuck-problem}
 
 Spotify 一直是合法聽免費音樂的最佳管道，只是最近遇到這個問題。
 
-[[/images/loading.png]]
+{{< figure src="/images/loading.png" >}}
 
 在歌曲歌手或專輯介面會一直卡在讀取畫面，其他功能卻是正常的。
 
@@ -1716,124 +1732,114 @@ Spotify 一直是合法聽免費音樂的最佳管道，只是最近遇到這個
 
 首先要先知道快取檔案放在電腦的哪裡
 
-1. 右上角下拉式選單選擇設定
-2. 最下方顯示進階設定
-3. 找到快取路徑
+1.  右上角下拉式選單選擇設定
+2.  最下方顯示進階設定
+3.  找到快取路徑
 
 知道路徑之後就可以開始清除快取了
 
-1. 關閉 Spotify
-2. 至快取路徑將 PersistentCache 內內容刪除。
-3. 啟動 Spotify
+1.  關閉 Spotify
+2.  至快取路徑將 PersistentCache 內內容刪除。
+3.  啟動 Spotify
 
 Spotify 應該會重新建立快取，問題就解決了。
 
 
-* 華碩ZenUI移除ZenLife                                               :zen_ui:
-:PROPERTIES:
-:EXPORT_FILE_NAME: how-to-remove-zenlife
-:EXPORT_DATE: <2016-03-07>
-:END:
+## 華碩ZenUI移除ZenLife <span class="tag"><span class="zen_ui">zen-ui</span></span> {#how-to-remove-zenlife}
 
 在最近的 ZenUI Launcher 更新中加入了新功能 ZenLife Beta，有點像是 HTC BlinkFeed 或是 Google Now Launcher 的 Google Now 介面。個人是不排斥新功能，不過如果這功能不能用就是另外一回事了。
 
-[[/images/zenlife_connection_error.png]]
+{{< figure src="/images/zenlife_connection_error.png" >}}
 
 既然連不上線就把功能關閉也罷，結果找了一陣子才找到要怎麼關閉。
 
 我想第一反應一定是右上角的設定按鈕，可惜不是，那邊是設定要顯示哪些資訊的設定畫面。
 
 如果要關閉要這樣關：
-1. 先找到桌面設定，可以從主畫面用向上手勢找到，這裡我是從App清單的右上角選單開啟。
-   [[/images/launcher_setting_screen_1.png]]
 
-2. 點選主畫面
-   [[/images/launcher_setting_screen_2.png]]
+1.  先找到桌面設定，可以從主畫面用向上手勢找到，這裡我是從App清單的右上角選單開啟。
+    ![](/images/launcher_setting_screen_1.png)
 
-3. 將ZenLife取消勾選
-   [[/images/launcher_setting_screen_3.png]]
+2.  點選主畫面
+    ![](/images/launcher_setting_screen_2.png)
+
+3.  將ZenLife取消勾選
+    ![](/images/launcher_setting_screen_3.png)
 
 如此一來就可以把ZenLife關閉了。
 
 
-* 用 git 與 github 帳號連結                                      :git:github:
-:PROPERTIES:
-:EXPORT_FILE_NAME: link-github-user-to-git
-:EXPORT_DATE: <2016-01-13>
-:END:
+## 用 git 與 github 帳號連結 <span class="tag"><span class="git">git</span><span class="github">github</span></span> {#link-github-user-to-git}
 
 最近在github上查看Commit歷史紀錄時發現這個。
-[[/images/not-link.png]]
+![](/images/not-link.png)
 我預期應該要長這個樣子
-[[/images/link.png]]
+![](/images/link.png)
 
 原本以為在push到github時輸入帳號密碼就會紀錄是誰push的。不過上網Google了一下才發現原來是github會依照commit的email來連結帳號。
 
-沒發現是因為過去都會安裝 [[https://desktop.github.com][github-desktop]] ，在github-desktop登入後程式就會自動設定好了，而這次因為沒有安裝所以就沒有設定。在未設定email的情況下git會產生一個local的email。所以github對應不到就直接拿commit username來當基準了。
+沒發現是因為過去都會安裝 [github-desktop](https://desktop.github.com) ，在github-desktop登入後程式就會自動設定好了，而這次因為沒有安裝所以就沒有設定。在未設定email的情況下git會產生一個local的email。所以github對應不到就直接拿commit username來當基準了。
 
 解決的方式要在本機將github上註冊的email建立起來，github網頁上上是這樣寫
-#+begin_src shell
+
+```shell
 git config --global user.email "your_email@example.com"
-#+end_src
+```
+
 設定完後可以這樣檢查
 
-#+begin_src shell
+```shell
 git config --global user.email
-#+end_Src
+```
+
 出現設定的email就成功了。
 
 這樣是設定全域的email，也可以針對不同的git資料夾建立個別的email，在該資料夾中把指令的--global移除即可。
 
 為什麼設定email很重要呢？如果有參與其他開源專案的話，沒有與github帳號連結是不會在歷史紀錄中顯示出來的。無法在其他專案中留下足跡還是有點難過的啊。
 
-** Reference:
-- [[https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address][Setting your email in Git]]
+
+### Reference: {#reference}
+
+-   [Setting your email in Git](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address)
 
 
-* Windows10 TortoiseGit icon未顯示問題                              :windows:
-:PROPERTIES:
-:EXPORT_FILE_NAME: fix-tortoisegit-icon-display-problem-in-windows-10
-:EXPORT_DATE: <2015-10-28>
-:END:
+## Windows10 TortoiseGit icon未顯示問題 <span class="tag"><span class="windows">windows</span></span> {#fix-tortoisegit-icon-display-problem-in-windows-10}
 
 雖然使用Git最好的方式是使用Command-Line，而這也是自己在Unix-like環境下的做法。不過在Windows底下自己依然是比較習慣使用GUI介面。而TortoiseGit是目前用最順手的。
 而這次在Windows10安裝完TortoiseGit後卻發現那方便的確認status的小icon消失了。實在是太不方便。上網找了解法後記在這裡，畢竟未來Windows還是無法避免要去用的。而Git對程式設計師來說又是如此重要。
 
 ＊能盡量用GUI就用GUI，算是個Windows腦袋
 
-1. 進入TortoiseGit 設定選單
-2. 在Icon Overlay中的Overlay Handlers選擇"Start registry editor"
-3. 將"ShellIconOverlayIdentifiers"中TortoiseGit相關檔案提升到最上層。
+1.  進入TortoiseGit 設定選單
+2.  在Icon Overlay中的Overlay Handlers選擇"Start registry editor"
+3.  將"ShellIconOverlayIdentifiers"中TortoiseGit相關檔案提升到最上層。
+
 註：Windows10很賊，將Onedrive跟Skydrive前面補了一個空格所以永遠都在最上層。那我們也將TortoiseGit的檔案也補空白和0來確保這些檔案在最上層
-4. 進入工作管理員把"windows檔案總管"和"TortoiseGit status cache"強制關閉
-5. 重新啟動"windows檔案總管"和"TortoiseGit status cache" （個人是直接重新啟動電腦）
-6. 小icon應該會出現了。 :)
+
+1.  進入工作管理員把"windows檔案總管"和"TortoiseGit status cache"強制關閉
+2.  重新啟動"windows檔案總管"和"TortoiseGit status cache" （個人是直接重新啟動電腦）
+3.  小icon應該會出現了。 :)
 
 
-* OSX 10.11 El Captain 與Homebrew 問題修正                              :osx:
-:PROPERTIES:
-:EXPORT_FILE_NAME: fix-homebrew-on-el-captian
-:EXPORT_DATE: <2015-10-02>
-:END:
+## OSX 10.11 El Captain 與Homebrew 問題修正 <span class="tag"><span class="osx">osx</span></span> {#fix-homebrew-on-el-captian}
+
 在10.11中導入新的機制"System Integrity Protection"，所以會導致homebrew無法正常運作。這是在Beta期間就做的更動，所以網路上已經有對應的解法了。
 
 這份文件是針對升級的homebrew使用者的
 
-[[https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/El_Capitan_and_Homebrew.md][El Capitan & Homebrew]]
+[El Capitan &amp; Homebrew](https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/El_Capitan_and_Homebrew.md)
 
 
-* OSX 10.11 El Captain 重新啟用字典手勢                                 :osx:
-:PROPERTIES:
-:EXPORT_FILE_NAME: re-enable-dictionary-gesture-on-osx
-:EXPORT_DATE: <2015-10-01 Thu>
-:END:
+## OSX 10.11 El Captain 重新啟用字典手勢 <span class="tag"><span class="osx">osx</span></span> {#re-enable-dictionary-gesture-on-osx}
 
 更新完10.11 El captain 之後感覺不錯，速度變快了、字體變漂亮了（尤其是中文字體）。不過在上網時習慣用的三指點選字典手勢竟然沒反應了。Google了一陣子後找到了解法。
 
-1. 進入"系統偏好設定"
-   [[/images/system-preferences.png]]
-2. 進入"觸控板設定"
-   [[/images/trackpad.png]]
-3. 重新啟用"三指"的功能
-   [[/images/3finger.png]]
+1.  進入"系統偏好設定"
+    ![](/images/system-preferences.png)
+2.  進入"觸控板設定"
+    ![](/images/trackpad.png)
+3.  重新啟用"三指"的功能
+    ![](/images/3finger.png)
+
 不知道為什麼在El Captain中這個預設被拿掉了，不過只要改個設定就可以叫回來真是太好了。
