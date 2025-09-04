@@ -24,12 +24,12 @@ draft = false
 
 中斷後有幾個基本操作，就跟大部分的 debugger 差不多。
 
-```nil
-c - 相當於 resume
-d - 相當於 step in
-b - 相當於 step over
-e - eval，相當於觀察變數或是可以直接修改
-```
+| 操作 | 說明                 |
+|----|--------------------|
+| c  | 相當於 resume        |
+| d  | 相當於 step in       |
+| b  | 相當於 step over     |
+| e  | eval，相當於觀察變數或是可以直接修改 |
 
 
 ## emacs 中的 shell 及 shell-command {#emacs-中的-shell-及-shell-command}
