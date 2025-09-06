@@ -1,6 +1,45 @@
 #+hugo_base_dir: ../
 
-* 處理 emacs shell command 抓不到 nix-direnv 的問題  :nix:home_manager:emacs:direnv:zsh:
+* 處理 emacs 讀不到主題的問題                                         :emacs:
+:PROPERTIES:
+:EXPORT_FILE_NAME: note-about-fixing-loading-theme-issue-in-emacs
+:EXPORT_DATE: <2025-09-06>
+:END:
+
+一般來說如果在 emacs 套用主題都會直接使用內建的套件管理器直接從社群維護的資源庫 mepla 下載。不過如果是比較新的主題或是有熱心人士從其他平台移植的主題，多數情況會是以檔案的方式分享，而且完整度可能就不會這麼高。有時候就會遇到跑不起來的問題，而錯誤訊息只有「讀取失敗」，甚至會是沒有錯誤訊息但在 `M-x load-theme `就是沒出現選項這樣，這邊記錄一下簡單的障礙排除。
+
+首先先用 `describe-variable (C-h v)` 確認 `load-path` 跟 `custom-theme-load-path`
+是不是都有該主題的位置。
+
+如果沒有的話，就變成需要手動讀取
+#+begin_src emacs-lisp
+  (load-file "{file_path}")
+  (add-to-list 'custom-theme-laod-path "{file_path}")
+#+end_src  
+
+再來看看原始碼，這邊參考一下 emacs 的說明手冊
+#+begin_quote
+A Custom theme file should be named foo-theme.el, where foo is the theme name. The first Lisp form in the file should be a call to deftheme, and the last form should be a call to provide-theme. 
+#+end_quote
+
+幾個要點
+- 檔案名稱的結尾必須是 `-theme`
+- 從 deftheme 開始，以 provide-theme 結束，有些人會用 `autothemer` 的 `autothemer-deftheme`，這邊就要額外安裝 `autothemer`
+- 注意一下有沒有 autoload
+#+begin_src emacs-lisp
+  ;;;###autoload
+  (and load-file-name
+       (boundp 'custom-theme-load-path)
+       (add-to-list 'custom-theme-load-path
+  		  (file-name-as-directory
+  		   (file-name-directory load-file-name))))
+#+end_src
+
+要是沒有 autoload 這一段的話，就變成要用上面的方法手動讀取。
+
+如果不想要手動讀取的話，是可以直接把上面的程式碼直接加進去就好了。
+
+* 處理 emacs shell command 抓不到 nix-direnv 的問題 :nix:home_manager:emacs:direnv:zsh:
 :PROPERTIES:
 :EXPORT_FILE_NAME: fix-shell-command-path-in-emacs-with-nix-direnv
 :EXPORT_DATE: <2025-09-02>
@@ -20,13 +59,12 @@
 
 中斷後有幾個基本操作，就跟大部分的 debugger 差不多。
 
-| 操作 | 說明                             |
-|-----+---------------------------------|
-| c   | 相當於 resume                    |
-| d   | 相當於 step in                   |
-| b   | 相當於 step over                 |
-| e   | eval，相當於觀察變數或是可以直接修改 |
-
+| 操作 | 說明                                 |
+|------+--------------------------------------|
+| c    | 相當於 resume                        |
+| d    | 相當於 step in                       |
+| b    | 相當於 step over                     |
+| e    | eval，相當於觀察變數或是可以直接修改 |
 
 ** emacs 中的 shell 及 shell-command
 回到根本變成是要了解 emacs 是怎麼操作 shell 的，這邊會遇到兩個相關的變數 `process-environment` 以及 `exec-path`，前者決定由 emacs 啟動的 subprocess 的環境變數，後者則是相當於在 emacs 環境中的 `PATH`。容易有疑問的地方會是 `process-environment` 中的 `PATH` 跟 `exec-path` 的區別。自己的理解會是 `exec-path` 決定 emacs 可以看到哪些 subprocess 可以被執行，而執行之後的環境變數則是由 `process-environment` 決定。基本上兩個地方的值應該要是相同的才是，但概念上是脫鉤的。
