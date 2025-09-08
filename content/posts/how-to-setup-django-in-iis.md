@@ -30,7 +30,7 @@ draft = false
 5.  完整路徑為python執行檔位置如： `<python安裝路徑>\python.exe` 引數為 wfastcgi.py 如： `<python安裝路徑>\lib\site-packages\wfastcgi.py`
 6.  新增網站
 7.  `網站設定頁面中 -> IIS -> 處理常式對應 -> 新增模組對應`
-8.  要求路徑： `*` ，模組： `FastCgiModule` ，執行檔： `` <python安裝路徑>\python.exe|<python安裝路徑>\lib\site-packages\wfastcgi.py` `` ，名稱： `Django Handler` （或是隨意）
+8.  要求路徑： `*` ，模組： `FastCgiModule` ，執行檔： `<python安裝路徑>\python.exe|<python安裝路徑>\lib\site-packages\wfastcgi.py` ，名稱： `Django Handler` （或是隨意）
 9.  要求限制 -&gt; 取消勾選 `只有當要求對應到下列項目時才啟動處理常式`
 10. IIS manager 可能會問你是否要建立 fastcgi 應用程式，選否 (選是應該也是可以)
 11. 看一下網站資料夾下面有無 `web.config` ，參考下面的範例，如果前面有照著做應該只要加入 appSettings 即可。
@@ -40,21 +40,21 @@ draft = false
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
     <configuration>
-      <system.webServer>
-          <handlers>
-              <add name="Django Handler"
-                   path="*"
-                   verb="*"
-                   modules="FastCgiModule"
-                   scriptProcessor="<python安裝路徑>python.exe|<python安裝路徑>\Lib\site-packages\wfastcgi.py"
-                   resourceType="Unspecified" />
-          </handlers>
-      </system.webServer>
-      <appSettings>
-          <add key="WSGI_HANDLER" value="django.core.wsgi.get_wsgi_application()" />
-          <add key="PYTHONPATH" value="<網站資料夾路徑>" />
-          <add key="DJANGO_SETTINGS_MODULE" value="<Django App>.settings" />
-      </appSettings>
+        <system.webServer>
+            <handlers>
+                <add name="Django Handler"
+                     path="*"
+                     verb="*"
+                     modules="FastCgiModule"
+                     scriptProcessor="<python安裝路徑>python.exe|<python安裝路徑>\Lib\site-packages\wfastcgi.py"
+                     resourceType="Unspecified" />
+            </handlers>
+        </system.webServer>
+        <appSettings>
+            <add key="WSGI_HANDLER" value="django.core.wsgi.get_wsgi_application()" />
+            <add key="PYTHONPATH" value="<網站資料夾路徑>" />
+            <add key="DJANGO_SETTINGS_MODULE" value="<Django App>.settings" />
+        </appSettings>
     </configuration>
 ```
 

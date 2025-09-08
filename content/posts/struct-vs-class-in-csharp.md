@@ -6,7 +6,7 @@ tags = ["cpp", "c-sharp"]
 draft = false
 +++
 
-前陣子因為個人主張\`用 class 取代 struct\`而討論到 csharp 中 struct 跟 class 有什麼不同。
+前陣子因為個人主張=用 class 取代 struct=而討論到 csharp 中 struct 跟 class 有什麼不同。
 
 ```csharp
 struct foo
@@ -53,25 +53,25 @@ class Program
 {
     static void Main(string[] args)
     {
-      structTest iAmStruct = new structTest
-      {
-          value = 1234;
-      }
-      classTest iAmClass = new classTest
-      {
-          value = 5678;
-      }
-      // iAmStruct.value = 1234, iAmClass.value = 5678
+        structTest iAmStruct = new structTest
+        {
+            value = 1234;
+        }
+        classTest iAmClass = new classTest
+        {
+            value = 5678;
+        }
+        // iAmStruct.value = 1234, iAmClass.value = 5678
 
-      // 指定到另外一個變數
-      structTest iAmAnotherStruct = iAmStruct;
-      classTest iAmAnotherClass = iAmClass;
+        // 指定到另外一個變數
+        structTest iAmAnotherStruct = iAmStruct;
+        classTest iAmAnotherClass = iAmClass;
 
-      // 改一下數值
-      iAmAnotherStruct.value = 0;
-      iAmAnotherClass.value = 0;
+        // 改一下數值
+        iAmAnotherStruct.value = 0;
+        iAmAnotherClass.value = 0;
 
-      // iAmStruct.value = 1234, iAmClass.value = 0
+        // iAmStruct.value = 1234, iAmClass.value = 0
     }
 }
 ```

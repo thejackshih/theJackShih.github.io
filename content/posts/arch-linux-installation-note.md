@@ -80,7 +80,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 ## 設定開機 {#設定開機}
 
 如果有找不到 bootloader 的情況可能是這邊BIOS要設定
-參照 [How to boot into linux on v3-372 / 在 V3-372 上如何開機進入 Linux]({{< relref "how-to-boot-into-linux-on-acer-v3-372" >}})
+參照 [How to boot into linux on v3-372 / 在 V3-372 上如何開機進入 Linux]({{<relref "how-to-boot-into-linux-on-acer-v3-372">}})
 
 
 ## 安裝後 {#安裝後}

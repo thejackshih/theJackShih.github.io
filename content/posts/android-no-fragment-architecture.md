@@ -37,18 +37,18 @@ public class MainActivity extends Activity {
     private Container container;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
-      super.onCreate(savedInstanceState);
-      setContentView(R.layout.activity_main);
-      container = (Container) findViewById(R.id.container);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        container = (Container) findViewById(R.id.container);
     }
     @Override public void onBackPressed() {
-      boolean handled = container.onBackPressed();
-      if(!handled) {
-          finish();
-      }
+        boolean handled = container.onBackPressed();
+        if(!handled) {
+            finish();
+        }
     }
     public Container getContainer() {
-      return container;
+        return container;
     }
 }
 ```
@@ -97,35 +97,35 @@ public class SinglePaneContainer extends LinearLayout implements Container {
     MainView mainView;
 
     public SinglePaneContainer(Context context, AttributeSet attrs) {
-      super(context, attrs);
+        super(context, attrs);
     }
 
     @Override protected void onFinishInflate() {
-      super.onFinishInflate();
-      View.inflate(getContext(), R.layout.main_view, this);
-      mainView = (MainView) getChildAt(0);
+        super.onFinishInflate();
+        View.inflate(getContext(), R.layout.main_view, this);
+        mainView = (MainView) getChildAt(0);
     }
 
     @Override public boolean onBackPressed() {
-      if(!rootViewAttached()) {
-          removeViewAt(0);
-          addView(mainView);
-          return true;
-      }
-      return false;
+        if(!rootViewAttached()) {
+            removeViewAt(0);
+            addView(mainView);
+            return true;
+        }
+        return false;
     }
 
     @Override public void showName(String name) {
-      TransitionManager.beginDelayedTransition(this);
-      if(rootViewAttached()) {
-          removeViewAt(0);
-          View.inflate(getContext(), R.layout.hello_view, this);
-      }
-      HelloView helloView = (HelloView) getChildAt(0);
-      helloView.setMessage(name);
+        TransitionManager.beginDelayedTransition(this);
+        if(rootViewAttached()) {
+            removeViewAt(0);
+            View.inflate(getContext(), R.layout.hello_view, this);
+        }
+        HelloView helloView = (HelloView) getChildAt(0);
+        helloView.setMessage(name);
     }
     private boolean rootViewAttached() {
-      return mainView.getParent() != null;
+        return mainView.getParent() != null;
     }
 }
 ```
@@ -152,14 +152,14 @@ TransitionManager.beginDelayedTransition(this); 就可以用漂亮的轉場效�
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <EditText
-      android:id="@+id/main_view_edittext"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content" />
+        android:id="@+id/main_view_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <Button
-      android:id="@+id/main_view_button"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="Button"/>
+        android:id="@+id/main_view_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button"/>
 </com.rdize.nofragmentexample.MainView>
 ```
 
@@ -174,20 +174,20 @@ MainView 的程式碼如下
 public class MainView extends LinearLayout {
     Button button;
     public MainView(Context context, AttributeSet attrs) {
-      super(context, attrs);
+        super(context, attrs);
     }
 
     @Override protected void onFinishInflate() {
-      super.onFinishInflate();
-      button = (Button) findViewById(R.id.main_view_button);
-      button.setOnClickListener(new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-              MainActivity mainActivity = (MainActivity) getContext();
-              EditText name = (EditText) findViewById(R.id.main_view_edittext);
-              mainActivity.getContainer().showName(name.getText().toString());
-          }
-      });
+        super.onFinishInflate();
+        button = (Button) findViewById(R.id.main_view_button);
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity mainActivity = (MainActivity) getContext();
+                EditText name = (EditText) findViewById(R.id.main_view_edittext);
+                mainActivity.getContainer().showName(name.getText().toString());
+            }
+        });
     }
 }
 ```
@@ -204,9 +204,9 @@ public class MainView extends LinearLayout {
     android:layout_height="match_parent"
     >
     <TextView
-      android:id="@+id/hello_view_welcome_message"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content" />
+        android:id="@+id/hello_view_welcome_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </com.rdize.nofragmentexample.HelloView>
 ```
 
@@ -217,17 +217,17 @@ public class HelloView extends LinearLayout {
     TextView welcomeMessage;
 
     public HelloView(Context context, AttributeSet attrs) {
-      super(context, attrs);
+        super(context, attrs);
     }
 
     @Override protected void onFinishInflate() {
-      super.onFinishInflate();
-      welcomeMessage = (TextView) findViewById(R.id.hello_view_welcome_message);
+        super.onFinishInflate();
+        welcomeMessage = (TextView) findViewById(R.id.hello_view_welcome_message);
     }
 
     public void setMessage(String name) {
-      String message = "Hello " + name;
-      welcomeMessage.setText(message);
+        String message = "Hello " + name;
+        welcomeMessage.setText(message);
     }
 }
 ```

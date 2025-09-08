@@ -6,9 +6,9 @@
 :EXPORT_DATE: <2025-09-06>
 :END:
 
-一般來說如果在 emacs 套用主題都會直接使用內建的套件管理器直接從社群維護的資源庫 mepla 下載。不過如果是比較新的主題或是有熱心人士從其他平台移植的主題，多數情況會是以檔案的方式分享，而且完整度可能就不會這麼高。有時候就會遇到跑不起來的問題，而錯誤訊息只有「讀取失敗」，甚至會是沒有錯誤訊息但在 `M-x load-theme `就是沒出現選項這樣，這邊記錄一下簡單的障礙排除。
+一般來說如果在 emacs 套用主題都會直接使用內建的套件管理器直接從社群維護的資源庫 mepla 下載。不過如果是比較新的主題或是有熱心人士從其他平台移植的主題，多數情況會是以檔案的方式分享，而且完整度可能就不會這麼高。有時候就會遇到跑不起來的問題，而錯誤訊息只有「讀取失敗」，甚至會是沒有錯誤訊息但在 =M-x load-theme= 就是沒出現選項這樣，這邊記錄一下簡單的障礙排除。
 
-首先先用 `describe-variable (C-h v)` 確認 `load-path` 跟 `custom-theme-load-path`
+首先先用 =describe-variable (C-h v)= 確認 =load-path= 跟 =custom-theme-load-path=
 是不是都有該主題的位置。
 
 如果沒有的話，就變成需要手動讀取
@@ -23,8 +23,8 @@ A Custom theme file should be named foo-theme.el, where foo is the theme name. T
 #+end_quote
 
 幾個要點
-- 檔案名稱的結尾必須是 `-theme`
-- 從 deftheme 開始，以 provide-theme 結束，有些人會用 `autothemer` 的 `autothemer-deftheme`，這邊就要額外安裝 `autothemer`
+- 檔案名稱的結尾必須是 =-theme=
+- 從 deftheme 開始，以 provide-theme 結束，有些人會用 =autothemer= 的 =autothemer-deftheme= ，這邊就要額外安裝 =autothemer=
 - 注意一下有沒有 autoload
 #+begin_src emacs-lisp
   ;;;###autoload
@@ -47,15 +47,15 @@ A Custom theme file should be named foo-theme.el, where foo is the theme name. T
 
 通常使用 nix 來處理專案開發環境的時候，除了用 nix-shell 之外，通常會搭配 direnv + nix-direnv 來達到所謂「切進專案資料夾的時候自動切換開發環境」的功能。
 
-在 emacs 中則是會再加上 `envrc` 跟 `exec-path-from-shell` 這兩個套件來輔助這件事情。
+在 emacs 中則是會再加上 =envrc= 跟 =exec-path-from-shell= 這兩個套件來輔助這件事情。
 
-雖然在 eshell 或是 shell 中看起來都能正確切換環境，但是在 `M-x shell-command` 或是 `M-x async-shell-command` 執行 `printenv` 中的 PATH 一直是錯誤的。陸續看了 google search， envrc repo， nix-direnv repo 都沒看到有人提這個問題。所以只好自己來看看。
+雖然在 eshell 或是 shell 中看起來都能正確切換環境，但是在 =M-x shell-command= 或是 =M-x async-shell-command= 執行 =printenv= 中的 PATH 一直是錯誤的。陸續看了 google search， envrc repo， nix-direnv repo 都沒看到有人提這個問題。所以只好自己來看看。
 
 ** TL;DR
-問題發生在，雖然 envrc 會把環境變數帶入，但是在 zsh 執行的過程中會被 home-manager 的設定覆蓋。既然已經透過 `exec-path-from-shell` 中將全部環境變數帶入 emacs 環境中，就不需要重新執行整套的 zsh 設定，所以額外帶入 `__NIX_DARWIN_SET_ENVIRONMENT_DONE` 就可以跳過設定的步驟。另外的好處是在進 shell 的時候也不需要再度執行 direnv，速度快一點。
+問題發生在，雖然 envrc 會把環境變數帶入，但是在 zsh 執行的過程中會被 home-manager 的設定覆蓋。既然已經透過 =exec-path-from-shell= 中將全部環境變數帶入 emacs 環境中，就不需要重新執行整套的 zsh 設定，所以額外帶入 =__NIX_DARWIN_SET_ENVIRONMENT_DONE= 就可以跳過設定的步驟。另外的好處是在進 shell 的時候也不需要再度執行 direnv，速度快一點。
 
 ** 菜鳥 elisp debug
-說到 elisp 或是 emacs 的強項，就是整個環境都是動態的，也就是說基本上指令都可以直接 ref 到原始碼，也可以在環境中直接做修改。其中一個下斷點的方式就是直接在對應的地方呼叫 `(debug)` 在直接更新 function 這樣就行了，方便的地方還有可以定義「進入 function 點」或是「當指定變數被修改時」等等。
+說到 elisp 或是 emacs 的強項，就是整個環境都是動態的，也就是說基本上指令都可以直接 ref 到原始碼，也可以在環境中直接做修改。其中一個下斷點的方式就是直接在對應的地方呼叫 =(debug)= 在直接更新 function 這樣就行了，方便的地方還有可以定義「進入 function 點」或是「當指定變數被修改時」等等。
 
 中斷後有幾個基本操作，就跟大部分的 debugger 差不多。
 
@@ -67,16 +67,16 @@ A Custom theme file should be named foo-theme.el, where foo is the theme name. T
 | e    | eval，相當於觀察變數或是可以直接修改 |
 
 ** emacs 中的 shell 及 shell-command
-回到根本變成是要了解 emacs 是怎麼操作 shell 的，這邊會遇到兩個相關的變數 `process-environment` 以及 `exec-path`，前者決定由 emacs 啟動的 subprocess 的環境變數，後者則是相當於在 emacs 環境中的 `PATH`。容易有疑問的地方會是 `process-environment` 中的 `PATH` 跟 `exec-path` 的區別。自己的理解會是 `exec-path` 決定 emacs 可以看到哪些 subprocess 可以被執行，而執行之後的環境變數則是由 `process-environment` 決定。基本上兩個地方的值應該要是相同的才是，但概念上是脫鉤的。
+回到根本變成是要了解 emacs 是怎麼操作 shell 的，這邊會遇到兩個相關的變數 =process-environment= 以及 =exec-path= ，前者決定由 emacs 啟動的 subprocess 的環境變數，後者則是相當於在 emacs 環境中的 =PATH= 。容易有疑問的地方會是 =process-environment= 中的 =PATH= 跟 =exec-path= 的區別。自己的理解會是 =exec-path= 決定 emacs 可以看到哪些 subprocess 可以被執行，而執行之後的環境變數則是由 =process-environment= 決定。基本上兩個地方的值應該要是相同的才是，但概念上是脫鉤的。
 
-了解之後與其用 (debug) 慢慢走，不如直接用 `M-x debug-on-variable-change` 直接觀測 `process-environment` 及 `exec-path`。 在這個情境中看起來似乎是沒什麼問題。也額外測試如果我多塞了 `FOO` 這樣的變數能不能順利傳遞到 shell 中，看起來是可以，不過依然沒有反應在 PATH 上。
+了解之後與其用 (debug) 慢慢走，不如直接用 =M-x debug-on-variable-change= 直接觀測 =process-environment= 及 =exec-path=。 在這個情境中看起來似乎是沒什麼問題。也額外測試如果我多塞了 =FOO= 這樣的變數能不能順利傳遞到 shell 中，看起來是可以，不過依然沒有反應在 PATH 上。
 
 ** bash 或 zsh 的順序
-既然在進入 shell 前 `process-environment` 或是 `exec-path` 都沒什麼問題，那方向就變成：「是不是在 shell 啟動的途中 PATH 被修改了？」
+既然在進入 shell 前 =process-environment= 或是 =exec-path= 都沒什麼問題，那方向就變成：「是不是在 shell 啟動的途中 PATH 被修改了？」
 
 從這個角度變成是要去了解 bash 或 zsh 的啟動順序，因為自己是用 zsh 所以就用 zsh 看。這邊有畫得不錯的圖可以參考 [[https://superuser.com/a/1840396][stackoverflow]] 。接下來就要知道是走哪個路線，就直接執行 emacs app 的方式的話， shell 是 Login Interctive， shell-command 則是 Login Non-interactive。
 
-順著路線一路看到 `/etc/zshenv`
+順著路線一路看到 =/etc/zshenv=
 #+begin_src shell
   # /etc/zshenv: DO NOT EDIT -- this file has been generated automatically.
   # This file is read for all shells.
@@ -104,9 +104,9 @@ A Custom theme file should be named foo-theme.el, where foo is the theme name. T
   fi
 #+end_src
 
-這段 `. /nix/store/jmf87lwjf46mm4iiacrlag752mqmdj8r-set-environment` 的內容終於看到一些覆蓋的動作。
+這段 =. /nix/store/jmf87lwjf46mm4iiacrlag752mqmdj8r-set-environment= 的內容終於看到一些覆蓋的動作。
 
-知道位置之後就好下手了，由於檔案是由 nix 負責所以基本上改不動。不過看來是可以用 `__NIX_DARWIN_SET_ENVIRONMENT_DONE` 這個環境變數來做控制。接下來問題又回到像是這邊的情境 @@hugo:[How to fix nix "Problem with the SSL CA cert" on macOS]({{<relref "how-to-fix-problem-with-the-ssl-ca-cert-on-macos">}})@@ 。由於`exec-path-from-sehll` 只會匯入常見的變數，其他的要自己指定。這邊就直接額外加入這個變數就行。
+知道位置之後就好下手了，由於檔案是由 nix 負責所以基本上改不動。不過看來是可以用 =__NIX_DARWIN_SET_ENVIRONMENT_DONE= 這個環境變數來做控制。接下來問題又回到像是這邊的情境 @@hugo:[How to fix nix "Problem with the SSL CA cert" on macOS]({{<relref "how-to-fix-problem-with-the-ssl-ca-cert-on-macos">}})@@ 。由於=exec-path-from-sehll= 只會匯入常見的變數，其他的要自己指定。這邊就直接額外加入這個變數就行。
 
 #+begin_src emacs-lisp
   (use-package exec-path-from-shell
@@ -798,7 +798,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 ** 設定開機
 如果有找不到 bootloader 的情況可能是這邊BIOS要設定
-參照 [[*How to boot into linux on v3-372 / 在 V3-372 上如何開機進入 Linux]]
+參照 @@hugo:[How to boot into linux on v3-372 / 在 V3-372 上如何開機進入 Linux]({{<relref "how-to-boot-into-linux-on-acer-v3-372">}})@@
 
 ** 安裝後
 預設是 root 所以要先新增自己的帳號。
@@ -938,7 +938,7 @@ public static void main()
 :EXPORT_DATE: <2018-01-30>
 :END:
 
-前陣子因為個人主張`用 class 取代 struct`而討論到 csharp 中 struct 跟 class 有什麼不同。
+前陣子因為個人主張=用 class 取代 struct=而討論到 csharp 中 struct 跟 class 有什麼不同。
 #+begin_src csharp
 struct foo
 {
@@ -1126,7 +1126,7 @@ unix環境應該在 /etc/ 之類的
 5. 完整路徑為python執行檔位置如： =<python安裝路徑>\python.exe= 引數為 wfastcgi.py 如： =<python安裝路徑>\lib\site-packages\wfastcgi.py=
 6. 新增網站
 7. =網站設定頁面中 -> IIS -> 處理常式對應 -> 新增模組對應=
-8. 要求路徑： =*= ，模組： =FastCgiModule= ，執行檔： =<python安裝路徑>\python.exe|<python安裝路徑>\lib\site-packages\wfastcgi.py`= ，名稱： =Django Handler= （或是隨意）
+8. 要求路徑： =*= ，模組： =FastCgiModule= ，執行檔： =<python安裝路徑>\python.exe|<python安裝路徑>\lib\site-packages\wfastcgi.py= ，名稱： =Django Handler= （或是隨意）
 9. 要求限制 -> 取消勾選 =只有當要求對應到下列項目時才啟動處理常式=
 10. IIS manager 可能會問你是否要建立 fastcgi 應用程式，選否 (選是應該也是可以)
 11. 看一下網站資料夾下面有無 =web.config= ，參考下面的範例，如果前面有照著做應該只要加入 appSettings 即可。

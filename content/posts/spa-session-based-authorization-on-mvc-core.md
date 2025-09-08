@@ -17,14 +17,14 @@ draft = false
 ```csharp
 services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options => {
-      options.Cookie.name = "CookieName";
-      options.Cookie.path = "/";
-      options.Events.OnRedirectToLogin = (context) =>
-      {
-          // 把未登入的自動轉頁複寫掉
-          context.Response.StatusCode = 401;
-          return Task.CompletedTask;
-      }
+        options.Cookie.name = "CookieName";
+        options.Cookie.path = "/";
+        options.Events.OnRedirectToLogin = (context) =>
+        {
+            // 把未登入的自動轉頁複寫掉
+            context.Response.StatusCode = 401;
+            return Task.CompletedTask;
+        }
     });
 ```
 
