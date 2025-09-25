@@ -30,6 +30,8 @@ This post is basically based on [this](https://www.youtube.com/watch?v=CZyiMlLZV
 
 1.  Use `Disk Utility` to format the USB stick with an `Apple Partition Map`.
     -   If you don't see the Scheme option, you're probably selecting just a partition instead of the whole drive. Click the drive icon on the left panel of Disk Utility, then choose "Show All Devices".
+        ![](/images/how-to-boot-from-usb-on-an-ibook-g4-format.png)
+        ![](/images/how-to-boot-from-usb-on-an-ibook-g4-show-all-devices.png)
 2.  Create a new partition using the `Mac OS Extended (Journaled)` format.
     -   Some people say you need to create a smaller partition if your USB stick is too large. Mine was 8GB, so I didn’t test this.
 3.  Restore the OS image to the USB stick. I couldn’t get the GUI method to work, so I used this terminal command instead:
@@ -54,6 +56,7 @@ sudo asr restore --source {IMAGE_LOCATION} --target /Volumes/{DRIVE_NAME} --eras
         1.  The usb stick has incorrect format (not using apple partition).
         2.  The image doesn't work.
         3.  The iBook can't read the USB stick at all (refer to step 2).
+            ![](/images/how-to-boot-from-usb-on-an-ibook-g4-openfirmware.jpeg)
 5.  Set up an alias `devalias ud {FULL_PATH_TO_DISK}`. For example, mine was `devalias ud /pci@f2000000/usb@1b,1/disk@1`
 6.  List the files on the USB Stick: `dir ud:{PARTITION_NUMBER},\` where paritition is based on previous step, mine was: `dir ud:3,\`
 7.  If you see the file list, you're good to go.
