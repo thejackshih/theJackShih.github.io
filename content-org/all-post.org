@@ -1,5 +1,61 @@
 #+hugo_base_dir: ../
 
+* How to Boot from USB on an iBook G4
+:PROPERTIES:
+:EXPORT_FILE_NAME: how-to-boot-from-usb-on-an-ibook-g4
+:EXPORT_DATE: <2025-09-25>
+:END:
+
+*Disclaimer: This post was proofread using ChatGPT.*
+
+Recently, I pulled out my family's old vintage iBook G4. Somehow, a long time ago, I installed Ubuntu 13.10 on this machine. Of course, I already forgot the password-I didn’t even remember installing Ubuntu in the first place!
+
+This time, I’m planning to restore it to macOS-specifically, OS X Leopard, which was the latest official version for PowerPC. After doing some research, people online recommend using a disc to install it rather than a USB.
+
+But then I discovered the DVD drive is broken (it keeps ejecting every disc I put in). Guess I’ll have to do this the hard way.
+
+This post is basically based on [[https://www.youtube.com/watch?v=CZyiMlLZV1Q&list=PL3izGrqeHYQ3OIkESuUUDp5YV1qr5u0bb][this]] YouTube video, with a few notes of my own.
+
+** Prerequisites
+- A USB stick
+  - Preferably an older one. I had no luck with my 64GB stick, but it worked with an ancient 8GB one.
+  - I recommend a stick with a read indicator LED (the kind that flashes when reading/writing).
+- OS X install image (still available online).
+  - In my case, only the =.dmg= file worked.
+- An iBook.
+
+** Prepare the USB Stick
+1. Use =Disk Utility= to format the USB stick with an =Apple Partition Map=.
+   - If you don't see the Scheme option, you're probably selecting just a partition instead of the whole drive. Click the drive icon on the left panel of Disk Utility, then choose "Show All Devices".
+2. Create a new partition using the =Mac OS Extended (Journaled)= format.
+   - Some people say you need to create a smaller partition if your USB stick is too large. Mine was 8GB, so I didn’t test this.
+3. Restore the OS image to the USB stick. I couldn’t get the GUI method to work, so I used this terminal command instead:
+#+begin_src shell
+  sudo asr restore --source {IMAGE_LOCATION} --target /Volumes/{DRIVE_NAME} --erase --noverify
+#+end_src
+4. Use =Disk Utility= to check =Partition number=.
+   - If your device shows as =disk4s3=, then the partition number is =3=.
+
+** Booting from USB Using Open Firmware
+1. Power on iBook while holding: =option= + =cmd= + =o= + =f=
+2. (Optional) Check if the USB drive’s LED is flashing (if it has one).
+3. Run the command =dev / ls= to list all devices.
+4. Look for something like =/usb@{SOME_NUMBER}= that has a =/disk@{SOME_NUMBER}= subtree.
+   - if you don't see =/disk@{SOME_NUMBER}= under =/usb@{SOME_NUMBER}=, it could mean:
+     1) The usb stick has incorrect format (not using apple partition).
+     2) The image doesn't work.
+     3) The iBook can't read the USB stick at all (refer to step 2).
+5. Set up an alias =devalias ud {FULL_PATH_TO_DISK}=. For example, mine was =devalias ud /pci@f2000000/usb@1b,1/disk@1=
+6. List the files on the USB Stick: =dir ud:{PARTITION_NUMBER},\= where paritition is based on previous step, mine was: =dir ud:3,\= 
+7. If you see the file list, you're good to go.
+8. Boot using: =boot ud:{PARTITION_NUMBER},\System\Library|CoreServices\BootX=, mine was =boot ud:3,\System\Library\CoreServices\BootX=
+9. You should now see the install screen just like booting from install disc.
+
+** References
+- https://www.youtube.com/watch?v=CZyiMlLZV1Q&list=PL3izGrqeHYQ3OIkESuUUDp5YV1qr5u0bb&index=33
+- https://maydur.st/2024-03-19-open-firmware-crash-course/
+
+
 * 處理 emacs 讀不到主題的問題                                         :emacs:
 :PROPERTIES:
 :EXPORT_FILE_NAME: note-about-fixing-loading-theme-issue-in-emacs
@@ -65,6 +121,7 @@ A Custom theme file should be named foo-theme.el, where foo is the theme name. T
 | d    | 相當於 step in                       |
 | b    | 相當於 step over                     |
 | e    | eval，相當於觀察變數或是可以直接修改 |
+
 
 ** emacs 中的 shell 及 shell-command
 回到根本變成是要了解 emacs 是怎麼操作 shell 的，這邊會遇到兩個相關的變數 =process-environment= 以及 =exec-path= ，前者決定由 emacs 啟動的 subprocess 的環境變數，後者則是相當於在 emacs 環境中的 =PATH= 。容易有疑問的地方會是 =process-environment= 中的 =PATH= 跟 =exec-path= 的區別。自己的理解會是 =exec-path= 決定 emacs 可以看到哪些 subprocess 可以被執行，而執行之後的環境變數則是由 =process-environment= 決定。基本上兩個地方的值應該要是相同的才是，但概念上是脫鉤的。
