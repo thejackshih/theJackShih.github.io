@@ -1,5 +1,216 @@
 #+hugo_base_dir: ../
 
+* Clojure 開發環境設定
+:PROPERTIES:
+:EXPORT_FILE_NAME: clojure-development-environment-setup
+:EXPORT_DATE: <2025-11-04>
+:END:
+
+** 前言
+之前參加 clojure meetup 並沒有簡單的文件輔助設定流程。這邊簡單列一下要怎麼設定環境。大致上是湊合網路上的資訊再加上一些自己的筆記。希望可以幫助大家加快上手的速度。
+
+** 目標
+在各環境安裝 clojure repl，並可以使用常用的編輯器操作 structure editing 及 interactive programming
+
+** 安裝 clojure repl
+大致上分成兩種
+1. 透過官方的 =clojure cli=
+2. 透過 =Leiningen= 安裝
+
+這邊建議是透過 =Leiningen= 安裝，原因是
+1. 比較簡單使用
+2. 各大平台都有提供 leiningen package，這也是 leiningen 官方推薦的安裝方式。
+3. 雖然老派，但 leiningen 提供了一個好的 clojure 專案的出發點。
+4. 如果是按照 Clojure for the brave and true，書中也是以 leiningen 當作基礎。
+
+備註：如果編輯器是用 =intellij= 且沒有打算要用 terminal 操作可以略過這一步。因為 cursive 會獨立安裝 leiningen。
+
+*** MacOS
+#+begin_src shell
+  brew install leiningen
+#+end_src
+*** Linux
+**** dnf (fedora)
+#+begin_src shell
+  sudo dnf install leiningen
+#+end_src
+**** apt (debian / ubuntu)
+#+begin_src shell
+  sudo apt install leiningen
+#+end_src
+**** pacman (arch)
+#+begin_src shell
+  sudo pacman -S leiningen
+#+end_src
+*** Windows
+**** chocolatey
+#+begin_src powershell
+  choco install leiningen
+#+end_src
+**** install script
+https://leiningen.org/#install
+**** installer
+https://bitbucket.org/djpowell/leiningen-win-installer/src/bitbucket-master/
+*** REPL
+執行 =lein repl= ，第一次執行會需要等一下。
+結束方式為 =ctrl-D (linux/macos)=, =ctrl-C (windows)=, =(exit)=, =(quit)=
+**** 常見問題
+=java.io.IOException: Permission denied. Please check your access rights for ...=
+在 home directory 建立 =.lein= 資料夾
+#+begin_src shell
+  mkdir ~/.lein
+#+end_src
+
+** 編輯器設定
+*** emacs
+**** 安裝 cider
+=M-x package-install <RET> cider <RET>=
+
+#+begin_src emacs-lisp
+  (use-package cider
+    :ensure t)
+#+end_src
+
+**** 安裝 paredit
+=M-x package-install <RET> paredit <RET>=
+
+#+begin_src emacs-lisp
+  (use-package paredit
+    :ensure t)
+#+end_src
+
+**** interactive programming
+=M-x cider <RET> cider-jack-in-clj <RET>=
+
+| 操作       | 快捷鍵  |
+|------------+---------|
+| evaluation | C-x C-e |
+
+
+**** structure editing
+http://danmidwood.com/content/2014/11/21/animated-paredit.html
+
+| 操作           | 快捷鍵      |
+|----------------+-------------|
+| Slurp forward  | C-<right>   |
+| Barf forward   | C-<left>    |
+| Slurp backward | C-M-<left>  |
+| barf backward  | C-M-<right> |
+
+
+*** vim / neovim
+**** vim-fireplace + vim-sexp
+- https://github.com/tpope/vim-fireplace
+- https://github.com/guns/vim-sexp
+- https://github.com/tpope/vim-sexp-mappings-for-regular-people  
+
+#+begin_src vimrc
+  Plug 'tpope/vim-fireplace'
+  Plug 'guns/vim-sexp'
+  Plug 'tpope/vim-sexp-mappings-for-regular-people'
+#+end_src
+
+**** interactive programming
+=:FireplaceConnect=
+
+https://github.com/tpope/vim-fireplace
+
+| 操作       | 快捷鍵  |
+|------------+---------|
+| evaluation | cpp     |
+
+**** structure editing
+https://github.com/tpope/vim-sexp-mappings-for-regular-people
+
+| 操作           | 快捷鍵 |
+|----------------+--------|
+| Slurp forward  | >)     |
+| Barf forward   | <)     |
+| Slurp backward | <(     |
+| barf backward  | >(     |
+
+*** neovim
+**** conjure + vim-sexp
+- https://github.com/Olical/conjure
+- https://github.com/guns/vim-sexp
+- https://github.com/tpope/vim-sexp-mappings-for-regular-people  
+
+#+begin_src vimrc
+  Plug 'Olical/conjure'
+  Plug 'guns/vim-sexp'
+  Plug 'tpope/vim-sexp-mappings-for-regular-people'
+#+end_src
+
+**** interactive programming
+
+| 操作       | 快捷鍵          |
+|------------+-----------------|
+| evaluation | <localleader>ee |
+| evaluation | \ee             |
+
+**** structure editing
+https://github.com/tpope/vim-sexp-mappings-for-regular-people
+
+| 操作           | 快捷鍵 |
+|----------------+--------|
+| Slurp forward  | >)     |
+| Barf forward   | <)     |
+| Slurp backward | <(     |
+| barf backward  | >(     |
+
+
+*** vscode
+**** 安裝 Calva
+https://calva.io/
+**** interactive programming
+command palette -> =Calva: Start a project REPL and connect=
+
+| 操作       | 快捷鍵                       |
+|------------+------------------------------|
+| evaluation | shift + option (alt) + enter |
+
+
+**** Structure editing
+https://calva.io/paredit/
+
+| 操作           | 快捷鍵                         |
+|----------------+--------------------------------|
+| Slurp forward  | cmd + option + <right>         |
+| Barf forward   | cmd + option + <left>          |
+| Slurp backward | cmd + shift + option + <left>  |
+| barf backward  | cmd + shift + option + <right> |
+
+
+
+*** intellij
+**** 安裝 cursive
+https://cursive-ide.com/
+**** interactive programming
+https://cursive-ide.com/userguide/repl.html#interaction-with-the-editor
+
+| 操作       | 快捷鍵                       |
+|------------+------------------------------|
+| evaluation | shift + cmd + p              |
+
+***** 常見問題
+No JDK Module for ...
+
+=project structure (cmd + ;)= -> =sdk=
+
+**** structure editing
+https://cursive-ide.com/userguide/paredit.html
+
+| 操作           | 快捷鍵            |
+|----------------+-------------------|
+| Slurp forward  | cmd + shift + k   |
+| Barf forward   | cmd + shift + j   |
+| Slurp backward | cmd + control + j |
+| barf backward  | cmd + control + k |
+
+
+** References
+
+
 * How to Boot from USB on an iBook G4
 :PROPERTIES:
 :EXPORT_FILE_NAME: how-to-boot-from-usb-on-an-ibook-g4
