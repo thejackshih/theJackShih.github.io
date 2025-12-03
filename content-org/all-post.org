@@ -46,7 +46,7 @@ emacs 一直以來有個很大的賣點就是它是一個可以完全客製化�
   (global-set-key (kbd "M-s-<SPC>") 'my-launch-app)
 #+end_src
 
-這邊有個小插曲，之前在 @@hugo:[處理 emacs shell command 抓不到 nix-direnv 的問題]({{<relref "fix-shell-command-path-in-emacs-with-nix-Hdirenv">}})@@ 的處理導致用這個方式啟動的 Termianl.app 會跳過設定環境變數的步驟。在測試了老半天之後才發現原來 Terminal.app 會吃 =start-process= 所代入 =process-environment= ，滿意外的是因為其他的 Termianl emulator 像是 Ghostty 都不會這樣。原本以為要土炮修改 =process-environment= ，後來發現 emacs 有提供 =with-environment-variables= 這個功能可以簡單處理。
+這邊有個小插曲，之前在 @@hugo:[處理 emacs shell command 抓不到 nix-direnv 的問題]({{<relref "fix-shell-command-path-in-emacs-with-nix-direnv">}})@@ 的處理導致用這個方式啟動的 Termianl.app 會跳過設定環境變數的步驟。在測試了老半天之後才發現原來 Terminal.app 會吃 =start-process= 所代入 =process-environment= ，滿意外的是因為其他的 Termianl emulator 像是 Ghostty 都不會這樣。原本以為要土炮修改 =process-environment= ，後來發現 emacs 有提供 =with-environment-variables= 這個功能可以簡單處理。
 
 雖然很 hacky 也有些小問題，不過是自己做給自己用的所以用起來還算順手。
 
